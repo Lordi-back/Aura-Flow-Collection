@@ -166,15 +166,15 @@ h1 {
 
 /* Фиксированный футер лучше сделать не фиксированным для мобильных, чтобы он не заслонял контент, или задать ему `bottom: 0` для всех размеров */
 
-/*.footer {
+.footer {
   background-color: #000;
   color: #fff;
   text-align: center;
   padding: 10px 0;
   font-size: 14px;
-  bottom: 0;
-  Можно оставить фиксированный или не фиксировать для мобильных 
-}*/
+  bottom: 0;  
+  /*Можно оставить фиксированный или не фиксировать для мобильных */
+}
 
 /* Медиазапросы для конкретных размеров */
 @media (max-width: 768px) {
@@ -215,7 +215,7 @@ h1 {
   
   <!-- Меню-иконка -->
 <div class="menu-container" style="position: absolute; top: 10px; right: 60px;">
- <button id="menu-button" style="background: none; border: none; color: white; cursor: pointer; font-size: 16px; font-weight: bold; font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;">☰ Меню</button>
+ <button id="menu-button" style="background: none; border: none; color: gray; cursor: pointer; font-size: 16px; font-weight: bold; font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;">☰</button>
   <div id="menu" class="menu" style="display: none; position: absolute; right: 0; top: 30px; background: #fff; border: 1px solid #ccc; border-radius: 5px; min-width: 200px; z-index: 999;">
     <ul style="list-style: none; margin: 0; padding: 10px; background-color: black; color: white;">
       <li><a href="index.html" style="text-decoration: none; display: block; padding: 8px; color: white;">Главная</a></li>
@@ -341,6 +341,7 @@ updateCartCount();
 <!-- Закрывающий тег body -->
 </body>
 </html>
+
 
 
 
