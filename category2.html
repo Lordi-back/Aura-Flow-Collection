@@ -77,7 +77,8 @@ body {
 /* Название */
 .header-title {
   font-family: 'colonna mt', cursive;
-  font-size: 48pt; /* уменьшил с 72pt для адаптивности */
+  font-size: 3vw; /* Размер шрифта — адаптивный */
+  font-size: 48px; /* чтобы не стать слишком большим */
   color: #fff;
   margin: 0;
 }
@@ -138,6 +139,25 @@ h1 {
 }
 .product:hover {
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+  /* Меньший шрифт для заголовка */
+  .header-title {
+    font-size: 5vw;  
+  }
+  /* Корзина и меню */
+  #cart-link {
+    font-size: 4vw;
+  }
+  /* Заголовок */
+  h1 {
+    font-size: 6vw;
+  }
+  /* Кнопки */
+  .product button {
+    font-size: 4vw; /* подстроится */
+  }
 }
 </style>
 <link rel="icon" href="ДОРАБОТКА.png" sizes="512x512" type="image/png">
@@ -279,7 +299,7 @@ updateCartCount();
 </script>
 
 <div class="footer">
-  <p>&copy; 2024. Flored. Все права защищены</p>
+  <p>&copy; 2024. Aura Flow Collection. Все права защищены</p>
 </div>
 <!-- Закрывающий тег body -->
 </body>
