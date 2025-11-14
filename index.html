@@ -73,11 +73,11 @@ body {
   margin-top: 10px;
 }
 
-/* Название */
+/* Название font-size: 3vw;  Размер шрифта — адаптивный 
+  font-size: 48px; чтобы не стать слишком большим  */
 .header-title {
   font-family: 'colonna mt', cursive;
-  font-size: 3vw; /* Размер шрифта — адаптивный */
-  font-size: 48px; /* чтобы не стать слишком большим */
+  font-size: clamp(24px, 5vw, 48px);
   color: #fff;
   margin: 0;
 }
@@ -187,7 +187,7 @@ h1 {
   }
   /* Заголовок */
   h1 {
-    font-size: 6vw;
+    font-size: 3vw;
   }
   /* Кнопки */
   .product button {
