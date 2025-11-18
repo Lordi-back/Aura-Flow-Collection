@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aura Flow Collection</title>
+
+<!-- Подключение шрифтов -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" />
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #fff;
+  color: #333;
+}
+/* Футер */
+.footer {
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 15px 0;
+  font-size: 14px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 999;
+}
+/* Кнопки */
+.product button {
+  padding: 12px 24px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Roboto', cursive;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+.product button:hover {
+  background-color: #222;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+/* Шапка */
+.header {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding: 10px 20px;
+  background-color: #111;
+  height: 100px;
+}
+/* Логотип слева */
+.header-left {
+  display: flex;
+  align-items: flex-start;
+}
+.logo img {
+  height: 50px; /* Настройте под логотип */
+}
+/* Центр: название */
+.header-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.header-title {
+  font-family: 'colonna mt', cursive;
+  font-size: 3vw; /* Размер шрифта — адаптивный */
+  font-size: 48px; /* чтобы не стать слишком большим */
+  color: #fff;
+  margin: 0;
+}
+
+/* Корзина */
+#cart-link {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: #fff;
+  font-size: 1em;
+  text-decoration: none;
+}
+#cart-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+}
+/* Меню-кнопка */
+.menu-container {
+  position: absolute;
+  top: 10px;
+  right: 60px;
+}
+.menu-container button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+}
+.menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 30px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  min-width: 200px;
+  z-index: 999;
+}
+.menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+  background-color: black;
+}
+.menu ul li {
+  margin-bottom: 5px;
+}
+.menu ul li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 8px;
+}
+h1 {
+  text-align: center;
+  font-size: 2.5em;
+  margin: 30px 0;
+}
+.about-section {
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+  padding: 0 20px;
+}
+.about-section h2 {
+  font-family: 'Pacifico', cursive;
+  font-size: 36px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.about-section p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+}
+.social-links {
+  text-align: center;
+  margin-top: 20px;
+}
+.social-links a {
+  margin: 0 10px;
+  display: inline-block;
+  font-size: 24px;
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s;
+}
+.social-links a:hover {
+  color: #000;
+}
+.map-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+.map-container h3 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+#map {
+  width: 100%;
+  height: 400px;
+  background-color: #eee; /* placeholder, замените на карту */
+}
+@media (max-width: 768px) {
+  /* Меньший шрифт для заголовка */
+  .header-title {
+    font-size: 5vw;  
+  }
+  /* Корзина и меню */
+  #cart-link {
+    font-size: 4vw;
+  }
+  /* Заголовок */
+  h1 {
+    font-size: 6vw;
+  }
+  /* Кнопки */
+  .product button {
+    font-size: 4vw; /* подстроится */
+  }
+}
+</style>
+<link rel="icon" href="ДОРАБОТКА.png" sizes="512x512" type="image/png">
+</head>
+<body>
+
+<!-- Шапка -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">
+      <img src="Aura 3.PNG" alt="Логотип" />
+    </div>
+  </div>
+  <div class="header-center">
+    <div class="header-title">Aura Flow Collection</div>
+  </div>
+  
+  <!-- Меню-иконка -->
+<div class="menu-container" style="position: absolute; top: 10px; right: 60px;">
+ <button id="menu-button" style="background: none; border: none; color: white; cursor: pointer; font-size: 16px; font-weight: bold; font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;">☰ Меню</button>
+  <div id="menu" class="menu" style="display: none; position: absolute; right: 0; top: 30px; background: #fff; border: 1px solid #ccc; border-radius: 5px; min-width: 200px; z-index: 999;">
+    <ul style="list-style: none; margin: 0; padding: 10px; background-color: black; color: white;">
+      <li><a href="index.html" style="text-decoration: none; display: block; padding: 8px; color: white;">Главная</a></li>
+      
+      <li>
+        <div class="categories-toggle" style="cursor: pointer; padding: 8px; color: white;">Категории ▸</div>
+        <ul class="subcategories" style="list-style: none; margin: 0; padding-left: 15px; display: none; background-color: black; color: white;">
+          <!-- Здесь добавьте ваши категории -->
+          <li><a href="category1.html" style="text-decoration: none; display: block; padding: 8px; color: white;">Штаны</a></li>
+          <li><a href="category2.html" style="text-decoration: none; display: block; padding: 8px; color: white;">Кофточки</a></li>
+        </ul>
+      </li>
+      <li><a href="about.html" style="text-decoration: none; display: block; padding: 8px; color: white;">О нас</a></li>
+    </ul>
+  </div>
+</div>
+  
+  <a href="cart.html" id="cart-link" style="position: absolute; top: 50px; right: 20px;">🛒 Корзина (<span id="cart-count">0</span>)</a>
+  
+</div>
+
+<h1>О нас</h1>
+
+<!-- Основная информация о компании -->
+<div class="about-section">
+  <h2></h2>
+  <p><!-- Краткое описание компании, ее история, миссия и ценности --> Одежка такого качества что тебя хотят даже те кто тебя не знает</p>
+  <!-- Например:
+    <strong>Название компании:</strong> Ваша компания<br>
+    <strong>Описание:</strong> Мы создаем качественную одежду для всех возрастов...
+  -->
+</div>
+
+<!-- Ссылки на соцсети -->
+<div class="social-links">
+  <a href="#" target="_blank" aria-label="Facebook">
+    <!-- иконка Facebook, можно вставить SVG или использовать шрифт например Font Awesome -->
+    &#128100; <!-- заменить на иконку соцсети по желанию -->
+  </a>
+  <a href="#" target="_blank" aria-label="Instagram">
+    &#128247;
+  </a>
+  <a href="#" target="_blank" aria-label="VK">
+    &#128101;
+  </a>
+  <!-- добавьте ваши соцсети -->
+</div>
+
+<!-- Карта -->
+<div class="map-container">
+  <h3>Наше местоположение</h3>
+  <!-- Вставьте сюда карту Google Maps или другую -->
+  <div id="map">
+    <!-- Например, вставьте iframe через Google Maps embed -->
+    
+    <iframe src="https://www.google.com/maps/embed?pb=..." width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+   
+    <!-- Или оставьте место для вставки карты -->
+    <p style="text-align:center; padding-top:150px;">Здесь будет карта вашего местоположения</p>
+  </div>
+</div>
+
+<div class="footer">
+  <p>&copy; 2024. Aura Flow Collection. Все права защищены</p>
+</div>
+
+<script>
+  // Меню
+const menuBtn = document.getElementById('menu-button');
+const menu = document.getElementById('menu');
+
+menuBtn.addEventListener('click', () => {
+  if (menu.style.display === 'none' || menu.style.display === '') {
+    menu.style.display = 'block';
+  } else {
+    menu.style.display = 'none';
+  }
+});
+document.addEventListener('click', (e) => {
+  if (!menu.contains(e.target) && e.target !== menuBtn) {
+    menu.style.display = 'none';
+  }
+});
+
+const categoriesToggle = document.querySelector('.categories-toggle');
+const subcategories = document.querySelector('.subcategories');
+
+categoriesToggle.addEventListener('click', () => {
+  if (subcategories.style.display === 'none' || subcategories.style.display === '') {
+    subcategories.style.display = 'block';
+    categoriesToggle.textContent = "Категории ▾";
+  } else {
+    subcategories.style.display = 'none';
+    categoriesToggle.textContent = "Категории ▸";
+  }
+});
+</script>
+
+<script>
+  // Тут можно добавить считывание соцсетей и карты, если нужно
+</script>
+</body>
+</html>

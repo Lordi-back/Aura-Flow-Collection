@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aura Flow Collection</title>
+
+<!-- Подключение шрифта Pacifico -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+<style>
+body {
+  margin: 0;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #fff;
+  color: #333;
+}
+
+/* Стиль для кнопки возврата */
+.back-button {
+  display: inline-block;
+  margin: 20px;
+  padding: 10px 20px;
+  background-color: #111;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+.back-button:hover {
+  background-color: #333;
+}
+
+/* Футер */
+.footer {
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 15px 0;
+  font-size: 14px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+/* Обертка шапки */
+.header {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding: 10px 20px;
+  background-color: #111;
+  height: 100px; /* или нужная высота */
+}
+
+/* Логотип слева сверху */
+.header-left {
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Центр: название по горизонтали и вертикали относительно всей шапки */
+.header-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.logo img {
+  height: 50px; /* по необходимости */
+}
+/* Название */
+.header-title {
+  font-family: 'colonna mt', cursive;
+  font-size: 3vw; /* Размер шрифта — адаптивный */
+  font-size: 48px; /* чтобы не стать слишком большим */
+  color: #fff;
+  margin: 0;
+}
+
+
+h1 {
+  text-align: center;
+  font-size: 2.5em;
+  margin: 30px 0;
+}
+
+/* Таблица корзины */
+#cart-table {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 30px auto;
+  border-collapse: collapse;
+}
+#cart-table th, #cart-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+#cart-table th {
+  background-color: #f2f2f2;
+}
+
+/* Размер картинок товара */
+.product-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+/* Стиль для кнопки */
+.button {
+  padding: 6px 12px;
+  background-color: #111;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+.button:hover {
+  background-color: #333;
+}
+
+/* Общая стилизация */
+.total {
+  text-align: right;
+  max-width: 1000px;
+  margin: 0 auto 30px auto;
+  font-size: 1.2em;
+  padding-right: 20px;
+}
+@media (max-width: 768px) {
+  /* Меньший шрифт для заголовка */
+  .header-title {
+    font-size: 5vw;  
+  }
+  /* Корзина и меню */
+  #cart-link {
+    font-size: 4vw;
+  }
+  /* Заголовок */
+  h1 {
+    font-size: 6vw;
+  }
+  /* Кнопки */
+  .product button {
+    font-size: 4vw; /* подстроится */
+  }
+}
+</style>
+<link rel="icon" href="ДОРАБОТКА.png" sizes="512x512" type="image/png">
+</head>
+<body>
+<div class="header">
+  <div class="header-left">
+    <div class="logo">
+       <img src="Aura 3.PNG" alt="Логотип" />
+    </div>
+  </div>
+  <div class="header-center">
+    <div class="header-title">Aura Flow Collection</div>
+  </div>
+</div>
+<!-- Меню-иконка -->
+<div class="menu-container" style="position: absolute; top: 10px; right: 60px;">
+ <button id="menu-button" style="background: none; border: none; color: white; cursor: pointer; font-size: 16px; font-weight: bold; font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;">☰ Меню</button>
+  <div id="menu" class="menu" style="display: none; position: absolute; right: 0; top: 30px; background: #fff; border: 1px solid #ccc; border-radius: 5px; min-width: 200px; z-index: 999;">
+    <ul style="list-style: none; margin: 0; padding: 10px; background-color: black; color: white;">
+      <li><a href="index.html" style="text-decoration: none; display: block; padding: 8px; color: white;">Главная</a></li>
+      
+      <li>
+        <div class="categories-toggle" style="cursor: pointer; padding: 8px; color: white;">Категории ▸</div>
+        <ul class="subcategories" style="list-style: none; margin: 0; padding-left: 15px; display: none; background-color: black; color: white;">
+          <!-- Здесь добавьте ваши категории -->
+          <li><a href="category1.html" style="text-decoration: none; display: block; padding: 8px; color: white;">Штаны</a></li>
+          <li><a href="category2.html" style="text-decoration: none; display: block; padding: 8px; color: white;">Кофточки</a></li>
+        </ul>
+      </li>
+      <li><a href="about.html" style="text-decoration: none; display: block; padding: 8px; color: white;">О нас</a></li>
+    </ul>
+  </div>
+</div>
+
+<h1>Ваша корзина</h1>
+<table id="cart-table">
+  <thead>
+    <tr>
+      <th>Товар</th>
+      <th>Цена</th>
+      <th>Количество</th>
+      <th>Общая цена</th>
+      <th>Действия</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<div class="total" id="total-price">Общая сумма: 0 ₽</div>
+
+<div class="actions" style="text-align: center; margin-bottom: 50px;">
+  <button class="button" id="pay-btn">Оплатить</button>
+</div>
+<script>
+  // Обработка открытия/закрытия меню
+const menuBtn = document.getElementById('menu-button');
+const menu = document.getElementById('menu');
+
+menuBtn.addEventListener('click', () => {
+  if (menu.style.display === 'none') {
+    menu.style.display = 'block';
+  } else {
+    menu.style.display = 'none';
+  }
+});
+
+// Закрывать меню при клике вне
+document.addEventListener('click', (e) => {
+  if (!menu.contains(e.target) && e.target !== menuBtn) {
+    menu.style.display = 'none';
+  }
+});
+
+// Обработка раскрытия категорий
+const categoriesToggle = document.querySelector('.categories-toggle');
+const subcategories = document.querySelector('.subcategories');
+
+categoriesToggle.addEventListener('click', () => {
+  if (subcategories.style.display === 'none') {
+    subcategories.style.display = 'block';
+    categoriesToggle.textContent = "Категории ▾";
+  } else {
+    subcategories.style.display = 'none';
+    categoriesToggle.textContent = "Категории ▸";
+  }
+});
+</script>
+<script>
+function loadCart() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const tbody = document.querySelector('#cart-table tbody');
+  tbody.innerHTML = '';
+
+  let totalSum = 0;
+
+  cart.forEach((item, index) => {
+    const itemTotal = item.price * item.count;
+    totalSum += itemTotal;
+
+    const row = document.createElement('tr');
+
+    row.innerHTML = `
+  <td style="display:flex; align-items:center;">
+    <img src="${item.image || 'placeholder.png'}" alt="${item.name}" class="product-image" />
+    ${item.name}
+  </td>
+      <td>${item.price} ₽</td>
+      <td>
+        <select data-index="${index}" class="quantity-select">
+          ${[1,2,3,4,5,6,7,8,9,10].map(num => `
+            <option value="${num}" ${num === item.count ? 'selected' : ''}>${num}</option>
+          `).join('')}
+        </select>
+      </td>
+      <td>${itemTotal.toFixed(2)} ₽</td>
+      <td>
+        <button data-index="${index}" class="delete-btn">🗑️</button>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+
+  document.getElementById('total-price').textContent = 'Общая сумма: ' + totalSum.toFixed(2) + ' ₽';
+
+  // Обработчик для изменения количества
+  document.querySelectorAll('.quantity-select').forEach(select => {
+    select.addEventListener('change', e => {
+      const idx = parseInt(e.target.getAttribute('data-index'));
+      const newCount = parseInt(e.target.value);
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart[idx].count = newCount;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      loadCart();
+      updateCartCount();
+    });
+  });
+
+  // Обработчик для удаления товара
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-index'));
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.splice(idx,1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      loadCart();
+      updateCartCount();
+    });
+  });
+}
+
+document.getElementById('pay-btn').addEventListener('click', () => {
+  alert('Оплата прошла успешно! Спасибо за покупку.');
+  localStorage.removeItem('cart');
+  loadCart();
+  updateCartCount();
+});
+
+function updateCartCount() {
+  const items = JSON.parse(localStorage.getItem('cart')) || [];
+  // Можно добавить счетчик, если есть корзинный значок
+  // document.querySelector('#cart-link span').textContent = items.reduce((sum, item) => sum + item.count, 0);
+}
+
+// Инициализация
+loadCart();
+updateCartCount();
+</script>
+<div class="footer">
+ <p>&copy; 2024. Aura Flow Collection. Все права защищены</p>
+</div>
+<!-- Закрывающий тег body -->
+</body>
+</html>
