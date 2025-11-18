@@ -446,27 +446,34 @@ body {
   font-size: 24px;
 }
 
+/* Белые иконки соцсетей */
+.social-icons a {
+  color: white;
+}
+
 /* Стиль для иконки МИР */
 .mir-icon {
   display: inline-block;
   width: 40px;
   height: 24px;
-  background-color: #1F5BFF;
+  background-color: white;
   border-radius: 4px;
   position: relative;
   overflow: hidden;
+  border: 1px solid #ddd;
 }
 
 .mir-icon::before {
-  content: "М";
+  content: "Мир";
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: white;
+  color: #1F5BFF;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 10px;
   font-family: Arial, sans-serif;
+  white-space: nowrap;
 }
 
 .copyright {
@@ -701,10 +708,11 @@ body {
     <div class="footer-section">
       <h3>Мы в соцсетях</h3>
       <div class="social-icons">
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-vk"></i></a>
-        <a href="#"><i class="fab fa-telegram"></i></a>
-        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        <!-- Замените # на ваши реальные ссылки на соцсети -->
+        <a href="https://instagram.com/ваш_instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://vk.com/ваш_vk" target="_blank"><i class="fab fa-vk"></i></a>
+        <a href="https://t.me/ваш_telegram" target="_blank"><i class="fab fa-telegram"></i></a>
+        <a href="https://wa.me/ваш_whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
       </div>
       
       <h3 style="margin-top: 20px;">Способы оплаты</h3>
