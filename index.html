@@ -446,6 +446,29 @@ body {
   font-size: 24px;
 }
 
+/* Стиль для иконки МИР */
+.mir-icon {
+  display: inline-block;
+  width: 40px;
+  height: 24px;
+  background-color: #1F5BFF;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.mir-icon::before {
+  content: "М";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+}
+
 .copyright {
   text-align: center;
   width: 100%;
@@ -688,7 +711,7 @@ body {
       <div class="payment-icons">
         <i class="fab fa-cc-visa"></i>
         <i class="fab fa-cc-mastercard"></i>
-        <i class="fab fa-cc-mir"></i>
+        <div class="mir-icon"></div>
       </div>
     </div>
     
