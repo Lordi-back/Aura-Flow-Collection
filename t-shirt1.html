@@ -291,6 +291,28 @@ body {
   transition: opacity 0.3s ease;
 }
 
+/* Кнопка лупы на основном изображении */
+.zoom-indicator {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.main-image-container:hover .zoom-indicator {
+  opacity: 1;
+}
+
 .image-gallery {
   display: flex;
   gap: 10px;
@@ -324,38 +346,6 @@ body {
   box-sizing: border-box;
 }
 
-.thumbnail-images {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-.thumbnail {
-  width: 80px;
-  height: 80px;
-  border: 2px solid transparent;
-  border-radius: 5px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: border-color 0.3s;
-  background-color: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.thumbnail.active {
-  border-color: #000;
-}
-
-.thumbnail img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 5px;
-  box-sizing: border-box;
-}
-
 /* Модальное окно для увеличения изображения */
 #image-modal {
   display: none;
@@ -374,12 +364,16 @@ body {
   position: relative;
   max-width: 90%;
   max-height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-#image-modal-content img {
+#modal-image {
   max-width: 100%;
   max-height: 90vh;
   object-fit: contain;
+  transition: transform 0.3s ease;
 }
 
 #close-image-modal {
@@ -448,6 +442,8 @@ body {
   border-color: #000;
   background-color: #000;
   color: white;
+  border: 2px solid white;
+  box-shadow: 0 0 0 2px #000;
 }
 
 /* Выбор цвета */
@@ -479,7 +475,12 @@ body {
 }
 
 .color-option.active {
-  background-color: #f0f0f0;
+  background-color: #e0e0e0;
+}
+
+.color-option.active .color-name {
+  color: #000;
+  font-weight: 600;
 }
 
 .color-preview {
@@ -499,7 +500,7 @@ body {
   box-shadow: 0 0 0 2px #000;
 }
 
-/* Стили для разделенных цветов с разными пропорциями */
+/* Стили для разделенных цветов с двумя цветами */
 .color-split {
   position: absolute;
   width: 100%;
@@ -508,46 +509,39 @@ body {
   overflow: hidden;
 }
 
-/* Черный/Красный - больше черного (270 градусов), меньше красного (90 градусов) */
+/* Черный/Красный - диагональное разделение */
 .color-split.black-red::before {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
-  background: conic-gradient(
-    #000000 0deg 270deg,
-    #ff0000 270deg 360deg
-  );
+  background: linear-gradient(135deg, #000000 0%, #000000 50%, #ff0000 50%, #ff0000 100%);
 }
 
-/* Белый/Черный - больше белого (270 градусов), меньше черного (90 градусов) */
+/* Белый/Черный - диагональное разделение */
 .color-split.white-black::before {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
-  background: conic-gradient(
-    #ffffff 0deg 270deg,
-    #000000 270deg 360deg
-  );
+  background: linear-gradient(135deg, #ffffff 0%, #ffffff 50%, #000000 50%, #000000 100%);
 }
 
-/* Черный/Серый - больше черного (270 градусов), меньше серого (90 градусов) */
+/* Черный/Серый - диагональное разделение */
 .color-split.black-gray::before {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
-  background: conic-gradient(
-    #000000 0deg 270deg,
-    #808080 270deg 360deg
-  );
+  background: linear-gradient(135deg, #000000 0%, #000000 50%, #808080 50%, #808080 100%);
 }
 
 .color-name {
   font-size: 14px;
   text-align: center;
   font-weight: 500;
+  color: #666;
+  transition: all 0.3s;
 }
 
 /* Описание товара */
@@ -882,14 +876,18 @@ body {
     font-size: 16px; /* Увеличиваем для удобства на мобильных */
   }
   
-  .image-gallery, .thumbnail-images {
+  .image-gallery {
     flex-wrap: wrap;
     justify-content: center;
   }
   
-  .gallery-image, .thumbnail {
+  .gallery-image {
     width: 70px;
     height: 70px;
+  }
+  
+  .zoom-indicator {
+    display: none; /* Скрываем лупу на мобильных */
   }
 }
 
@@ -918,7 +916,7 @@ body {
     font-size: 14px;
   }
   
-  .gallery-image, .thumbnail {
+  .gallery-image {
     width: 60px;
     height: 60px;
   }
@@ -947,22 +945,13 @@ body {
   <div class="product-images">
     <div class="main-image-container" id="main-image-container">
       <img id="main-image" src="" alt="Футболка" />
+      <div class="zoom-indicator">
+        <i class="fas fa-search-plus"></i>
+      </div>
     </div>
     
     <div class="image-gallery" id="image-gallery">
       <!-- Галерея изображений будет заполнена через JavaScript -->
-    </div>
-    
-    <div class="thumbnail-images">
-      <div class="thumbnail active" data-color="black-red">
-        <img src="" alt="Черный/Красный" />
-      </div>
-      <div class="thumbnail" data-color="white-black">
-        <img src="" alt="Белый/Черный" />
-      </div>
-      <div class="thumbnail" data-color="black-gray">
-        <img src="" alt="Черный/Серый" />
-      </div>
     </div>
   </div>
 
@@ -1134,7 +1123,6 @@ const productData = {
       images: {
         front: 'product1.jpg',           // Передняя часть
         back: 'product1-hover.jpg',       // Задняя часть
-        thumb: 'product1.jpg'            // Миниатюра
       }
     },
     'white-black': {
@@ -1143,7 +1131,6 @@ const productData = {
       images: {
         front: 'product2.jpg',
         back: 'product2-hover.jpg',
-        thumb: 'product2.jpg'
       }
     },
     'black-gray': {
@@ -1152,7 +1139,6 @@ const productData = {
       images: {
         front: 'product3.jpg',
         back: 'product3-hover.jpg',
-        thumb: 'product3.jpg'
       }
     }
   }
@@ -1162,6 +1148,7 @@ const productData = {
 let selectedColor = 'black-red';
 let selectedSize = 'S';
 let currentImageType = 'front';
+let isZoomed = false;
 
 // Функция изменения цвета товара
 function changeColor(color) {
@@ -1170,12 +1157,6 @@ function changeColor(color) {
   
   // Обновляем основное изображение
   document.getElementById('main-image').src = colorData.images.front;
-  
-  // Обновляем миниатюры
-  document.querySelectorAll('.thumbnail').forEach(thumb => {
-    const thumbColor = thumb.dataset.color;
-    thumb.querySelector('img').src = productData.colors[thumbColor].images.thumb;
-  });
   
   // Обновляем галерею изображений
   updateImageGallery();
@@ -1187,13 +1168,9 @@ function changeColor(color) {
   document.querySelectorAll('.color-preview').forEach(preview => {
     preview.classList.remove('active');
   });
-  document.querySelectorAll('.thumbnail').forEach(thumb => {
-    thumb.classList.remove('active');
-  });
   
   document.querySelector(`.color-option[data-color="${color}"]`).classList.add('active');
   document.querySelector(`.color-option[data-color="${color}"] .color-preview`).classList.add('active');
-  document.querySelector(`.thumbnail[data-color="${color}"]`).classList.add('active');
   
   // Обновляем название товара с цветом
   document.querySelector('.product-title').textContent = 
@@ -1255,11 +1232,22 @@ function openImageModal() {
   const colorData = productData.colors[selectedColor];
   document.getElementById('modal-image').src = colorData.images[currentImageType];
   document.getElementById('image-modal').style.display = 'flex';
+  isZoomed = false;
 }
 
 // Функция закрытия модального окна с изображением
 function closeImageModal() {
   document.getElementById('image-modal').style.display = 'none';
+  const modalImage = document.getElementById('modal-image');
+  modalImage.style.transform = 'scale(1)';
+  isZoomed = false;
+}
+
+// Функция увеличения изображения в модальном окне
+function toggleZoom() {
+  const modalImage = document.getElementById('modal-image');
+  isZoomed = !isZoomed;
+  modalImage.style.transform = isZoomed ? 'scale(1.5)' : 'scale(1)';
 }
 
 // Обновление счетчика корзины
@@ -1509,10 +1497,9 @@ function setupBackButton() {
 
 // Обработчики выбора цвета
 function setupColorSelection() {
-  document.querySelectorAll('.color-option, .thumbnail').forEach(element => {
+  document.querySelectorAll('.color-option').forEach(element => {
     element.addEventListener('click', () => {
-      const color = element.getAttribute('data-color') || 
-                   element.closest('.color-option').getAttribute('data-color');
+      const color = element.getAttribute('data-color');
       changeColor(color);
     });
   });
@@ -1539,6 +1526,9 @@ function setupImageModal() {
       closeImageModal();
     }
   });
+  
+  // Обработчик клика по изображению в модальном окне для увеличения
+  document.getElementById('modal-image').addEventListener('click', toggleZoom);
 }
 
 // Инициализация страницы
