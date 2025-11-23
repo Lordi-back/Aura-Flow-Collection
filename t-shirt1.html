@@ -486,7 +486,7 @@ body {
 .color-preview {
   width: 60px;
   height: 60px;
-  border-radius: 50%;
+  border-radius: 5px;
   border: 2px solid #000;
   margin-bottom: 5px;
   transition: all 0.3s;
@@ -500,40 +500,39 @@ body {
   box-shadow: 0 0 0 2px #000;
 }
 
-/* Стили для разделенных цветов с двумя цветами */
+/* Стили для квадратных иконок цветов с разделением 2/3 и 1/3 */
 .color-split {
   position: absolute;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   overflow: hidden;
 }
 
-/* Черный/Красный - диагональное разделение */
+/* Черный/Красный - 2/3 черный, 1/3 красный */
 .color-split.black-red::before {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #000000 0%, #000000 50%, #ff0000 50%, #ff0000 100%);
+  background: linear-gradient(to right, #000000 0%, #000000 66.66%, #ff0000 66.66%, #ff0000 100%);
 }
 
-/* Белый/Черный - диагональное разделение */
+/* Белый/Черный - 2/3 белый, 1/3 черный */
 .color-split.white-black::before {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #ffffff 0%, #ffffff 50%, #000000 50%, #000000 100%);
+  background: linear-gradient(to right, #ffffff 0%, #ffffff 66.66%, #000000 66.66%, #000000 100%);
 }
 
-/* Черный/Серый - диагональное разделение */
+/* Черный/Серый - 2/3 черный, 1/3 серый */
 .color-split.black-gray::before {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #000000 0%, #000000 50%, #808080 50%, #808080 100%);
+  background: linear-gradient(to right, #000000 0%, #000000 66.66%, #808080 66.66%, #808080 100%);
 }
 
 .color-name {
