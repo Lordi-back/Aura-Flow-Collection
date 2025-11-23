@@ -11,99 +11,887 @@
 <!-- Иконки FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* Все ваши существующие стили остаются без изменений */
-/* Добавляем только новые стили для расчета доставки */
-
-.delivery-calculator {
-  background: #f9f9f9;
-  border-radius: 10px;
-  padding: 15px;
-  margin: 15px 0;
-  border: 1px solid #e0e0e0;
-}
-
-.delivery-calculator h4 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  font-size: 16px;
-}
-
-.delivery-inputs {
+body {
+  margin: 0;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #fff;
+  color: #333;
+  min-height: 100vh;
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
+  flex-direction: column;
 }
 
-.delivery-inputs input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
+/* Стиль для всех кнопок */
+.product button {
+  padding: 12px 24px;
+  background-color: #000; /* черный фон */
+  color: #fff; /* белый текст */
+  border: none;
+  border-radius: 10px; /* скругление */
+  font-family: 'Roboto', cursive; /* красивый шрифт */
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+.product button:hover {
+  background-color: #222;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Черная полоска сверху с логотипом и меню - ЗАФИКСИРОВАНА */
+.black-bar {
+  height: 60px; /* Уменьшенная высота */
+  background-color: #000;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  z-index: 1002;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.logo-link img {
+  height: 40px; /* Размер логотипа */
+  max-height: 70%; /* Чтобы не выходил за пределы полоски */
+}
+
+/* Меню в левом углу на уровне логотипа */
+.menu-container {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+
+#menu-button {
+  background: none;
+  border: none;
+  color: #fff; /* Белый цвет для меню */
+  cursor: pointer;
+  font-size: 24px;
+  padding: 5px;
+}
+
+/* Выдвигающееся меню - ИСПРАВЛЕННОЕ */
+#menu {
+  position: fixed;
+  top: 0;
+  left: -33.33vw; /* Скрыто за пределами экрана */
+  width: 33.33vw; /* 1/3 экрана */
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.98); /* Полупрозрачный черный фон */
+  color: white;
+  transition: left 0.3s ease;
+  z-index: 1003; /* Поверх всех элементов */
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  backdrop-filter: blur(5px); /* Эффект размытия фона */
+}
+
+#menu.active {
+  left: 0;
+}
+
+#close-menu {
+  background: #000; /* Черный фон для крестика */
+  border: none;
+  color: #fff; /* Белый цвет для крестика */
+  font-size: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Заголовок в меню */
+.menu-title {
+  font-family: 'Montserrat', sans-serif; /* Более спокойный шрифт */
+  font-size: 24px;
+  color: white;
+  text-align: center;
+  margin-bottom: 30px;
+  padding-top: 20px;
+  font-weight: 300;
+}
+
+#menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#menu li {
+  margin-bottom: 15px;
+}
+
+#menu a {
+  text-decoration: none;
+  color: white;
+  display: block;
+  padding: 8px 0;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+#menu a:hover {
+  color: #ccc;
+}
+
+/* Корзина справа выше центра */
+#cart-container {
+  position: fixed;
+  right: 20px;
+  top: 80px; /* Ниже верхней части, но выше центра */
+  z-index: 998;
+  display: none; /* Скрыта по умолчанию */
+}
+
+#cart-button {
+  background: #000;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+#cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Окно корзины */
+#cart-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1001;
+  align-items: center;
+  justify-content: center;
+}
+
+#cart-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+#cart-items {
+  margin-bottom: 20px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  gap: 10px;
+}
+
+.cart-item-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
   border-radius: 5px;
+}
+
+.cart-item-info {
+  flex: 1;
+  min-width: 0; /* Для корректного переноса текста */
+}
+
+.cart-item-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+  word-break: break-word;
+}
+
+.cart-item-price {
+  color: #666;
   font-size: 14px;
 }
 
-#calculate-delivery {
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.cart-item button {
   background: #000;
   color: white;
   border: none;
-  padding: 8px 16px;
   border-radius: 5px;
+  width: 25px;
+  height: 25px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 14px;
 }
 
-#calculate-delivery:disabled {
-  background: #666;
-  cursor: not-allowed;
+#cart-form input, #cart-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
 }
 
-.delivery-results {
-  margin-top: 10px;
+#cart-total {
+  font-weight: bold;
+  margin: 15px 0;
+  text-align: right;
+  font-size: 18px;
 }
 
-.delivery-option {
+#checkout-btn {
+  width: 100%;
+  padding: 12px;
+  background: #000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+#close-cart {
+  background: none;
+  border: none;
+  font-size: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Блок с градиентной картинкой - ИСПРАВЛЕННЫЙ */
+.hero-banner {
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #333333 100%); /* Улучшенный градиент */
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #333333 100%);
   display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #eee;
+  align-items: center;
+  justify-content: center;
+  margin-top: 60px; /* Отступ для фиксированной шапки */
+  margin-top: 60px;
+  overflow: hidden;
+  position: relative;
 }
 
-.delivery-option:last-child {
-  border-bottom: none;
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+  z-index: 1;
 }
 
-.delivery-price {
+.hero-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Возвращаем cover для лучшего заполнения */
+  object-fit: cover;
+  opacity: 0.8;
+  max-width: 500px;
+  position: relative;
+  z-index: 0;
+}
+
+/* Контейнер товаров */
+.products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 40px 20px;
+  justify-content: flex-start;
+  flex: 1;
+}
+
+/* Карточка товара - 4 в ряд */
+/* Карточка товара - ИСПРАВЛЕННАЯ */
+.product {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 15px;
+  width: calc(25% - 15px);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.3s;
+  transition: all 0.3s ease;
+  margin-bottom: 15px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.product:hover {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
+
+.product-image {
+  width: 100%;
+  height: 250px;
+  background-color: #f5f5f5;
+  margin-bottom: 15px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px; /* Добавлен отступ для мобильных */
+  box-sizing: border-box;
+  background: transparent; /* Убираем фон */
+}
+
+.product-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Сохраняем contain для полного отображения */
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Полное отображение без обрезки */
+  transition: opacity 0.3s ease;
+}
+
+.product-image .hover-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.product:hover .hover-image {
+  opacity: 1;
+}
+
+.product:hover .main-image {
+  opacity: 0;
+}
+
+.product h3 {
+  margin: 10px 0 5px 0;
+  font-size: 16px;
+  text-align: center;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.product p {
+  margin: 0 0 15px 0;
+  font-size: 18px;
   font-weight: bold;
   color: #000;
 }
 
-.delivery-error {
-  color: #d32f2f;
+/* Кнопка возвращения вверх */
+#back-to-top {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  background: #000;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  font-size: 20px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 997;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  transition: opacity 0.3s;
+}
+
+#back-to-top.visible {
+  display: flex;
+}
+
+/* Футер */
+.footer {
+  background-color: #000;
+  color: #fff;
+  padding: 30px 20px;
   font-size: 14px;
-  margin-top: 10px;
+  margin-top: auto;
 }
 
-.loading {
-  color: #666;
-  font-style: italic;
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Стиль для ссылок названий товаров */
-.product h3 a {
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+  margin-bottom: 20px;
+}
+
+.footer-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 8px;
+}
+
+.footer-links a {
+  color: #fff;
   text-decoration: none;
-  color: inherit;
-  transition: color 0.3s ease;
 }
 
-.product h3 a:hover {
-  color: #666;
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.social-icons, .payment-icons {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.social-icons i, .payment-icons i {
+  font-size: 24px;
+}
+
+/* Белые иконки соцсетей */
+.social-icons a {
+  color: white;
+}
+
+/* Официальные иконки платежных систем - ИСПРАВЛЕННЫЕ */
+.payment-icon {
+/* Иконки платежных систем - ПРОСТЫЕ НАДПИСИ */
+.payment-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: block; /* Добавлено для корректного отображения */
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #000;
+  font-family: Arial, sans-serif;
+}
+
+.mir-icon {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 30"><rect width="100" height="30" fill="%231F5BFF"/><text x="50" y="18" text-anchor="middle" fill="white" font-family="Arial" font-size="12">МИР</text></svg>');
+.mir-text {
+  font-size: 9px;
+}
+
+.sbp-icon {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 30"><rect width="100" height="30" fill="%2328A745"/><text x="50" y="18" text-anchor="middle" fill="white" font-family="Arial" font-size="10">СБП</text></svg>');
+.sbp-text {
+  font-size: 8px;
+}
+
+.copyright {
+  text-align: center;
+  width: 100%;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #333;
+}
+
+/* Медиазапросы для мобильных устройств */
+@media (max-width: 1200px) {
+  .products {
+    max-width: 900px;
+  }
+
+  .product {
+    width: calc(33.33% - 15px);
+  }
+}
+
+@media (max-width: 900px) {
+  .products {
+    max-width: 600px;
+  }
+
+  .product {
+    width: calc(50% - 15px);
+  }
+}
+
+@media (max-width: 768px) {
+  #menu {
+    width: 80vw;
+    left: -80vw;
+  }
+
+  .menu-title {
+    font-size: 20px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+  }
+
+  .footer-section {
+    margin-bottom: 20px;
+  }
+
+  .social-icons, .payment-icons {
+    justify-content: center;
+  }
+
+  .products {
+    padding: 20px 10px;
+    max-width: 100%;
+  }
+
+  .product {
+    width: calc(50% - 10px);
+    padding: 10px; /* Уменьшен padding для мобильных */
+    padding: 12px;
+  }
+
+  .product-image {
+    height: 180px; /* Уменьшена высота для мобильных */
+    padding: 5px; /* Уменьшен отступ */
+    height: 200px;
+  }
+  
+  .product h3 {
+    font-size: 14px;
+  }
+  
+  .product p {
+    font-size: 16px;
+  }
+  
+  .product button {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+
+  #cart-container {
+    right: 15px;
+    top: 70px;
+  }
+
+  #cart-button {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+
+  .black-bar {
+    height: 50px;
+  }
+
+  .logo-link img {
+    height: 35px;
+  }
+
+  #back-to-top {
+    bottom: 90px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+
+  .hero-banner {
+    height: 200px;
+    margin-top: 50px; /* Уменьшен отступ для мобильных */
+    margin-top: 50px;
+  }
+
+  .hero-banner img {
+    max-width: 400px;
+  }
+  
+  /* Адаптивность корзины для мобильных */
+  .cart-item {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .cart-item-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .cart-item-info {
+    flex: 1;
+    min-width: 120px;
+  }
+  
+  .cart-item-controls {
+    width: 100%;
+    justify-content: center;
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product {
+    width: 100%;
+    padding: 8px; /* Еще меньше padding для маленьких экранов */
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .product-image {
+    height: 160px; /* Еще меньше высота */
+    padding: 3px; /* Минимальный отступ */
+    height: 180px;
+  }
+  
+  .product h3 {
+    font-size: 14px;
+    margin: 8px 0 4px 0;
+  }
+  
+  .product p {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .product button {
+    padding: 8px 16px;
+    font-size: 12px;
+    width: 100%;
+    max-width: 200px;
+  }
+
+  #cart-container {
+    right: 10px;
+    top: 60px;
+  }
+
+  #cart-button {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  #cart-count {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+
+  .black-bar {
+    height: 45px;
+  }
+
+  .logo-link img {
+    height: 30px;
+  }
+
+  #back-to-top {
+    bottom: 80px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .cart-item-image {
+    width: 100%;
+    height: 100px;
+  }
+  
+  .hero-banner {
+    height: 150px;
+  }
+
+  .hero-banner img {
+    max-width: 300px;
+  }
+
+  .menu-title {
+    font-size: 18px;
+  }
+
+  /* Убираем белую полосу между шапкой и баннером */
+  body {
+    background-color: #000; /* Черный фон для body */
+  /* Адаптивность корзины для маленьких экранов */
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
+  }
+
+  .hero-banner {
+    background: #000; /* Убираем градиент на мобильных */
+  .cart-item-image {
+    width: 80px;
+    height: 80px;
+    align-self: center;
+  }
+
+  .hero-banner::before {
+    display: none; /* Убираем оверлей на мобильных */
+  .cart-item-info {
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero-banner img {
+    opacity: 1; /* Полная непрозрачность на мобильных */
+  .cart-item-controls {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  #cart-content {
+    padding: 15px;
+    margin: 10px;
+  }
+  
+  #cart-form input, #cart-form select {
+    padding: 12px;
+    font-size: 16px; /* Увеличиваем для удобства на мобильных */
+  }
 }
 </style>
 <link rel="icon" href="ДОРАБОТКА.png" sizes="512x512" type="image/png">
 </head>
 <body>
 
-<!-- Ваш существующий HTML код остается без изменений до блока товаров -->
+<!-- Черная полоска сверху с логотипом и меню - ЗАФИКСИРОВАНА -->
+<div class="black-bar">
+  <!-- Меню в левом углу на уровне логотипа -->
+  <div class="menu-container">
+    <button id="menu-button">☰</button>
+  </div>
+
+  <!-- Логотип в центре -->
+  <a href="index.html" class="logo-link">
+    <img src="white-logo.png" alt="Логотип" />
+  </a>
+</div>
+
+<!-- Блок с градиентной картинкой - ИСПРАВЛЕННЫЙ -->
+<div class="hero-banner">
+  <img src="5246746420214173062.jpg" alt="Aura Flow Collection" />
+</div>
+
+<!-- Выдвигающееся меню - ИСПРАВЛЕННОЕ -->
+<div id="menu">
+  <button id="close-menu">✕</button>
+  <div class="menu-title">Aura Flow Collection</div>
+  <ul>
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="catalog.html">Каталог</a></li>
+    <li><a href="about.html">О нас</a></li>
+  </ul>
+</div>
+
+<!-- Корзина справа выше центра (скрыта по умолчанию) -->
+<div id="cart-container">
+  <button id="cart-button">
+    🛒
+    <span id="cart-count">0</span>
+  </button>
+</div>
 
 <!-- Контейнер товаров -->
 <div class="products" id="products-container">
@@ -121,31 +909,15 @@
     <div id="cart-items">
       <!-- Товары в корзине -->
     </div>
-    
-    <!-- Блок расчета доставки -->
-    <div class="delivery-calculator">
-      <h4>Расчет доставки</h4>
-      <div class="delivery-inputs">
-        <input type="text" id="delivery-city" placeholder="Город доставки" required>
-        <button id="calculate-delivery">Рассчитать</button>
-      </div>
-      <div id="delivery-results" class="delivery-results">
-        <!-- Результаты расчета появятся здесь -->
-      </div>
-    </div>
-    
     <form id="cart-form">
       <input type="text" placeholder="ФИО" required>
-      <input type="text" placeholder="Город" required id="form-city">
+      <input type="text" placeholder="Город" required>
       <input type="text" placeholder="Адрес" required>
       <select id="delivery-method" required>
         <option value="">Выберите способ доставки</option>
-        <option value="sdek">СДЭК</option>
-        <option value="post">Почта России</option>
+        <option value="sdek">СДЭК - 700 ₽</option>
+        <option value="post">Почта России - 500 ₽</option>
       </select>
-      <div id="delivery-cost-display" style="margin: 10px 0; font-size: 14px; display: none;">
-        Стоимость доставки: <span id="delivery-cost">0</span> ₽
-      </div>
       <div id="cart-total">Итого: 0 ₽</div>
       <button type="button" id="checkout-btn">Оформить заказ</button>
     </form>
@@ -154,7 +926,59 @@
 
 <!-- Футер -->
 <div class="footer">
-  <!-- Ваш существующий футер -->
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>Навигация</h3>
+      <ul class="footer-links">
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="catalog.html">Каталог</a></li>
+        <li><a href="about.html">О нас</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Помощь</h3>
+      <ul class="footer-links">
+        <li><a href="#">Уход</a></li>
+        <li><a href="#">Доставка и оплата</a></li>
+        <li><a href="#">Возврат и обмен</a></li>
+        <li><a href="#">Поддержка</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Документация</h3>
+      <ul class="footer-links">
+        <li><a href="#">Политика конфиденциальности</a></li>
+        <li><a href="#">Условия использования</a></li>
+        <li><a href="#">Публичная оферта</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Мы в соцсетях</h3>
+      <div class="social-icons">
+        <a href="https://instagram.com/ваш_instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://vk.com/n1kpav" target="_blank"><i class="fab fa-vk"></i></a>
+        <a href="https://t.me/AFCoSup" target="_blank"><i class="fab fa-telegram"></i></a>
+        <a href="https://wa.me/79379546766" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      </div>
+
+      <h3 style="margin-top: 20px;">Способы оплаты</h3>
+      <div class="payment-icons">
+        <i class="fab fa-cc-visa"></i>
+        <i class="fab fa-cc-mastercard"></i>
+        <span class="payment-icon mir-icon"></span>
+        <span class="payment-icon sbp-icon"></span>
+        <span class="payment-text mir-text">МИР</span>
+        <span class="payment-text sbp-text">СБП</span>
+      </div>
+    </div>
+
+    <div class="copyright">
+      <p>&copy; 2024. Aura Flow Collection. Все права защищены</p>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -165,36 +989,32 @@ const products = [
     price: 2990, 
     image: 'product1.jpg',
     hoverImage: 'product1-hover.jpg',
-    preorder: false,
-    link: 't-shirt1.html' // Добавляем ссылку на страницу товара
+    preorder: false
   },
   { 
     name: 'Футболка "Luxury That Breathes" White', 
     price: 2990, 
     image: 'product2.jpg',
     hoverImage: 'product2-hover.jpg',
-    preorder: true,
-    link: 't-shirt1.html'
+    preorder: true
   },
   { 
     name: 'Футболка "Luxury That Breathes" Grey', 
     price: 2990, 
     image: 'product3.jpg',
     hoverImage: 'product3-hover.jpg',
-    preorder: true,
-    link: 't-shirt1.html'
+    preorder: true
   },
   { 
     name: 'Шапка', 
     price: 1200, 
     image: 'product4.jpg',
     hoverImage: 'product4-hover.jpg',
-    preorder: false,
-    link: 't-shirt1.html'
+    preorder: false
   },
 ];
 
-// функция отображения товаров - ОБНОВЛЕНА
+// функция отображения товаров
 function renderProducts() {
   const container = document.getElementById('products-container');
   container.innerHTML = '';
@@ -206,7 +1026,7 @@ function renderProducts() {
         <img src="${prod.image}" alt="${prod.name}" class="main-image">
         <img src="${prod.hoverImage}" alt="${prod.name}" class="hover-image">
       </div>
-      <h3><a href="${prod.link}">${prod.name}</a></h3>
+      <h3>${prod.name}</h3>
       <p>Цена: ${prod.price} ₽</p>
       <button data-index="${index}">${prod.preorder ? 'Оформить предзаказ' : 'Добавить в корзину'}</button>
     `;
@@ -214,121 +1034,40 @@ function renderProducts() {
   });
 }
 
-// Функции для расчета доставки
-async function calculateDelivery(city) {
-  const resultsDiv = document.getElementById('delivery-results');
-  resultsDiv.innerHTML = '<div class="loading">Рассчитываем стоимость доставки...</div>';
-  
-  try {
-    // Расчет для СДЭК
-    const sdekCost = await calculateSDEK(city);
-    // Расчет для Почты России
-    const postCost = await calculatePostRussia(city);
-    
-    resultsDiv.innerHTML = `
-      <div class="delivery-option">
-        <span>СДЭК</span>
-        <span class="delivery-price">${sdekCost} ₽</span>
-      </div>
-      <div class="delivery-option">
-        <span>Почта России</span>
-        <span class="delivery-price">${postCost} ₽</span>
-      </div>
-    `;
-    
-    // Сохраняем цены для использования в форме
-    window.deliveryPrices = {
-      sdek: sdekCost,
-      post: postCost
-    };
-    
-  } catch (error) {
-    resultsDiv.innerHTML = `<div class="delivery-error">Не удалось рассчитать доставку. Проверьте название города.</div>`;
-    console.error('Ошибка расчета доставки:', error);
+// Обновление счетчика корзины
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const totalCount = cart.reduce((sum, item) => sum + item.count, 0);
+  document.getElementById('cart-count').textContent = totalCount;
+
+  // Показать корзину, если есть товары
+  if (totalCount > 0) {
+    document.getElementById('cart-container').style.display = 'block';
+  } else {
+    document.getElementById('cart-container').style.display = 'none';
   }
 }
 
-// Расчет стоимости доставки СДЭК
-async function calculateSDEK(city) {
-  // Здесь будет реальный API запрос к СДЭК
-  // Пока используем mock данные на основе расстояния
-  
-  const citiesDistance = {
-    'москва': 650,
-    'санкт-петербург': 700,
-    'казань': 350,
-    'нижний новгород': 250,
-    'самара': 500,
-    'екатеринбург': 900,
-    'новосибирск': 1900,
-    'краснодар': 1100,
-    'ростов-на-дону': 1000,
-    'челябинск': 1100
-  };
-  
-  const normalizedCity = city.toLowerCase();
-  const distance = citiesDistance[normalizedCity] || 800;
-  
-  // Базовая формула расчета (примерная)
-  const baseCost = 300;
-  const costPerKm = 0.5;
-  let calculatedCost = Math.round(baseCost + (distance * costPerKm));
-  
-  // Минимальная и максимальная стоимость
-  calculatedCost = Math.max(400, Math.min(calculatedCost, 2000));
-  
-  return calculatedCost;
-}
-
-// Расчет стоимости доставки Почтой России
-async function calculatePostRussia(city) {
-  // Аналогично СДЭК, но с другими тарифами
-  
-  const citiesDistance = {
-    'москва': 650,
-    'санкт-петербург': 700,
-    'казань': 350,
-    'нижний новгород': 250,
-    'самара': 500,
-    'екатеринбург': 900,
-    'новосибирск': 1900,
-    'краснодар': 1100,
-    'ростов-на-дону': 1000,
-    'челябинск': 1100
-  };
-  
-  const normalizedCity = city.toLowerCase();
-  const distance = citiesDistance[normalizedCity] || 800;
-  
-  // Почта России обычно дешевле
-  const baseCost = 200;
-  const costPerKm = 0.3;
-  let calculatedCost = Math.round(baseCost + (distance * costPerKm));
-  
-  // Минимальная и максимальная стоимость
-  calculatedCost = Math.max(300, Math.min(calculatedCost, 1500));
-  
-  return calculatedCost;
-}
-
-// Обновленная функция обновления корзины с учетом доставки
+// Обновление содержимого корзины в модальном окне
 function updateCartModal() {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
   const cartItems = document.getElementById('cart-items');
   const cartTotal = document.getElementById('cart-total');
-  
+
   cartItems.innerHTML = '';
-  let itemsTotal = 0;
-  
+  let total = 0;
+
   cart.forEach((item, index) => {
     const itemTotal = item.price * item.count;
-    itemsTotal += itemTotal;
-    
+    total += itemTotal;
+
     const itemElement = document.createElement('div');
     itemElement.className = 'cart-item';
     itemElement.innerHTML = `
       <img src="${item.image}" alt="${item.name}" class="cart-item-image">
       <div class="cart-item-info">
+        <div>${item.name}</div>
+        <div>${item.price} ₽ x ${item.count}</div>
         <div class="cart-item-name">${item.name}</div>
         <div class="cart-item-price">${item.price} ₽ x ${item.count}</div>
       </div>
@@ -341,138 +1080,17 @@ function updateCartModal() {
     `;
     cartItems.appendChild(itemElement);
   });
-  
-  // Обновляем общую сумму с учетом доставки
-  updateTotalWithDelivery(itemsTotal);
-}
 
-// Функция обновления общей суммы с доставкой
-function updateTotalWithDelivery(itemsTotal) {
+  // Добавляем стоимость доставки
   const deliveryMethod = document.getElementById('delivery-method');
-  const deliveryCostDisplay = document.getElementById('delivery-cost-display');
-  const deliveryCostSpan = document.getElementById('delivery-cost');
-  const cartTotal = document.getElementById('cart-total');
-  
-  let deliveryCost = 0;
-  
-  if (deliveryMethod.value && window.deliveryPrices) {
-    deliveryCost = window.deliveryPrices[deliveryMethod.value] || 0;
-    deliveryCostDisplay.style.display = 'block';
-    deliveryCostSpan.textContent = deliveryCost;
-  } else {
-    deliveryCostDisplay.style.display = 'none';
-  }
-  
-  const total = itemsTotal + deliveryCost;
+  const deliveryCost = deliveryMethod.value === 'sdek' ? 700 : 
+                       deliveryMethod.value === 'post' ? 500 : 0;
+  total += deliveryCost;
+
   cartTotal.textContent = `Итого: ${total} ₽`;
 }
 
-// Обновленная настройка модального окна корзины
-function setupCartModal() {
-  const cartButton = document.getElementById('cart-button');
-  const closeCartButton = document.getElementById('close-cart');
-  const cartModal = document.getElementById('cart-modal');
-  const deliveryMethod = document.getElementById('delivery-method');
-  const checkoutButton = document.getElementById('checkout-btn');
-  const calculateButton = document.getElementById('calculate-delivery');
-  const deliveryCityInput = document.getElementById('delivery-city');
-  const formCityInput = document.getElementById('form-city');
-  
-  cartButton.addEventListener('click', () => {
-    updateCartModal();
-    cartModal.style.display = 'flex';
-  });
-  
-  closeCartButton.addEventListener('click', () => {
-    cartModal.style.display = 'none';
-  });
-  
-  cartModal.addEventListener('click', (e) => {
-    if (e.target === cartModal) {
-      cartModal.style.display = 'none';
-    }
-  });
-  
-  // Синхронизация полей города
-  deliveryCityInput.addEventListener('input', () => {
-    formCityInput.value = deliveryCityInput.value;
-  });
-  
-  formCityInput.addEventListener('input', () => {
-    deliveryCityInput.value = formCityInput.value;
-  });
-  
-  // Расчет доставки
-  calculateButton.addEventListener('click', () => {
-    const city = deliveryCityInput.value.trim();
-    if (city) {
-      calculateDelivery(city);
-    }
-  });
-  
-  deliveryCityInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      const city = deliveryCityInput.value.trim();
-      if (city) {
-        calculateDelivery(city);
-      }
-    }
-  });
-  
-  // Обновление стоимости при изменении способа доставки
-  deliveryMethod.addEventListener('change', () => {
-    updateCartModal();
-  });
-  
-  checkoutButton.addEventListener('click', () => {
-    const form = document.getElementById('cart-form');
-    const formData = new FormData(form);
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-    if (!formData.get('ФИО') || !formData.get('Город') || !formData.get('Адрес') || !deliveryMethod.value) {
-      alert('Пожалуйста, заполните все поля формы');
-      return;
-    }
-    
-    if (cart.length === 0) {
-      alert('Корзина пуста');
-      return;
-    }
-    
-    const deliveryCost = window.deliveryPrices ? window.deliveryPrices[deliveryMethod.value] || 0 : 0;
-    
-    const orderData = {
-      fio: formData.get('ФИО'),
-      city: formData.get('Город'),
-      address: formData.get('Адрес'),
-      delivery: deliveryMethod.value,
-      deliveryCost: deliveryCost,
-      items: cart,
-      total: document.getElementById('cart-total').textContent
-    };
-    
-    sendToTelegram(orderData);
-    
-    localStorage.removeItem('cart');
-    updateCartCount();
-    cartModal.style.display = 'none';
-    alert('Заказ оформлен! Мы свяжемся с вами в ближайшее время.');
-  });
-}
-
-// Остальные функции остаются без изменений
-function updateCartCount() {
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  const totalCount = cart.reduce((sum, item) => sum + item.count, 0);
-  document.getElementById('cart-count').textContent = totalCount;
-  
-  if (totalCount > 0) {
-    document.getElementById('cart-container').style.display = 'block';
-  } else {
-    document.getElementById('cart-container').style.display = 'none';
-  }
-}
-
+// Обработчики добавления в корзину
 function setupAddButtons() {
   document.addEventListener('click', (e) => {
     if (e.target.hasAttribute('data-index') && !e.target.hasAttribute('data-action')) {
@@ -480,7 +1098,7 @@ function setupAddButtons() {
       const product = products[index];
       let cart = JSON.parse(localStorage.getItem('cart')) || [];
       const existing = cart.find(item => item.name === product.name);
-      
+
       if (existing) {
         existing.count++;
       } else {
@@ -491,20 +1109,21 @@ function setupAddButtons() {
           image: product.image
         });
       }
-      
+
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartCount();
     }
   });
 }
 
+// Обработчики управления корзиной
 function setupCartControls() {
   document.addEventListener('click', (e) => {
     if (e.target.hasAttribute('data-action')) {
       const index = parseInt(e.target.getAttribute('data-index'));
       const action = e.target.getAttribute('data-action');
       let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      
+
       if (action === 'increase') {
         cart[index].count++;
       } else if (action === 'decrease') {
@@ -515,7 +1134,7 @@ function setupCartControls() {
       } else if (action === 'remove') {
         cart.splice(index, 1);
       }
-      
+
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartCount();
       updateCartModal();
@@ -523,19 +1142,21 @@ function setupCartControls() {
   });
 }
 
+// Обработчики меню
 function setupMenu() {
   const menuButton = document.getElementById('menu-button');
   const closeMenuButton = document.getElementById('close-menu');
   const menu = document.getElementById('menu');
-  
+
   menuButton.addEventListener('click', () => {
     menu.classList.add('active');
   });
-  
+
   closeMenuButton.addEventListener('click', () => {
     menu.classList.remove('active');
   });
-  
+
+  // Закрывать меню при клике вне
   document.addEventListener('click', (e) => {
     if (!menu.contains(e.target) && e.target !== menuButton) {
       menu.classList.remove('active');
@@ -543,7 +1164,76 @@ function setupMenu() {
   });
 }
 
+// Обработчики корзины
+function setupCartModal() {
+  const cartButton = document.getElementById('cart-button');
+  const closeCartButton = document.getElementById('close-cart');
+  const cartModal = document.getElementById('cart-modal');
+  const deliveryMethod = document.getElementById('delivery-method');
+  const checkoutButton = document.getElementById('checkout-btn');
+
+  cartButton.addEventListener('click', () => {
+    updateCartModal();
+    cartModal.style.display = 'flex';
+  });
+
+  closeCartButton.addEventListener('click', () => {
+    cartModal.style.display = 'none';
+  });
+
+  // Закрытие корзины при клике вне окна
+  cartModal.addEventListener('click', (e) => {
+    if (e.target === cartModal) {
+      cartModal.style.display = 'none';
+    }
+  });
+
+  deliveryMethod.addEventListener('change', () => {
+    updateCartModal();
+  });
+
+  checkoutButton.addEventListener('click', () => {
+    const form = document.getElementById('cart-form');
+    const formData = new FormData(form);
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Проверка заполнения формы
+    if (!formData.get('ФИО') || !formData.get('Город') || !formData.get('Адрес') || !deliveryMethod.value) {
+      alert('Пожалуйста, заполните все поля формы');
+      return;
+    }
+
+    // Проверка наличия товаров в корзине
+    if (cart.length === 0) {
+      alert('Корзина пуста');
+      return;
+    }
+
+    // Формирование данных для отправки
+    const orderData = {
+      fio: formData.get('ФИО'),
+      city: formData.get('Город'),
+      address: formData.get('Адрес'),
+      delivery: deliveryMethod.value,
+      deliveryCost: deliveryMethod.value === 'sdek' ? 700 : 500,
+      items: cart,
+      total: document.getElementById('cart-total').textContent
+    };
+
+    // Отправка данных (здесь нужно указать ваш Telegram бот токен и chat ID)
+    sendToTelegram(orderData);
+
+    // Очистка корзины после оформления заказа
+    localStorage.removeItem('cart');
+    updateCartCount();
+    cartModal.style.display = 'none';
+    alert('Заказ оформлен! Мы свяжемся с вами в ближайшее время.');
+  });
+}
+
+// Функция отправки данных в Telegram
 function sendToTelegram(orderData) {
+  // Формируем текст сообщения
   let message = `Новый заказ!\n\n`;
   message += `ФИО: ${orderData.fio}\n`;
   message += `Город: ${orderData.city}\n`;
@@ -551,22 +1241,25 @@ function sendToTelegram(orderData) {
   message += `Способ доставки: ${orderData.delivery === 'sdek' ? 'СДЭК' : 'Почта России'}\n`;
   message += `Стоимость доставки: ${orderData.deliveryCost} ₽\n\n`;
   message += `Товары:\n`;
-  
+
   orderData.items.forEach(item => {
     message += `- ${item.name}: ${item.price} ₽ x ${item.count} = ${item.price * item.count} ₽\n`;
   });
-  
+
   message += `\n${orderData.total}`;
-  
+
+  // Здесь нужно указать токен вашего бота и chat ID
   const botToken = 'YOUR_BOT_TOKEN';
   const chatId = 'YOUR_CHAT_ID';
-  
+
+  // Отправка запроса к API Telegram
   fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
+      chat_id: chatId,
       chat_id: chatId,     
       text: message,
     }),
@@ -580,9 +1273,10 @@ function sendToTelegram(orderData) {
   });
 }
 
+// Кнопка возвращения вверх
 function setupBackToTop() {
   const backToTopButton = document.getElementById('back-to-top');
-  
+
   window.addEventListener('scroll', () => {
     if (window.pageYOffset > 300) {
       backToTopButton.classList.add('visible');
@@ -590,7 +1284,7 @@ function setupBackToTop() {
       backToTopButton.classList.remove('visible');
     }
   });
-  
+
   backToTopButton.addEventListener('click', () => {
     window.scrollTo({
       top: 0,
