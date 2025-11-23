@@ -11,6 +11,7 @@
 <!-- Иконки FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
+/* Все существующие стили остаются без изменений */
 body {
   margin: 0;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -181,6 +182,12 @@ body {
   font-weight: bold;
   margin-bottom: 5px;
   word-break: break-word;
+}
+
+.cart-item-details {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 3px;
 }
 
 .cart-item-price {
@@ -1283,6 +1290,7 @@ function updateCartModal() {
       <img src="${item.image}" alt="${item.name}" class="cart-item-image">
       <div class="cart-item-info">
         <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-details">Цвет: ${item.color} | Размер: ${item.size}</div>
         <div class="cart-item-price">${item.price} ₽ x ${item.count}</div>
       </div>
       <div class="cart-item-controls">
@@ -1309,19 +1317,30 @@ function setupAddToCart() {
   document.getElementById('add-to-cart').addEventListener('click', () => {
     const colorData = productData.colors[selectedColor];
     const product = {
-      name: `${productData.name} ${colorData.name} (${selectedSize})`,
+      name: `${productData.name}`,
+      color: colorData.name,
+      size: selectedSize,
       price: productData.price,
       image: colorData.images.front // Используем изображение передней части для корзины
     };
     
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const existing = cart.find(item => item.name === product.name);
+    
+    // Создаем уникальный идентификатор товара с учетом цвета и размера
+    const productId = `${product.name}-${product.color}-${product.size}`;
+    
+    // Ищем товар с таким же названием, цветом и размером
+    const existingIndex = cart.findIndex(item => 
+      `${item.name}-${item.color}-${item.size}` === productId
+    );
 
-    if (existing) {
-      existing.count++;
+    if (existingIndex !== -1) {
+      cart[existingIndex].count++;
     } else {
       cart.push({ 
         name: product.name, 
+        color: product.color,
+        size: product.size,
         price: product.price, 
         count: 1,
         image: product.image
@@ -1416,7 +1435,7 @@ function setupCartModal() {
       total: document.getElementById('cart-total').textContent
     };
 
-    // Отправка данных (здесь нужно указать ваш Telegram бот токен и chat ID)
+    // Отправка данных в Telegram
     sendToTelegram(orderData);
 
     // Очистка корзины после оформления заказа
@@ -1429,24 +1448,27 @@ function setupCartModal() {
 
 // Функция отправки данных в Telegram
 function sendToTelegram(orderData) {
-  // Формируем текст сообщения
-  let message = `Новый заказ!\n\n`;
-  message += `ФИО: ${orderData.fio}\n`;
-  message += `Город: ${orderData.city}\n`;
-  message += `Адрес: ${orderData.address}\n`;
-  message += `Способ доставки: ${orderData.delivery === 'sdek' ? 'СДЭК' : 'Почта России'}\n`;
-  message += `Стоимость доставки: ${orderData.deliveryCost} ₽\n\n`;
-  message += `Товары:\n`;
+  // Формируем текст сообщения с информацией о размерах
+  let message = `🛍️ НОВЫЙ ЗАКАЗ!\n\n`;
+  message += `👤 ФИО: ${orderData.fio}\n`;
+  message += `🏙️ Город: ${orderData.city}\n`;
+  message += `📍 Адрес: ${orderData.address}\n`;
+  message += `🚚 Способ доставки: ${orderData.delivery === 'sdek' ? 'СДЭК' : 'Почта России'}\n`;
+  message += `💰 Стоимость доставки: ${orderData.deliveryCost} ₽\n\n`;
+  message += `🛒 ТОВАРЫ:\n`;
 
   orderData.items.forEach(item => {
-    message += `- ${item.name}: ${item.price} ₽ x ${item.count} = ${item.price * item.count} ₽\n`;
+    message += `• ${item.name}\n`;
+    message += `  Цвет: ${item.color}\n`;
+    message += `  Размер: ${item.size}\n`;
+    message += `  Цена: ${item.price} ₽ x ${item.count} = ${item.price * item.count} ₽\n\n`;
   });
 
-  message += `\n${orderData.total}`;
+  message += `💵 ${orderData.total}`;
 
-  // Здесь нужно указать токен вашего бота и chat ID
-  const botToken = 'YOUR_BOT_TOKEN';
-  const chatId = 'YOUR_CHAT_ID';
+  // ЗАМЕНИТЕ НА ВАШИ ДАННЫЕ
+  const botToken = 'YOUR_BOT_TOKEN'; // Токен вашего бота
+  const chatId = 'YOUR_CHAT_ID'; // ID чата, куда отправлять заказы
 
   // Отправка запроса к API Telegram
   fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -1457,6 +1479,7 @@ function sendToTelegram(orderData) {
     body: JSON.stringify({
       chat_id: chatId,
       text: message,
+      parse_mode: 'HTML'
     }),
   })
   .then(response => response.json())
@@ -1465,6 +1488,8 @@ function sendToTelegram(orderData) {
   })
   .catch(error => {
     console.error('Ошибка отправки в Telegram:', error);
+    // В случае ошибки можно показать сообщение пользователю
+    alert('Произошла ошибка при отправке заказа. Пожалуйста, свяжитесь с нами напрямую.');
   });
 }
 
