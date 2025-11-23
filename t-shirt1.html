@@ -281,6 +281,7 @@ body {
   padding: 10px;
   box-sizing: border-box;
   border-radius: 8px;
+  cursor: pointer;
 }
 
 .main-image-container img {
@@ -292,24 +293,31 @@ body {
   transition: opacity 0.3s ease;
 }
 
-.main-image-container .hover-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
+.image-gallery {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.gallery-image {
+  width: 80px;
+  height: 80px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.gallery-image.active {
+  border-color: #000;
+}
+
+.gallery-image img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-.main-image-container:hover .hover-image {
-  opacity: 1;
-}
-
-.main-image-container:hover .main-image {
-  opacity: 0;
+  object-fit: cover;
 }
 
 .thumbnail-images {
@@ -336,6 +344,43 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Модальное окно для увеличения изображения */
+#image-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  z-index: 1003;
+  align-items: center;
+  justify-content: center;
+}
+
+#image-modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+#image-modal-content img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+#close-image-modal {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
 }
 
 /* Информация о товаре */
@@ -380,6 +425,11 @@ body {
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s;
+  background: white;
+}
+
+.size-option:hover {
+  border-color: #000;
 }
 
 .size-option.active {
@@ -404,13 +454,26 @@ body {
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  border: none;
+  background: none;
+  padding: 5px;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.color-option:hover {
+  background-color: #f5f5f5;
+}
+
+.color-option.active {
+  background-color: #f0f0f0;
 }
 
 .color-preview {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 2px solid transparent;
+  border: 2px solid #000;
   margin-bottom: 5px;
   transition: border-color 0.3s;
   overflow: hidden;
@@ -419,9 +482,10 @@ body {
 
 .color-preview.active {
   border-color: #000;
+  box-shadow: 0 0 0 2px #000;
 }
 
-/* Стили для разделенных цветов (как циферблат часов) */
+/* Стили для разделенных цветов с разными пропорциями */
 .color-split {
   position: absolute;
   width: 100%;
@@ -430,20 +494,46 @@ body {
   overflow: hidden;
 }
 
-.color-split::before {
+/* Черный/Красный - больше черного (240 градусов), меньше красного (120 градусов) */
+.color-split.black-red::before {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
   background: conic-gradient(
-    var(--color1) 0deg 120deg,
-    var(--color2) 120deg 360deg
+    #000000 0deg 240deg,
+    #ff0000 240deg 360deg
+  );
+}
+
+/* Белый/Черный - больше белого (240 градусов), меньше черного (120 градусов) */
+.color-split.white-black::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    #ffffff 0deg 240deg,
+    #000000 240deg 360deg
+  );
+}
+
+/* Черный/Серый - больше черного (240 градусов), меньше серого (120 градусов) */
+.color-split.black-gray::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    #000000 0deg 240deg,
+    #808080 240deg 360deg
   );
 }
 
 .color-name {
   font-size: 14px;
   text-align: center;
+  font-weight: 500;
 }
 
 /* Описание товара */
@@ -672,6 +762,8 @@ body {
   .color-option {
     flex-direction: row;
     gap: 10px;
+    width: 100%;
+    justify-content: flex-start;
   }
   
   .color-preview {
@@ -772,18 +864,23 @@ body {
 <div class="product-details">
   <!-- Изображения товара -->
   <div class="product-images">
-    <div class="main-image-container">
-      <img id="main-image" src="https://via.placeholder.com/500x500?text=Черный/Красный" alt="Футболка" />
+    <div class="main-image-container" id="main-image-container">
+      <img id="main-image" src="" alt="Футболка" />
     </div>
+    
+    <div class="image-gallery" id="image-gallery">
+      <!-- Галерея изображений будет заполнена через JavaScript -->
+    </div>
+    
     <div class="thumbnail-images">
       <div class="thumbnail active" data-color="black-red">
-        <img src="https://via.placeholder.com/80x80?text=Черный/Красный" alt="Черный/Красный" />
+        <img src="" alt="Черный/Красный" />
       </div>
       <div class="thumbnail" data-color="white-black">
-        <img src="https://via.placeholder.com/80x80?text=Белый/Черный" alt="Белый/Черный" />
+        <img src="" alt="Белый/Черный" />
       </div>
       <div class="thumbnail" data-color="black-gray">
-        <img src="https://via.placeholder.com/80x80?text=Черный/Серый" alt="Черный/Серый" />
+        <img src="" alt="Черный/Серый" />
       </div>
     </div>
   </div>
@@ -797,10 +894,10 @@ body {
     <div class="size-selection">
       <h3>Выберите размер:</h3>
       <div class="size-options">
-        <div class="size-option active" data-size="S">S</div>
-        <div class="size-option" data-size="M">M</div>
-        <div class="size-option" data-size="L">L</div>
-        <div class="size-option" data-size="XL">XL</div>
+        <button class="size-option active" data-size="S" type="button">S</button>
+        <button class="size-option" data-size="M" type="button">M</button>
+        <button class="size-option" data-size="L" type="button">L</button>
+        <button class="size-option" data-size="XL" type="button">XL</button>
       </div>
     </div>
     
@@ -808,24 +905,24 @@ body {
     <div class="color-selection">
       <h3>Выберите цвет:</h3>
       <div class="color-options">
-        <div class="color-option" data-color="black-red">
+        <button class="color-option active" data-color="black-red" type="button">
           <div class="color-preview active">
-            <div class="color-split" style="--color1: #000000; --color2: #ff0000;"></div>
+            <div class="color-split black-red"></div>
           </div>
           <span class="color-name">Черный/Красный</span>
-        </div>
-        <div class="color-option" data-color="white-black">
+        </button>
+        <button class="color-option" data-color="white-black" type="button">
           <div class="color-preview">
-            <div class="color-split" style="--color1: #ffffff; --color2: #000000;"></div>
+            <div class="color-split white-black"></div>
           </div>
           <span class="color-name">Белый/Черный</span>
-        </div>
-        <div class="color-option" data-color="black-gray">
+        </button>
+        <button class="color-option" data-color="black-gray" type="button">
           <div class="color-preview">
-            <div class="color-split" style="--color1: #000000; --color2: #808080;"></div>
+            <div class="color-split black-gray"></div>
           </div>
           <span class="color-name">Черный/Серый</span>
-        </div>
+        </button>
       </div>
     </div>
     
@@ -877,6 +974,14 @@ body {
       <div id="cart-total">Итого: 0 ₽</div>
       <button type="button" id="checkout-btn">Оформить заказ</button>
     </form>
+  </div>
+</div>
+
+<!-- Модальное окно для увеличения изображения -->
+<div id="image-modal">
+  <div id="image-modal-content">
+    <button id="close-image-modal">✕</button>
+    <img id="modal-image" src="" alt="Увеличенное изображение">
   </div>
 </div>
 
@@ -936,7 +1041,7 @@ body {
 </div>
 
 <script>
-// Данные о товаре с разными цветами
+// Данные о товаре с разными цветами и изображениями
 // ЗАМЕНИТЕ ЭТИ ССЫЛКИ НА ВАШИ ИЗОБРАЖЕНИЯ
 const productData = {
   name: 'Футболка "Luxury That Breathes"',
@@ -945,45 +1050,45 @@ const productData = {
     'black-red': {
       name: 'Черный/Красный',
       // ЗАМЕНИТЕ НА ВАШИ ИЗОБРАЖЕНИЯ:
-     mages: {
-        main: 'product1.jpg',
-        hover: 'product1-hover.jpg',
-        thumb: 'product1.jpg'
+      images: {
+        front: 'product1.jpg',           // Передняя часть
+        back: 'product1-back.jpg',       // Задняя часть
+        thumb: 'product1.jpg'            // Миниатюра
       }
     },
     'white-black': {
       name: 'Белый/Черный',
+      // ЗАМЕНИТЕ НА ВАШИ ИЗОБРАЖЕНИЯ:
       images: {
-        main: 'product2.jpg',
-        hover: 'product2-hover.jpg',
+        front: 'product2.jpg',
+        back: 'product2-back.jpg',
         thumb: 'product2.jpg'
       }
     },
     'black-gray': {
       name: 'Черный/Серый',
+      // ЗАМЕНИТЕ НА ВАШИ ИЗОБРАЖЕНИЯ:
       images: {
-        main: 'product3.jpg',
-        hover: 'product3-hover.jpg',
-        thumb: 'product3.jpg' // Миниатюра черно-серой футболки
+        front: 'product3.jpg',
+        back: 'product3-back.jpg',
+        thumb: 'product3.jpg'
+      }
     }
   }
 };
 
-// Текущий выбранный цвет и размер
+// Текущий выбранный цвет, размер и изображение
 let selectedColor = 'black-red';
 let selectedSize = 'S';
+let currentImageType = 'front';
 
 // Функция изменения цвета товара
 function changeColor(color) {
   selectedColor = color;
   const colorData = productData.colors[color];
   
-  // Обновляем основное изображение и hover изображение
-  const mainImageContainer = document.querySelector('.main-image-container');
-  mainImageContainer.innerHTML = `
-    <img src="${colorData.images.main}" alt="${colorData.name}" class="main-image">
-    <img src="${colorData.images.hover}" alt="${colorData.name}" class="hover-image">
-  `;
+  // Обновляем основное изображение
+  document.getElementById('main-image').src = colorData.images.front;
   
   // Обновляем миниатюры
   document.querySelectorAll('.thumbnail').forEach(thumb => {
@@ -991,7 +1096,13 @@ function changeColor(color) {
     thumb.querySelector('img').src = productData.colors[thumbColor].images.thumb;
   });
   
+  // Обновляем галерею изображений
+  updateImageGallery();
+  
   // Обновляем активные состояния превью цветов
+  document.querySelectorAll('.color-option').forEach(option => {
+    option.classList.remove('active');
+  });
   document.querySelectorAll('.color-preview').forEach(preview => {
     preview.classList.remove('active');
   });
@@ -999,12 +1110,51 @@ function changeColor(color) {
     thumb.classList.remove('active');
   });
   
+  document.querySelector(`.color-option[data-color="${color}"]`).classList.add('active');
   document.querySelector(`.color-option[data-color="${color}"] .color-preview`).classList.add('active');
   document.querySelector(`.thumbnail[data-color="${color}"]`).classList.add('active');
   
   // Обновляем название товара с цветом
   document.querySelector('.product-title').textContent = 
     `${productData.name} ${colorData.name}`;
+}
+
+// Функция обновления галереи изображений
+function updateImageGallery() {
+  const colorData = productData.colors[selectedColor];
+  const gallery = document.getElementById('image-gallery');
+  
+  gallery.innerHTML = `
+    <div class="gallery-image active" data-image-type="front">
+      <img src="${colorData.images.front}" alt="Передняя часть">
+    </div>
+    <div class="gallery-image" data-image-type="back">
+      <img src="${colorData.images.back}" alt="Задняя часть">
+    </div>
+  `;
+  
+  // Добавляем обработчики для галереи
+  document.querySelectorAll('.gallery-image').forEach(img => {
+    img.addEventListener('click', () => {
+      const imageType = img.dataset.imageType;
+      changeImage(imageType);
+    });
+  });
+}
+
+// Функция изменения изображения в галерее
+function changeImage(imageType) {
+  currentImageType = imageType;
+  const colorData = productData.colors[selectedColor];
+  
+  // Обновляем основное изображение
+  document.getElementById('main-image').src = colorData.images[imageType];
+  
+  // Обновляем активное состояние в галерее
+  document.querySelectorAll('.gallery-image').forEach(img => {
+    img.classList.remove('active');
+  });
+  document.querySelector(`.gallery-image[data-image-type="${imageType}"]`).classList.add('active');
 }
 
 // Функция изменения размера
@@ -1017,6 +1167,18 @@ function changeSize(size) {
   });
   
   document.querySelector(`.size-option[data-size="${size}"]`).classList.add('active');
+}
+
+// Функция открытия модального окна с изображением
+function openImageModal() {
+  const colorData = productData.colors[selectedColor];
+  document.getElementById('modal-image').src = colorData.images[currentImageType];
+  document.getElementById('image-modal').style.display = 'flex';
+}
+
+// Функция закрытия модального окна с изображением
+function closeImageModal() {
+  document.getElementById('image-modal').style.display = 'none';
 }
 
 // Обновление счетчика корзины
@@ -1080,7 +1242,7 @@ function setupAddToCart() {
     const product = {
       name: `${productData.name} ${colorData.name} (${selectedSize})`,
       price: productData.price,
-      image: colorData.images.main // Используем основное изображение для корзины
+      image: colorData.images.front // Используем изображение передней части для корзины
     };
     
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -1285,8 +1447,24 @@ function setupSizeSelection() {
   });
 }
 
+// Обработчик модального окна изображения
+function setupImageModal() {
+  document.getElementById('main-image-container').addEventListener('click', openImageModal);
+  document.getElementById('close-image-modal').addEventListener('click', closeImageModal);
+  
+  // Закрытие модального окна при клике вне изображения
+  document.getElementById('image-modal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('image-modal')) {
+      closeImageModal();
+    }
+  });
+}
+
 // Инициализация страницы
 document.addEventListener('DOMContentLoaded', () => {
+  // Инициализируем первый цвет
+  changeColor(selectedColor);
+  
   setupColorSelection();
   setupSizeSelection();
   setupAddToCart();
@@ -1294,6 +1472,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupCartModal();
   setupBackToTop();
   setupBackButton();
+  setupImageModal();
   updateCartCount();
 });
 </script>
