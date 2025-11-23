@@ -196,7 +196,7 @@ body {
   justify-content: center;
 }
 
-/* Окно корзины */
+/* Окно корзины - ПЕРЕДЕЛАННОЕ как на t-shirt1.html */
 #cart-modal {
   display: none;
   position: fixed;
@@ -212,49 +212,85 @@ body {
 
 #cart-content {
   background: white;
-  padding: 20px;
-  border-radius: 10px;
+  padding: 30px;
+  border-radius: 15px;
   width: 90%;
-  max-width: 500px;
-  max-height: 80vh;
+  max-width: 600px;
+  max-height: 85vh;
   overflow-y: auto;
   position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 #cart-items {
-  margin-bottom: 20px;
-  max-height: 200px;
+  margin-bottom: 25px;
+  max-height: 300px;
   overflow-y: auto;
+  padding-right: 10px;
 }
 
 .cart-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
-  gap: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  gap: 15px;
 }
 
 .cart-item-image {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
-  border-radius: 5px;
+  border-radius: 8px;
+  flex-shrink: 0;
 }
 
-.cart-item-info {
+.cart-item-details {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cart-item-name {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.cart-item-size, .cart-item-color {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 3px;
+}
+
+.cart-item-price {
+  font-weight: 600;
+  color: #000;
+  font-size: 16px;
 }
 
 .cart-item-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 8px;
 }
 
-.cart-item button {
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 5px 10px;
+}
+
+.quantity-btn {
   background: #000;
   color: white;
   border: none;
@@ -262,42 +298,92 @@ body {
   width: 25px;
   height: 25px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.quantity {
+  font-weight: 600;
+  min-width: 30px;
+  text-align: center;
+}
+
+.remove-btn {
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.3s ease;
+}
+
+.remove-btn:hover {
+  background: #cc0000;
+}
+
+#cart-form {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
 }
 
 #cart-form input, #cart-form select {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   box-sizing: border-box;
+  font-size: 14px;
 }
 
 #cart-total {
   font-weight: bold;
-  margin: 15px 0;
-  text-align: right;
+  font-size: 20px;
+  margin: 20px 0;
+  text-align: center;
+  padding: 15px;
+  background: #000;
+  color: white;
+  border-radius: 10px;
 }
 
 #checkout-btn {
   width: 100%;
-  padding: 12px;
+  padding: 15px;
   background: #000;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+#checkout-btn:hover {
+  background: #333;
 }
 
 #close-cart {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 24px;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 20px;
   cursor: pointer;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+#close-cart:hover {
+  color: #000;
 }
 
 /* Блок с градиентной картинкой - ИСПРАВЛЕННЫЙ */
@@ -407,6 +493,78 @@ body {
 
 .product:hover .main-image {
   opacity: 0;
+}
+
+/* Выбор размера и цвета в карточке товара */
+.product-options {
+  width: 100%;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.size-selector, .color-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.size-selector label, .color-selector label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+}
+
+.size-buttons, .color-buttons {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.size-btn, .color-btn {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.3s ease;
+}
+
+.size-btn:hover, .color-btn:hover {
+  border-color: #999;
+}
+
+.size-btn.selected, .color-btn.selected {
+  background: #000;
+  color: white;
+  border-color: #000;
+}
+
+.color-btn {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.color-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.color-btn.selected::after {
+  opacity: 1;
 }
 
 /* Ссылка на товар */
@@ -658,6 +816,15 @@ body {
   .hero-banner img {
     max-width: 400px;
   }
+  
+  .cart-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .cart-item-controls {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -710,14 +877,9 @@ body {
     font-size: 16px;
   }
   
-  .cart-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
   .cart-item-image {
-    width: 100%;
-    height: 100px;
+    width: 60px;
+    height: 60px;
   }
   
   .hero-banner {
@@ -771,12 +933,12 @@ body {
   .cart-item {
     flex-direction: row;
     align-items: center;
-    padding: 8px 0;
+    padding: 10px;
   }
   
   .cart-item-image {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
   }
   
   .cart-item-info {
@@ -787,6 +949,10 @@ body {
   .cart-item-controls {
     flex-wrap: wrap;
     justify-content: flex-end;
+  }
+  
+  #cart-content {
+    padding: 20px 15px;
   }
 }
 
@@ -831,7 +997,7 @@ body {
   </a>
 </div>
 
-<!-- Блок с градиентной картинкой - ИСПРАВЛЕННЫЙ -->
+<!-- Блок с градиентной картинка - ИСПРАВЛЕННЫЙ -->
 <div class="hero-banner">
   <img src="5246746420214173062.jpg" alt="Aura Flow Collection" />
 </div>
@@ -863,11 +1029,11 @@ body {
 <!-- Кнопка возвращения вверх -->
 <button id="back-to-top">↑</button>
 
-<!-- Модальное окно корзины -->
+<!-- Модальное окно корзины - ПЕРЕДЕЛАННОЕ -->
 <div id="cart-modal">
   <div id="cart-content">
     <button id="close-cart">✕</button>
-    <h2>Корзина</h2>
+    <h2 style="text-align: center; margin-bottom: 20px;">Корзина</h2>
     <div id="cart-items">
       <!-- Товары в корзине -->
     </div>
@@ -942,7 +1108,7 @@ body {
 </div>
 
 <script>
-// Массив товаров с изображениями
+// Массив товаров с изображениями, размерами и цветами
 const products = [
   { 
     name: 'Футболка "Luxury That Breathes" Black', 
@@ -950,7 +1116,10 @@ const products = [
     image: 'product1.jpg',
     hoverImage: 'product1-hover.jpg',
     preorder: false,
-    link: 't-shirt1.html'
+    link: 't-shirt1.html',
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['#000000', '#333333'],
+    colorNames: ['Черный', 'Темно-серый']
   },
   { 
     name: 'Футболка "Luxury That Breathes" White', 
@@ -958,7 +1127,10 @@ const products = [
     image: 'product2.jpg',
     hoverImage: 'product2-hover.jpg',
     preorder: true,
-    link: 't-shirt1.html'
+    link: 't-shirt1.html',
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['#FFFFFF', '#F5F5F5'],
+    colorNames: ['Белый', 'Кремовый']
   },
   { 
     name: 'Футболка "Luxury That Breathes" Grey', 
@@ -966,7 +1138,10 @@ const products = [
     image: 'product3.jpg',
     hoverImage: 'product3-hover.jpg',
     preorder: true,
-    link: 't-shirt1.html'
+    link: 't-shirt1.html',
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['#808080', '#A9A9A9'],
+    colorNames: ['Серый', 'Светло-серый']
   },
   { 
     name: 'Шапка', 
@@ -974,7 +1149,10 @@ const products = [
     image: 'product4.jpg',
     hoverImage: 'product4-hover.jpg',
     preorder: false,
-    link: '#'
+    link: '#',
+    sizes: ['Универсальный'],
+    colors: ['#000000', '#FFFFFF', '#808080'],
+    colorNames: ['Черный', 'Белый', 'Серый']
   },
 ];
 
@@ -994,9 +1172,62 @@ function renderProducts() {
         <h3>${prod.name}</h3>
         <p>Цена: ${prod.price} ₽</p>
       </a>
+      <div class="product-options">
+        <div class="size-selector">
+          <label>Размер:</label>
+          <div class="size-buttons">
+            ${prod.sizes.map(size => 
+              `<button type="button" class="size-btn" data-size="${size}">${size}</button>`
+            ).join('')}
+          </div>
+        </div>
+        <div class="color-selector">
+          <label>Цвет:</label>
+          <div class="color-buttons">
+            ${prod.colors.map((color, i) => 
+              `<button type="button" class="color-btn" data-color="${color}" data-color-name="${prod.colorNames[i]}" style="background-color: ${color}"></button>`
+            ).join('')}
+          </div>
+        </div>
+      </div>
       <button data-index="${index}">${prod.preorder ? 'Оформить предзаказ' : 'Добавить в корзину'}</button>
     `;
     container.appendChild(div);
+  });
+  
+  // Инициализация выбора размера и цвета
+  initializeProductOptions();
+}
+
+// Инициализация выбора размера и цвета
+function initializeProductOptions() {
+  // Выбор размера
+  document.querySelectorAll('.size-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const parent = this.closest('.size-selector');
+      parent.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+      this.classList.add('selected');
+    });
+  });
+  
+  // Выбор цвета
+  document.querySelectorAll('.color-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const parent = this.closest('.color-selector');
+      parent.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
+      this.classList.add('selected');
+    });
+  });
+  
+  // Выбираем первый размер и цвет по умолчанию
+  document.querySelectorAll('.size-selector').forEach(selector => {
+    const firstSize = selector.querySelector('.size-btn');
+    if (firstSize) firstSize.classList.add('selected');
+  });
+  
+  document.querySelectorAll('.color-selector').forEach(selector => {
+    const firstColor = selector.querySelector('.color-btn');
+    if (firstColor) firstColor.classList.add('selected');
   });
 }
 
@@ -1023,6 +1254,12 @@ function updateCartModal() {
   cartItems.innerHTML = '';
   let total = 0;
   
+  if (cart.length === 0) {
+    cartItems.innerHTML = '<p style="text-align: center; color: #666;">Корзина пуста</p>';
+    cartTotal.textContent = 'Итого: 0 ₽';
+    return;
+  }
+  
   cart.forEach((item, index) => {
     const itemTotal = item.price * item.count;
     total += itemTotal;
@@ -1031,15 +1268,19 @@ function updateCartModal() {
     itemElement.className = 'cart-item';
     itemElement.innerHTML = `
       <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-      <div class="cart-item-info">
-        <div>${item.name}</div>
-        <div>${item.price} ₽ x ${item.count}</div>
-      </div>
-      <div class="cart-item-controls">
-        <button data-index="${index}" data-action="decrease">-</button>
-        <span>${item.count}</span>
-        <button data-index="${index}" data-action="increase">+</button>
-        <button data-index="${index}" data-action="remove">✕</button>
+      <div class="cart-item-details">
+        <div class="cart-item-name">${item.name}</div>
+        ${item.size ? `<div class="cart-item-size">Размер: ${item.size}</div>` : ''}
+        ${item.color ? `<div class="cart-item-color">Цвет: ${item.color}</div>` : ''}
+        <div class="cart-item-price">${item.price} ₽</div>
+        <div class="cart-item-controls">
+          <div class="quantity-controls">
+            <button class="quantity-btn" data-index="${index}" data-action="decrease">-</button>
+            <span class="quantity">${item.count}</span>
+            <button class="quantity-btn" data-index="${index}" data-action="increase">+</button>
+          </div>
+          <button class="remove-btn" data-index="${index}" data-action="remove">Удалить</button>
+        </div>
       </div>
     `;
     cartItems.appendChild(itemElement);
@@ -1060,24 +1301,69 @@ function setupAddButtons() {
     if (e.target.hasAttribute('data-index') && !e.target.hasAttribute('data-action')) {
       const index = parseInt(e.target.getAttribute('data-index'));
       const product = products[index];
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const existing = cart.find(item => item.name === product.name);
+      const productElement = e.target.closest('.product');
       
-      if (existing) {
-        existing.count++;
+      // Получаем выбранный размер и цвет
+      const selectedSize = productElement.querySelector('.size-btn.selected')?.getAttribute('data-size');
+      const selectedColor = productElement.querySelector('.color-btn.selected')?.getAttribute('data-color-name');
+      
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      
+      // Ищем товар с такими же параметрами
+      const existingIndex = cart.findIndex(item => 
+        item.name === product.name && 
+        item.size === selectedSize && 
+        item.color === selectedColor
+      );
+      
+      if (existingIndex !== -1) {
+        // Увеличиваем количество существующего товара
+        cart[existingIndex].count++;
       } else {
+        // Добавляем новый товар
         cart.push({ 
           name: product.name, 
           price: product.price, 
           count: 1,
-          image: product.image
+          image: product.image,
+          size: selectedSize,
+          color: selectedColor
         });
       }
       
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartCount();
+      
+      // Показываем уведомление
+      showNotification('Товар добавлен в корзину!');
     }
   });
+}
+
+// Показать уведомление
+function showNotification(message) {
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: #000;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    z-index: 10000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    animation: slideIn 0.3s ease;
+  `;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.style.animation = 'slideOut 0.3s ease';
+    setTimeout(() => {
+      document.body.removeChild(notification);
+    }, 300);
+  }, 2000);
 }
 
 // Обработчики управления корзиной
@@ -1207,7 +1493,10 @@ function sendToTelegram(orderData) {
   message += `Товары:\n`;
   
   orderData.items.forEach(item => {
-    message += `- ${item.name}: ${item.price} ₽ x ${item.count} = ${item.price * item.count} ₽\n`;
+    message += `- ${item.name}`;
+    if (item.size) message += ` (Размер: ${item.size})`;
+    if (item.color) message += ` (Цвет: ${item.color})`;
+    message += `: ${item.price} ₽ x ${item.count} = ${item.price * item.count} ₽\n`;
   });
   
   message += `\n${orderData.total}`;
@@ -1255,6 +1544,20 @@ function setupBackToTop() {
     });
   });
 }
+
+// Добавляем CSS анимации для уведомлений
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  @keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+  }
+`;
+document.head.appendChild(style);
 
 // Инициализация страницы
 document.addEventListener('DOMContentLoaded', () => {
