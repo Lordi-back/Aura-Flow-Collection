@@ -456,6 +456,7 @@ body {
   gap: 15px;
   margin-top: 10px;
   flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .color-option {
@@ -468,6 +469,9 @@ body {
   padding: 8px;
   border-radius: 8px;
   transition: all 0.3s;
+  width: calc(33.33% - 10px);
+  min-width: 100px;
+  box-sizing: border-box;
 }
 
 .color-option:hover {
@@ -484,8 +488,8 @@ body {
 }
 
 .color-preview {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 5px;
   border: 2px solid #000;
   margin-bottom: 5px;
@@ -532,15 +536,16 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to right, #000000 0%, #000000 66.66%, #808080 66.66%, #808080 100%);
+  background: linear-gradient(to right, #000000 0%, #000000 66.66%, #666666 66.66%, #666666 100%);
 }
 
 .color-name {
-  font-size: 14px;
+  font-size: 12px;
   text-align: center;
   font-weight: 500;
   color: #666;
   transition: all 0.3s;
+  line-height: 1.2;
 }
 
 /* Описание товара */
@@ -708,8 +713,13 @@ body {
   }
   
   .color-preview {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .color-option {
+    width: calc(33.33% - 10px);
+    min-width: 90px;
   }
   
   .size-option {
@@ -777,20 +787,18 @@ body {
   }
   
   .color-options {
-    flex-direction: row;
     justify-content: center;
     gap: 10px;
   }
   
   .color-option {
-    flex-direction: column;
-    width: auto;
-    justify-content: center;
+    width: calc(33.33% - 10px);
+    min-width: 80px;
   }
   
   .color-preview {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     margin-bottom: 5px;
   }
   
@@ -904,8 +912,13 @@ body {
   }
   
   .color-preview {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
+  }
+  
+  .color-option {
+    width: calc(33.33% - 8px);
+    min-width: 70px;
   }
   
   .size-option {
