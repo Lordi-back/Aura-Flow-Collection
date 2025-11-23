@@ -161,7 +161,7 @@ body {
   position: fixed;
   right: 20px;
   top: 80px; /* Ниже верхней части, но выше центра */
-  z-index: 998;
+  z-index: 9999; /* Увеличиваем z-index */
   display: none; /* Скрыта по умолчанию */
 }
 
@@ -204,8 +204,8 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 1001;
+  background: rgba(0,0,0,0.8);
+  z-index: 10000; /* Очень высокий z-index чтобы было поверх всего */
   align-items: center;
   justify-content: center;
 }
@@ -219,7 +219,7 @@ body {
   max-height: 85vh;
   overflow-y: auto;
   position: relative;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
 }
 
 #cart-items {
@@ -275,8 +275,8 @@ body {
 
 .cart-item-controls {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 10px;
   margin-top: 8px;
 }
 
@@ -310,6 +310,44 @@ body {
   text-align: center;
 }
 
+.size-selector-cart {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.size-selector-cart label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+}
+
+.size-buttons-cart {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.size-btn-cart {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.3s ease;
+}
+
+.size-btn-cart:hover {
+  border-color: #999;
+}
+
+.size-btn-cart.selected {
+  background: #000;
+  color: white;
+  border-color: #000;
+}
+
 .remove-btn {
   background: #ff4444;
   color: white;
@@ -319,6 +357,7 @@ body {
   cursor: pointer;
   font-size: 12px;
   transition: background 0.3s ease;
+  margin-top: 5px;
 }
 
 .remove-btn:hover {
@@ -380,6 +419,7 @@ body {
   cursor: pointer;
   color: #666;
   transition: color 0.3s ease;
+  z-index: 10001;
 }
 
 #close-cart:hover {
@@ -493,78 +533,6 @@ body {
 
 .product:hover .main-image {
   opacity: 0;
-}
-
-/* Выбор размера и цвета в карточке товара */
-.product-options {
-  width: 100%;
-  margin: 10px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.size-selector, .color-selector {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.size-selector label, .color-selector label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #666;
-}
-
-.size-buttons, .color-buttons {
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-}
-
-.size-btn, .color-btn {
-  padding: 5px 10px;
-  border: 1px solid #ddd;
-  background: white;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 11px;
-  transition: all 0.3s ease;
-}
-
-.size-btn:hover, .color-btn:hover {
-  border-color: #999;
-}
-
-.size-btn.selected, .color-btn.selected {
-  background: #000;
-  color: white;
-  border-color: #000;
-}
-
-.color-btn {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  position: relative;
-}
-
-.color-btn::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 8px;
-  height: 8px;
-  background: white;
-  border-radius: 50%;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.color-btn.selected::after {
-  opacity: 1;
 }
 
 /* Ссылка на товар */
@@ -1108,7 +1076,7 @@ body {
 </div>
 
 <script>
-// Массив товаров с изображениями, размерами и цветами
+// Массив товаров с изображениями
 const products = [
   { 
     name: 'Футболка "Luxury That Breathes" Black', 
@@ -1118,8 +1086,7 @@ const products = [
     preorder: false,
     link: 't-shirt1.html',
     sizes: ['S', 'M', 'L', 'XL'],
-    colors: ['#000000', '#333333'],
-    colorNames: ['Черный', 'Темно-серый']
+    color: 'Черно-красный'
   },
   { 
     name: 'Футболка "Luxury That Breathes" White', 
@@ -1129,8 +1096,7 @@ const products = [
     preorder: true,
     link: 't-shirt1.html',
     sizes: ['S', 'M', 'L', 'XL'],
-    colors: ['#FFFFFF', '#F5F5F5'],
-    colorNames: ['Белый', 'Кремовый']
+    color: 'Бело-черный'
   },
   { 
     name: 'Футболка "Luxury That Breathes" Grey', 
@@ -1140,8 +1106,7 @@ const products = [
     preorder: true,
     link: 't-shirt1.html',
     sizes: ['S', 'M', 'L', 'XL'],
-    colors: ['#808080', '#A9A9A9'],
-    colorNames: ['Серый', 'Светло-серый']
+    color: 'Серо-черный'
   },
   { 
     name: 'Шапка', 
@@ -1151,8 +1116,7 @@ const products = [
     preorder: false,
     link: '#',
     sizes: ['Универсальный'],
-    colors: ['#000000', '#FFFFFF', '#808080'],
-    colorNames: ['Черный', 'Белый', 'Серый']
+    color: 'Черный'
   },
 ];
 
@@ -1172,62 +1136,9 @@ function renderProducts() {
         <h3>${prod.name}</h3>
         <p>Цена: ${prod.price} ₽</p>
       </a>
-      <div class="product-options">
-        <div class="size-selector">
-          <label>Размер:</label>
-          <div class="size-buttons">
-            ${prod.sizes.map(size => 
-              `<button type="button" class="size-btn" data-size="${size}">${size}</button>`
-            ).join('')}
-          </div>
-        </div>
-        <div class="color-selector">
-          <label>Цвет:</label>
-          <div class="color-buttons">
-            ${prod.colors.map((color, i) => 
-              `<button type="button" class="color-btn" data-color="${color}" data-color-name="${prod.colorNames[i]}" style="background-color: ${color}"></button>`
-            ).join('')}
-          </div>
-        </div>
-      </div>
       <button data-index="${index}">${prod.preorder ? 'Оформить предзаказ' : 'Добавить в корзину'}</button>
     `;
     container.appendChild(div);
-  });
-  
-  // Инициализация выбора размера и цвета
-  initializeProductOptions();
-}
-
-// Инициализация выбора размера и цвета
-function initializeProductOptions() {
-  // Выбор размера
-  document.querySelectorAll('.size-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const parent = this.closest('.size-selector');
-      parent.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
-      this.classList.add('selected');
-    });
-  });
-  
-  // Выбор цвета
-  document.querySelectorAll('.color-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const parent = this.closest('.color-selector');
-      parent.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
-      this.classList.add('selected');
-    });
-  });
-  
-  // Выбираем первый размер и цвет по умолчанию
-  document.querySelectorAll('.size-selector').forEach(selector => {
-    const firstSize = selector.querySelector('.size-btn');
-    if (firstSize) firstSize.classList.add('selected');
-  });
-  
-  document.querySelectorAll('.color-selector').forEach(selector => {
-    const firstColor = selector.querySelector('.color-btn');
-    if (firstColor) firstColor.classList.add('selected');
   });
 }
 
@@ -1270,10 +1181,18 @@ function updateCartModal() {
       <img src="${item.image}" alt="${item.name}" class="cart-item-image">
       <div class="cart-item-details">
         <div class="cart-item-name">${item.name}</div>
-        ${item.size ? `<div class="cart-item-size">Размер: ${item.size}</div>` : ''}
-        ${item.color ? `<div class="cart-item-color">Цвет: ${item.color}</div>` : ''}
+        <div class="cart-item-color">Цвет: ${item.color}</div>
         <div class="cart-item-price">${item.price} ₽</div>
         <div class="cart-item-controls">
+          <div class="size-selector-cart">
+            <label>Размер:</label>
+            <div class="size-buttons-cart">
+              ${getAvailableSizes(item.name).map(size => 
+                `<button type="button" class="size-btn-cart ${item.size === size ? 'selected' : ''}" 
+                  data-index="${index}" data-size="${size}">${size}</button>`
+              ).join('')}
+            </div>
+          </div>
           <div class="quantity-controls">
             <button class="quantity-btn" data-index="${index}" data-action="decrease">-</button>
             <span class="quantity">${item.count}</span>
@@ -1286,6 +1205,9 @@ function updateCartModal() {
     cartItems.appendChild(itemElement);
   });
   
+  // Инициализируем обработчики для кнопок размеров в корзине
+  initializeCartSizeButtons();
+  
   // Добавляем стоимость доставки
   const deliveryMethod = document.getElementById('delivery-method');
   const deliveryCost = deliveryMethod.value === 'sdek' ? 700 : 
@@ -1295,39 +1217,57 @@ function updateCartModal() {
   cartTotal.textContent = `Итого: ${total} ₽`;
 }
 
+// Получение доступных размеров для товара
+function getAvailableSizes(productName) {
+  const product = products.find(p => p.name === productName);
+  return product ? product.sizes : ['Универсальный'];
+}
+
+// Инициализация обработчиков для кнопок размеров в корзине
+function initializeCartSizeButtons() {
+  document.querySelectorAll('.size-btn-cart').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const index = parseInt(this.getAttribute('data-index'));
+      const newSize = this.getAttribute('data-size');
+      
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (cart[index]) {
+        cart[index].size = newSize;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // Обновляем отображение выбранного размера
+        const parent = this.closest('.size-buttons-cart');
+        parent.querySelectorAll('.size-btn-cart').forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      }
+    });
+  });
+}
+
 // Обработчики добавления в корзину
 function setupAddButtons() {
   document.addEventListener('click', (e) => {
     if (e.target.hasAttribute('data-index') && !e.target.hasAttribute('data-action')) {
       const index = parseInt(e.target.getAttribute('data-index'));
       const product = products[index];
-      const productElement = e.target.closest('.product');
-      
-      // Получаем выбранный размер и цвет
-      const selectedSize = productElement.querySelector('.size-btn.selected')?.getAttribute('data-size');
-      const selectedColor = productElement.querySelector('.color-btn.selected')?.getAttribute('data-color-name');
       
       let cart = JSON.parse(localStorage.getItem('cart')) || [];
       
-      // Ищем товар с такими же параметрами
-      const existingIndex = cart.findIndex(item => 
-        item.name === product.name && 
-        item.size === selectedSize && 
-        item.color === selectedColor
-      );
+      // Ищем товар с таким же названием (без учета размера при добавлении)
+      const existingIndex = cart.findIndex(item => item.name === product.name);
       
       if (existingIndex !== -1) {
         // Увеличиваем количество существующего товара
         cart[existingIndex].count++;
       } else {
-        // Добавляем новый товар
+        // Добавляем новый товар с размером по умолчанию
         cart.push({ 
           name: product.name, 
           price: product.price, 
           count: 1,
           image: product.image,
-          size: selectedSize,
-          color: selectedColor
+          size: product.sizes[0], // Первый размер по умолчанию
+          color: product.color
         });
       }
       
@@ -1425,16 +1365,19 @@ function setupCartModal() {
   cartButton.addEventListener('click', () => {
     updateCartModal();
     cartModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // Блокируем прокрутку страницы
   });
   
   closeCartButton.addEventListener('click', () => {
     cartModal.style.display = 'none';
+    document.body.style.overflow = ''; // Восстанавливаем прокрутку
   });
   
   // Закрытие корзины при клике вне окна
   cartModal.addEventListener('click', (e) => {
     if (e.target === cartModal) {
       cartModal.style.display = 'none';
+      document.body.style.overflow = ''; // Восстанавливаем прокрутку
     }
   });
   
@@ -1477,6 +1420,7 @@ function setupCartModal() {
     localStorage.removeItem('cart');
     updateCartCount();
     cartModal.style.display = 'none';
+    document.body.style.overflow = ''; // Восстанавливаем прокрутку
     alert('Заказ оформлен! Мы свяжемся с вами в ближайшее время.');
   });
 }
