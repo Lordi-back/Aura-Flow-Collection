@@ -285,11 +285,9 @@ body {
 }
 
 .main-image-container img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
   width: 100%;
   height: 100%;
+  object-fit: contain;
   transition: opacity 0.3s ease;
 }
 
@@ -308,6 +306,10 @@ body {
   overflow: hidden;
   cursor: pointer;
   transition: border-color 0.3s;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .gallery-image.active {
@@ -317,7 +319,9 @@ body {
 .gallery-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 5px;
+  box-sizing: border-box;
 }
 
 .thumbnail-images {
@@ -334,6 +338,10 @@ body {
   overflow: hidden;
   cursor: pointer;
   transition: border-color 0.3s;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .thumbnail.active {
@@ -343,7 +351,9 @@ body {
 .thumbnail img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 5px;
+  box-sizing: border-box;
 }
 
 /* Модальное окно для увеличения изображения */
@@ -415,7 +425,7 @@ body {
 }
 
 .size-option {
-  width: 40px;
+  min-width: 50px;
   height: 40px;
   border: 2px solid #ddd;
   border-radius: 5px;
@@ -426,10 +436,12 @@ body {
   font-weight: bold;
   transition: all 0.3s;
   background: white;
+  padding: 0 15px;
 }
 
 .size-option:hover {
   border-color: #000;
+  background-color: #f5f5f5;
 }
 
 .size-option.active {
@@ -447,6 +459,7 @@ body {
   display: flex;
   gap: 15px;
   margin-top: 10px;
+  flex-wrap: wrap;
 }
 
 .color-option {
@@ -456,7 +469,7 @@ body {
   cursor: pointer;
   border: none;
   background: none;
-  padding: 5px;
+  padding: 8px;
   border-radius: 8px;
   transition: all 0.3s;
 }
@@ -475,9 +488,10 @@ body {
   border-radius: 50%;
   border: 2px solid #000;
   margin-bottom: 5px;
-  transition: border-color 0.3s;
+  transition: all 0.3s;
   overflow: hidden;
   position: relative;
+  background: white;
 }
 
 .color-preview.active {
@@ -494,39 +508,39 @@ body {
   overflow: hidden;
 }
 
-/* Черный/Красный - больше черного (240 градусов), меньше красного (120 градусов) */
+/* Черный/Красный - больше черного (270 градусов), меньше красного (90 градусов) */
 .color-split.black-red::before {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
   background: conic-gradient(
-    #000000 0deg 240deg,
-    #ff0000 240deg 360deg
+    #000000 0deg 270deg,
+    #ff0000 270deg 360deg
   );
 }
 
-/* Белый/Черный - больше белого (240 градусов), меньше черного (120 градусов) */
+/* Белый/Черный - больше белого (270 градусов), меньше черного (90 градусов) */
 .color-split.white-black::before {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
   background: conic-gradient(
-    #ffffff 0deg 240deg,
-    #000000 240deg 360deg
+    #ffffff 0deg 270deg,
+    #000000 270deg 360deg
   );
 }
 
-/* Черный/Серый - больше черного (240 градусов), меньше серого (120 градусов) */
+/* Черный/Серый - больше черного (270 градусов), меньше серого (90 градусов) */
 .color-split.black-gray::before {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
   background: conic-gradient(
-    #000000 0deg 240deg,
-    #808080 240deg 360deg
+    #000000 0deg 270deg,
+    #808080 270deg 360deg
   );
 }
 
@@ -705,6 +719,12 @@ body {
     height: 50px;
   }
   
+  .size-option {
+    min-width: 45px;
+    height: 35px;
+    padding: 0 12px;
+  }
+  
   #back-button {
     font-size: 20px;
   }
@@ -740,36 +760,56 @@ body {
 @media (max-width: 480px) {
   .product-details {
     padding: 70px 10px 20px;
-  }
-  
-  .main-image-container {
-    height: 300px;
-  }
-  
-  .product-title {
-    font-size: 22px;
-  }
-  
-  .product-price {
-    font-size: 20px;
-  }
-  
-  .color-options {
     flex-direction: column;
     align-items: center;
   }
   
-  .color-option {
+  .product-images, .product-info {
+    max-width: 100%;
+    min-width: 100%;
+  }
+  
+  .main-image-container {
+    height: 350px;
+  }
+  
+  .product-title {
+    font-size: 22px;
+    text-align: center;
+  }
+  
+  .product-price {
+    font-size: 20px;
+    text-align: center;
+  }
+  
+  .color-options {
     flex-direction: row;
+    justify-content: center;
     gap: 10px;
-    width: 100%;
-    justify-content: flex-start;
+  }
+  
+  .color-option {
+    flex-direction: column;
+    width: auto;
+    justify-content: center;
   }
   
   .color-preview {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 0;
+    width: 45px;
+    height: 45px;
+    margin-bottom: 5px;
+  }
+  
+  .size-options {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .size-option {
+    min-width: 40px;
+    height: 35px;
+    padding: 0 10px;
   }
   
   #back-button {
@@ -840,6 +880,47 @@ body {
   #cart-form input, #cart-form select {
     padding: 12px;
     font-size: 16px; /* Увеличиваем для удобства на мобильных */
+  }
+  
+  .image-gallery, .thumbnail-images {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .gallery-image, .thumbnail {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 360px) {
+  .product-details {
+    padding: 70px 5px 20px;
+  }
+  
+  .main-image-container {
+    height: 300px;
+  }
+  
+  .color-options {
+    gap: 8px;
+  }
+  
+  .color-preview {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .size-option {
+    min-width: 35px;
+    height: 30px;
+    padding: 0 8px;
+    font-size: 14px;
+  }
+  
+  .gallery-image, .thumbnail {
+    width: 60px;
+    height: 60px;
   }
 }
 </style>
@@ -1052,7 +1133,7 @@ const productData = {
       // ЗАМЕНИТЕ НА ВАШИ ИЗОБРАЖЕНИЯ:
       images: {
         front: 'product1.jpg',           // Передняя часть
-        back: 'product1-back.jpg',       // Задняя часть
+        back: 'product1-hover.jpg',       // Задняя часть
         thumb: 'product1.jpg'            // Миниатюра
       }
     },
@@ -1061,7 +1142,7 @@ const productData = {
       // ЗАМЕНИТЕ НА ВАШИ ИЗОБРАЖЕНИЯ:
       images: {
         front: 'product2.jpg',
-        back: 'product2-back.jpg',
+        back: 'product2-hover.jpg',
         thumb: 'product2.jpg'
       }
     },
@@ -1070,7 +1151,7 @@ const productData = {
       // ЗАМЕНИТЕ НА ВАШИ ИЗОБРАЖЕНИЯ:
       images: {
         front: 'product3.jpg',
-        back: 'product3-back.jpg',
+        back: 'product3-hover.jpg',
         thumb: 'product3.jpg'
       }
     }
