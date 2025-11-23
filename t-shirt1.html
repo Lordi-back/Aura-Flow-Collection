@@ -292,6 +292,26 @@ body {
   transition: opacity 0.3s ease;
 }
 
+.main-image-container .hover-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.main-image-container:hover .hover-image {
+  opacity: 1;
+}
+
+.main-image-container:hover .main-image {
+  opacity: 0;
+}
+
 .thumbnail-images {
   display: flex;
   gap: 10px;
@@ -338,6 +358,36 @@ body {
   color: #000;
 }
 
+/* Выбор размера */
+.size-selection {
+  margin-bottom: 20px;
+}
+
+.size-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.size-option {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.size-option.active {
+  border-color: #000;
+  background-color: #000;
+  color: white;
+}
+
 /* Выбор цвета */
 .color-selection {
   margin-bottom: 20px;
@@ -364,19 +414,31 @@ body {
   margin-bottom: 5px;
   transition: border-color 0.3s;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
 }
 
 .color-preview.active {
   border-color: #000;
 }
 
-.color-preview img {
+/* Стили для разделенных цветов (как циферблат часов) */
+.color-split {
+  position: absolute;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.color-split::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    var(--color1) 0deg 120deg,
+    var(--color2) 120deg 360deg
+  );
 }
 
 .color-name {
@@ -731,25 +793,36 @@ body {
     <h1 class="product-title">Футболка "Luxury That Breathes"</h1>
     <div class="product-price">2 990 ₽</div>
     
+    <!-- Выбор размера -->
+    <div class="size-selection">
+      <h3>Выберите размер:</h3>
+      <div class="size-options">
+        <div class="size-option active" data-size="S">S</div>
+        <div class="size-option" data-size="M">M</div>
+        <div class="size-option" data-size="L">L</div>
+        <div class="size-option" data-size="XL">XL</div>
+      </div>
+    </div>
+    
     <!-- Выбор цвета -->
     <div class="color-selection">
       <h3>Выберите цвет:</h3>
       <div class="color-options">
         <div class="color-option" data-color="black-red">
           <div class="color-preview active">
-            <img src="https://via.placeholder.com/60x60?text=Черный/Красный" alt="Черный/Красный" />
+            <div class="color-split" style="--color1: #000000; --color2: #ff0000;"></div>
           </div>
           <span class="color-name">Черный/Красный</span>
         </div>
         <div class="color-option" data-color="white-black">
           <div class="color-preview">
-            <img src="https://via.placeholder.com/60x60?text=Белый/Черный" alt="Белый/Черный" />
+            <div class="color-split" style="--color1: #ffffff; --color2: #000000;"></div>
           </div>
           <span class="color-name">Белый/Черный</span>
         </div>
         <div class="color-option" data-color="black-gray">
           <div class="color-preview">
-            <img src="https://via.placeholder.com/60x60?text=Черный/Серый" alt="Черный/Серый" />
+            <div class="color-split" style="--color1: #000000; --color2: #808080;"></div>
           </div>
           <span class="color-name">Черный/Серый</span>
         </div>
@@ -864,37 +937,59 @@ body {
 
 <script>
 // Данные о товаре с разными цветами
+// ЗАМЕНИТЕ ЭТИ ССЫЛКИ НА ВАШИ ИЗОБРАЖЕНИЯ
 const productData = {
   name: 'Футболка "Luxury That Breathes"',
   price: 2990,
   colors: {
     'black-red': {
       name: 'Черный/Красный',
-      mainImage: 'https://via.placeholder.com/500x500?text=Черный/Красный',
-      thumbImage: 'https://via.placeholder.com/80x80?text=Черный/Красный'
+      // ЗАМЕНИТЕ НА ВАШИ ИЗОБРАЖЕНИЯ:
+     mages: {
+        main: 'продукт1.jpg',
+        hover: 'продукт1-hover.jpg',
+        thumb: 'продукт1.jpg'
+      }
     },
     'white-black': {
       name: 'Белый/Черный',
-      mainImage: 'https://via.placeholder.com/500x500?text=Белый/Черный',
-      thumbImage: 'https://via.placeholder.com/80x80?text=Белый/Черный'
+      images: {
+        main: 'продукт2.jpg',
+        hover: 'продукт2-hover.jpg',
+        thumb: 'продукт2.jpg'
+      }
     },
     'black-gray': {
       name: 'Черный/Серый',
-      mainImage: 'https://via.placeholder.com/500x500?text=Черный/Серый',
-      thumbImage: 'https://via.placeholder.com/80x80?text=Черный/Серый'
+      images: {
+        main: 'продукт3.jpg',
+        hover: 'продукт3-hover.jpg',
+        thumb: 'продукт3.jpg' // Миниатюра черно-серой футболки
     }
   }
 };
 
-// Текущий выбранный цвет
+// Текущий выбранный цвет и размер
 let selectedColor = 'black-red';
+let selectedSize = 'S';
 
 // Функция изменения цвета товара
 function changeColor(color) {
   selectedColor = color;
+  const colorData = productData.colors[color];
   
-  // Обновляем основное изображение
-  document.getElementById('main-image').src = productData.colors[color].mainImage;
+  // Обновляем основное изображение и hover изображение
+  const mainImageContainer = document.querySelector('.main-image-container');
+  mainImageContainer.innerHTML = `
+    <img src="${colorData.images.main}" alt="${colorData.name}" class="main-image">
+    <img src="${colorData.images.hover}" alt="${colorData.name}" class="hover-image">
+  `;
+  
+  // Обновляем миниатюры
+  document.querySelectorAll('.thumbnail').forEach(thumb => {
+    const thumbColor = thumb.dataset.color;
+    thumb.querySelector('img').src = productData.colors[thumbColor].images.thumb;
+  });
   
   // Обновляем активные состояния превью цветов
   document.querySelectorAll('.color-preview').forEach(preview => {
@@ -909,7 +1004,19 @@ function changeColor(color) {
   
   // Обновляем название товара с цветом
   document.querySelector('.product-title').textContent = 
-    `${productData.name} ${productData.colors[color].name}`;
+    `${productData.name} ${colorData.name}`;
+}
+
+// Функция изменения размера
+function changeSize(size) {
+  selectedSize = size;
+  
+  // Обновляем активные состояния размеров
+  document.querySelectorAll('.size-option').forEach(option => {
+    option.classList.remove('active');
+  });
+  
+  document.querySelector(`.size-option[data-size="${size}"]`).classList.add('active');
 }
 
 // Обновление счетчика корзины
@@ -969,10 +1076,11 @@ function updateCartModal() {
 // Обработчик добавления в корзину
 function setupAddToCart() {
   document.getElementById('add-to-cart').addEventListener('click', () => {
+    const colorData = productData.colors[selectedColor];
     const product = {
-      name: `${productData.name} ${productData.colors[selectedColor].name}`,
+      name: `${productData.name} ${colorData.name} (${selectedSize})`,
       price: productData.price,
-      image: productData.colors[selectedColor].mainImage
+      image: colorData.images.main // Используем основное изображение для корзины
     };
     
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -1167,9 +1275,20 @@ function setupColorSelection() {
   });
 }
 
+// Обработчики выбора размера
+function setupSizeSelection() {
+  document.querySelectorAll('.size-option').forEach(element => {
+    element.addEventListener('click', () => {
+      const size = element.getAttribute('data-size');
+      changeSize(size);
+    });
+  });
+}
+
 // Инициализация страницы
 document.addEventListener('DOMContentLoaded', () => {
   setupColorSelection();
+  setupSizeSelection();
   setupAddToCart();
   setupCartControls();
   setupCartModal();
