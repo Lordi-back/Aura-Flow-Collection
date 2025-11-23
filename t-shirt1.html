@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Футболка - Aura Flow Collection</title>
+<!-- Подключение шрифта Pacifico -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" />
+<!-- Иконки FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+body {
+  margin: 0;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #fff;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Стиль для всех кнопок */
+.product button, .product-details button {
+  padding: 12px 24px;
+  background-color: #000; /* черный фон */
+  color: #fff; /* белый текст */
+  border: none;
+  border-radius: 10px; /* скругление */
+  font-family: 'Roboto', cursive; /* красивый шрифт */
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+.product button:hover, .product-details button:hover {
+  background-color: #222;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Черная полоска сверху с логотипом и меню - ЗАФИКСИРОВАНА */
+.black-bar {
+  height: 60px; /* Уменьшенная высота */
+  background-color: #000;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  z-index: 1002;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.logo-link img {
+  height: 40px; /* Размер логотипа */
+  max-height: 70%; /* Чтобы не выходил за пределы полоски */
+}
+
+/* Кнопка возврата на главную */
+.back-container {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+
+#back-button {
+  background: none;
+  border: none;
+  color: #fff; /* Белый цвет для стрелки */
+  cursor: pointer;
+  font-size: 24px;
+  padding: 5px;
+}
+
+/* Корзина справа выше центра */
+#cart-container {
+  position: fixed;
+  right: 20px;
+  top: 80px; /* Ниже верхней части, но выше центра */
+  z-index: 998;
+  display: none; /* Скрыта по умолчанию */
+}
+
+#cart-button {
+  background: #000;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+#cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Окно корзины */
+#cart-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1001;
+  align-items: center;
+  justify-content: center;
+}
+
+#cart-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+#cart-items {
+  margin-bottom: 20px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  gap: 10px;
+}
+
+.cart-item-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.cart-item-info {
+  flex: 1;
+  min-width: 0; /* Для корректного переноса текста */
+}
+
+.cart-item-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+  word-break: break-word;
+}
+
+.cart-item-price {
+  color: #666;
+  font-size: 14px;
+}
+
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.cart-item button {
+  background: #000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+#cart-form input, #cart-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+#cart-total {
+  font-weight: bold;
+  margin: 15px 0;
+  text-align: right;
+  font-size: 18px;
+}
+
+#checkout-btn {
+  width: 100%;
+  padding: 12px;
+  background: #000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+#close-cart {
+  background: none;
+  border: none;
+  font-size: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Контейнер товара */
+.product-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 100px 20px 40px;
+  justify-content: center;
+  flex: 1;
+}
+
+/* Изображения товара */
+.product-images {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.main-image-container {
+  width: 100%;
+  height: 500px;
+  background-color: #f5f5f5;
+  margin-bottom: 15px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+.main-image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s ease;
+}
+
+.thumbnail-images {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 80px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.thumbnail.active {
+  border-color: #000;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Информация о товаре */
+.product-info {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.product-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.product-price {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+/* Выбор цвета */
+.color-selection {
+  margin-bottom: 20px;
+}
+
+.color-options {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.color-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.color-preview {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  margin-bottom: 5px;
+  transition: border-color 0.3s;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.color-preview.active {
+  border-color: #000;
+}
+
+.color-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.color-name {
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Описание товара */
+.product-description {
+  margin: 30px 0;
+  padding: 20px 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.product-description h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.product-description ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.product-description li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+/* Кнопка возвращения вверх */
+#back-to-top {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  background: #000;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  font-size: 20px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 997;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  transition: opacity 0.3s;
+}
+
+#back-to-top.visible {
+  display: flex;
+}
+
+/* Футер */
+.footer {
+  background-color: #000;
+  color: #fff;
+  padding: 30px 20px;
+  font-size: 14px;
+  margin-top: auto;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+  margin-bottom: 20px;
+}
+
+.footer-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 8px;
+}
+
+.footer-links a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.social-icons, .payment-icons {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.social-icons i, .payment-icons i {
+  font-size: 24px;
+}
+
+/* Белые иконки соцсетей */
+.social-icons a {
+  color: white;
+}
+
+/* Официальные иконки платежных систем - ИСПРАВЛЕННЫЕ */
+.payment-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 24px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #000;
+  font-family: Arial, sans-serif;
+}
+
+.mir-text {
+  font-size: 9px;
+}
+
+.sbp-text {
+  font-size: 8px;
+}
+
+.copyright {
+  text-align: center;
+  width: 100%;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #333;
+}
+
+/* Медиазапросы для мобильных устройств */
+@media (max-width: 768px) {
+  .product-details {
+    padding: 80px 15px 30px;
+    gap: 20px;
+  }
+  
+  .main-image-container {
+    height: 400px;
+  }
+  
+  .product-title {
+    font-size: 24px;
+  }
+  
+  .product-price {
+    font-size: 22px;
+  }
+  
+  .color-preview {
+    width: 50px;
+    height: 50px;
+  }
+  
+  #back-button {
+    font-size: 20px;
+  }
+  
+  .black-bar {
+    height: 50px;
+  }
+  
+  .logo-link img {
+    height: 35px;
+  }
+  
+  #cart-container {
+    right: 15px;
+    top: 70px;
+  }
+
+  #cart-button {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+  
+  #back-to-top {
+    bottom: 90px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-details {
+    padding: 70px 10px 20px;
+  }
+  
+  .main-image-container {
+    height: 300px;
+  }
+  
+  .product-title {
+    font-size: 22px;
+  }
+  
+  .product-price {
+    font-size: 20px;
+  }
+  
+  .color-options {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .color-option {
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .color-preview {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0;
+  }
+  
+  #back-button {
+    font-size: 18px;
+  }
+  
+  .black-bar {
+    height: 45px;
+  }
+  
+  .logo-link img {
+    height: 30px;
+  }
+  
+  #cart-container {
+    right: 10px;
+    top: 60px;
+  }
+
+  #cart-button {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  #cart-count {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+  
+  #back-to-top {
+    bottom: 80px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+  
+  /* Адаптивность корзины для маленьких экранов */
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
+  }
+
+  .cart-item-image {
+    width: 80px;
+    height: 80px;
+    align-self: center;
+  }
+
+  .cart-item-info {
+    width: 100%;
+    text-align: center;
+  }
+
+  .cart-item-controls {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  #cart-content {
+    padding: 15px;
+    margin: 10px;
+  }
+  
+  #cart-form input, #cart-form select {
+    padding: 12px;
+    font-size: 16px; /* Увеличиваем для удобства на мобильных */
+  }
+}
+</style>
+<link rel="icon" href="ДОРАБОТКА.png" sizes="512x512" type="image/png">
+</head>
+<body>
+
+<!-- Черная полоска сверху с логотипом и стрелкой возврата -->
+<div class="black-bar">
+  <!-- Стрелка возврата на главную -->
+  <div class="back-container">
+    <button id="back-button">←</button>
+  </div>
+
+  <!-- Логотип в центре -->
+  <a href="https://lordi-back.github.io/Aura-Flow-Collection" class="logo-link">
+    <img src="white-logo.png" alt="Логотип" />
+  </a>
+</div>
+
+<!-- Контейнер товара -->
+<div class="product-details">
+  <!-- Изображения товара -->
+  <div class="product-images">
+    <div class="main-image-container">
+      <img id="main-image" src="https://via.placeholder.com/500x500?text=Черный/Красный" alt="Футболка" />
+    </div>
+    <div class="thumbnail-images">
+      <div class="thumbnail active" data-color="black-red">
+        <img src="https://via.placeholder.com/80x80?text=Черный/Красный" alt="Черный/Красный" />
+      </div>
+      <div class="thumbnail" data-color="white-black">
+        <img src="https://via.placeholder.com/80x80?text=Белый/Черный" alt="Белый/Черный" />
+      </div>
+      <div class="thumbnail" data-color="black-gray">
+        <img src="https://via.placeholder.com/80x80?text=Черный/Серый" alt="Черный/Серый" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Информация о товаре -->
+  <div class="product-info">
+    <h1 class="product-title">Футболка "Luxury That Breathes"</h1>
+    <div class="product-price">2 990 ₽</div>
+    
+    <!-- Выбор цвета -->
+    <div class="color-selection">
+      <h3>Выберите цвет:</h3>
+      <div class="color-options">
+        <div class="color-option" data-color="black-red">
+          <div class="color-preview active">
+            <img src="https://via.placeholder.com/60x60?text=Черный/Красный" alt="Черный/Красный" />
+          </div>
+          <span class="color-name">Черный/Красный</span>
+        </div>
+        <div class="color-option" data-color="white-black">
+          <div class="color-preview">
+            <img src="https://via.placeholder.com/60x60?text=Белый/Черный" alt="Белый/Черный" />
+          </div>
+          <span class="color-name">Белый/Черный</span>
+        </div>
+        <div class="color-option" data-color="black-gray">
+          <div class="color-preview">
+            <img src="https://via.placeholder.com/60x60?text=Черный/Серый" alt="Черный/Серый" />
+          </div>
+          <span class="color-name">Черный/Серый</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Кнопка добавления в корзину -->
+    <button id="add-to-cart">Добавить в корзину</button>
+    
+    <!-- Описание товара -->
+    <div class="product-description">
+      <h3>Описание товара:</h3>
+      <ul>
+        <li>100% хлопок</li>
+        <li>300гр. плотность</li>
+        <li>Жаккардовая бирка</li>
+        <li>Принт шелкография</li>
+        <li>В комплекте с футболкой наклейки</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Корзина справа выше центра (скрыта по умолчанию) -->
+<div id="cart-container">
+  <button id="cart-button">
+    🛒
+    <span id="cart-count">0</span>
+  </button>
+</div>
+
+<!-- Кнопка возвращения вверх -->
+<button id="back-to-top">↑</button>
+
+<!-- Модальное окно корзины -->
+<div id="cart-modal">
+  <div id="cart-content">
+    <button id="close-cart">✕</button>
+    <h2>Корзина</h2>
+    <div id="cart-items">
+      <!-- Товары в корзине -->
+    </div>
+    <form id="cart-form">
+      <input type="text" placeholder="ФИО" required>
+      <input type="text" placeholder="Город" required>
+      <input type="text" placeholder="Адрес" required>
+      <select id="delivery-method" required>
+        <option value="">Выберите способ доставки</option>
+        <option value="sdek">СДЭК - 700 ₽</option>
+        <option value="post">Почта России - 500 ₽</option>
+      </select>
+      <div id="cart-total">Итого: 0 ₽</div>
+      <button type="button" id="checkout-btn">Оформить заказ</button>
+    </form>
+  </div>
+</div>
+
+<!-- Футер -->
+<div class="footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>Навигация</h3>
+      <ul class="footer-links">
+        <li><a href="https://lordi-back.github.io/Aura-Flow-Collection">Главная</a></li>
+        <li><a href="catalog.html">Каталог</a></li>
+        <li><a href="about.html">О нас</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Помощь</h3>
+      <ul class="footer-links">
+        <li><a href="#">Уход</a></li>
+        <li><a href="#">Доставка и оплата</a></li>
+        <li><a href="#">Возврат и обмен</a></li>
+        <li><a href="#">Поддержка</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Документация</h3>
+      <ul class="footer-links">
+        <li><a href="#">Политика конфиденциальности</a></li>
+        <li><a href="#">Условия использования</a></li>
+        <li><a href="#">Публичная оферта</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Мы в соцсетях</h3>
+      <div class="social-icons">
+        <a href="https://instagram.com/ваш_instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://vk.com/n1kpav" target="_blank"><i class="fab fa-vk"></i></a>
+        <a href="https://t.me/AFCoSup" target="_blank"><i class="fab fa-telegram"></i></a>
+        <a href="https://wa.me/79379546766" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      </div>
+
+      <h3 style="margin-top: 20px;">Способы оплаты</h3>
+      <div class="payment-icons">
+        <i class="fab fa-cc-visa"></i>
+        <i class="fab fa-cc-mastercard"></i>
+        <span class="payment-text mir-text">МИР</span>
+        <span class="payment-text sbp-text">СБП</span>
+      </div>
+    </div>
+
+    <div class="copyright">
+      <p>&copy; 2024. Aura Flow Collection. Все права защищены</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// Данные о товаре с разными цветами
+const productData = {
+  name: 'Футболка "Luxury That Breathes"',
+  price: 2990,
+  colors: {
+    'black-red': {
+      name: 'Черный/Красный',
+      mainImage: 'https://via.placeholder.com/500x500?text=Черный/Красный',
+      thumbImage: 'https://via.placeholder.com/80x80?text=Черный/Красный'
+    },
+    'white-black': {
+      name: 'Белый/Черный',
+      mainImage: 'https://via.placeholder.com/500x500?text=Белый/Черный',
+      thumbImage: 'https://via.placeholder.com/80x80?text=Белый/Черный'
+    },
+    'black-gray': {
+      name: 'Черный/Серый',
+      mainImage: 'https://via.placeholder.com/500x500?text=Черный/Серый',
+      thumbImage: 'https://via.placeholder.com/80x80?text=Черный/Серый'
+    }
+  }
+};
+
+// Текущий выбранный цвет
+let selectedColor = 'black-red';
+
+// Функция изменения цвета товара
+function changeColor(color) {
+  selectedColor = color;
+  
+  // Обновляем основное изображение
+  document.getElementById('main-image').src = productData.colors[color].mainImage;
+  
+  // Обновляем активные состояния превью цветов
+  document.querySelectorAll('.color-preview').forEach(preview => {
+    preview.classList.remove('active');
+  });
+  document.querySelectorAll('.thumbnail').forEach(thumb => {
+    thumb.classList.remove('active');
+  });
+  
+  document.querySelector(`.color-option[data-color="${color}"] .color-preview`).classList.add('active');
+  document.querySelector(`.thumbnail[data-color="${color}"]`).classList.add('active');
+  
+  // Обновляем название товара с цветом
+  document.querySelector('.product-title').textContent = 
+    `${productData.name} ${productData.colors[color].name}`;
+}
+
+// Обновление счетчика корзины
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const totalCount = cart.reduce((sum, item) => sum + item.count, 0);
+  document.getElementById('cart-count').textContent = totalCount;
+
+  // Показать корзину, если есть товары
+  if (totalCount > 0) {
+    document.getElementById('cart-container').style.display = 'block';
+  } else {
+    document.getElementById('cart-container').style.display = 'none';
+  }
+}
+
+// Обновление содержимого корзины в модальном окне
+function updateCartModal() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const cartItems = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total');
+
+  cartItems.innerHTML = '';
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    const itemTotal = item.price * item.count;
+    total += itemTotal;
+
+    const itemElement = document.createElement('div');
+    itemElement.className = 'cart-item';
+    itemElement.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${item.price} ₽ x ${item.count}</div>
+      </div>
+      <div class="cart-item-controls">
+        <button data-index="${index}" data-action="decrease">-</button>
+        <span>${item.count}</span>
+        <button data-index="${index}" data-action="increase">+</button>
+        <button data-index="${index}" data-action="remove">✕</button>
+      </div>
+    `;
+    cartItems.appendChild(itemElement);
+  });
+
+  // Добавляем стоимость доставки
+  const deliveryMethod = document.getElementById('delivery-method');
+  const deliveryCost = deliveryMethod.value === 'sdek' ? 700 : 
+                       deliveryMethod.value === 'post' ? 500 : 0;
+  total += deliveryCost;
+
+  cartTotal.textContent = `Итого: ${total} ₽`;
+}
+
+// Обработчик добавления в корзину
+function setupAddToCart() {
+  document.getElementById('add-to-cart').addEventListener('click', () => {
+    const product = {
+      name: `${productData.name} ${productData.colors[selectedColor].name}`,
+      price: productData.price,
+      image: productData.colors[selectedColor].mainImage
+    };
+    
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existing = cart.find(item => item.name === product.name);
+
+    if (existing) {
+      existing.count++;
+    } else {
+      cart.push({ 
+        name: product.name, 
+        price: product.price, 
+        count: 1,
+        image: product.image
+      });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    alert('Товар добавлен в корзину!');
+  });
+}
+
+// Обработчики управления корзиной
+function setupCartControls() {
+  document.addEventListener('click', (e) => {
+    if (e.target.hasAttribute('data-action')) {
+      const index = parseInt(e.target.getAttribute('data-index'));
+      const action = e.target.getAttribute('data-action');
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+      if (action === 'increase') {
+        cart[index].count++;
+      } else if (action === 'decrease') {
+        cart[index].count--;
+        if (cart[index].count <= 0) {
+          cart.splice(index, 1);
+        }
+      } else if (action === 'remove') {
+        cart.splice(index, 1);
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      updateCartModal();
+    }
+  });
+}
+
+// Обработчики корзины
+function setupCartModal() {
+  const cartButton = document.getElementById('cart-button');
+  const closeCartButton = document.getElementById('close-cart');
+  const cartModal = document.getElementById('cart-modal');
+  const deliveryMethod = document.getElementById('delivery-method');
+  const checkoutButton = document.getElementById('checkout-btn');
+
+  cartButton.addEventListener('click', () => {
+    updateCartModal();
+    cartModal.style.display = 'flex';
+  });
+
+  closeCartButton.addEventListener('click', () => {
+    cartModal.style.display = 'none';
+  });
+
+  // Закрытие корзины при клике вне окна
+  cartModal.addEventListener('click', (e) => {
+    if (e.target === cartModal) {
+      cartModal.style.display = 'none';
+    }
+  });
+
+  deliveryMethod.addEventListener('change', () => {
+    updateCartModal();
+  });
+
+  checkoutButton.addEventListener('click', () => {
+    const form = document.getElementById('cart-form');
+    const formData = new FormData(form);
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Проверка заполнения формы
+    if (!formData.get('ФИО') || !formData.get('Город') || !formData.get('Адрес') || !deliveryMethod.value) {
+      alert('Пожалуйста, заполните все поля формы');
+      return;
+    }
+
+    // Проверка наличия товаров в корзине
+    if (cart.length === 0) {
+      alert('Корзина пуста');
+      return;
+    }
+
+    // Формирование данных для отправки
+    const orderData = {
+      fio: formData.get('ФИО'),
+      city: formData.get('Город'),
+      address: formData.get('Адрес'),
+      delivery: deliveryMethod.value,
+      deliveryCost: deliveryMethod.value === 'sdek' ? 700 : 500,
+      items: cart,
+      total: document.getElementById('cart-total').textContent
+    };
+
+    // Отправка данных (здесь нужно указать ваш Telegram бот токен и chat ID)
+    sendToTelegram(orderData);
+
+    // Очистка корзины после оформления заказа
+    localStorage.removeItem('cart');
+    updateCartCount();
+    cartModal.style.display = 'none';
+    alert('Заказ оформлен! Мы свяжемся с вами в ближайшее время.');
+  });
+}
+
+// Функция отправки данных в Telegram
+function sendToTelegram(orderData) {
+  // Формируем текст сообщения
+  let message = `Новый заказ!\n\n`;
+  message += `ФИО: ${orderData.fio}\n`;
+  message += `Город: ${orderData.city}\n`;
+  message += `Адрес: ${orderData.address}\n`;
+  message += `Способ доставки: ${orderData.delivery === 'sdek' ? 'СДЭК' : 'Почта России'}\n`;
+  message += `Стоимость доставки: ${orderData.deliveryCost} ₽\n\n`;
+  message += `Товары:\n`;
+
+  orderData.items.forEach(item => {
+    message += `- ${item.name}: ${item.price} ₽ x ${item.count} = ${item.price * item.count} ₽\n`;
+  });
+
+  message += `\n${orderData.total}`;
+
+  // Здесь нужно указать токен вашего бота и chat ID
+  const botToken = 'YOUR_BOT_TOKEN';
+  const chatId = 'YOUR_CHAT_ID';
+
+  // Отправка запроса к API Telegram
+  fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: message,
+    }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Сообщение отправлено в Telegram:', data);
+  })
+  .catch(error => {
+    console.error('Ошибка отправки в Telegram:', error);
+  });
+}
+
+// Кнопка возвращения вверх
+function setupBackToTop() {
+  const backToTopButton = document.getElementById('back-to-top');
+
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTopButton.classList.add('visible');
+    } else {
+      backToTopButton.classList.remove('visible');
+    }
+  });
+
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+}
+
+// Обработчик стрелки возврата
+function setupBackButton() {
+  document.getElementById('back-button').addEventListener('click', () => {
+    window.location.href = 'https://lordi-back.github.io/Aura-Flow-Collection';
+  });
+}
+
+// Обработчики выбора цвета
+function setupColorSelection() {
+  document.querySelectorAll('.color-option, .thumbnail').forEach(element => {
+    element.addEventListener('click', () => {
+      const color = element.getAttribute('data-color') || 
+                   element.closest('.color-option').getAttribute('data-color');
+      changeColor(color);
+    });
+  });
+}
+
+// Инициализация страницы
+document.addEventListener('DOMContentLoaded', () => {
+  setupColorSelection();
+  setupAddToCart();
+  setupCartControls();
+  setupCartModal();
+  setupBackToTop();
+  setupBackButton();
+  updateCartCount();
+});
+</script>
+</body>
+</html>
