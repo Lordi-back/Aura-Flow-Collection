@@ -246,12 +246,25 @@ body {
 
 .cart-item-info {
   flex: 1;
+  min-width: 0; /* Для корректного переноса текста */
+}
+
+.cart-item-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+  word-break: break-word;
+}
+
+.cart-item-price {
+  color: #666;
+  font-size: 14px;
 }
 
 .cart-item-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .cart-item button {
@@ -262,6 +275,10 @@ body {
   width: 25px;
   height: 25px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
 }
 
 #cart-form input, #cart-form select {
@@ -277,6 +294,7 @@ body {
   font-weight: bold;
   margin: 15px 0;
   text-align: right;
+  font-size: 18px;
 }
 
 #checkout-btn {
@@ -288,6 +306,7 @@ body {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  font-weight: 600;
 }
 
 #close-cart {
@@ -298,17 +317,18 @@ body {
   top: 10px;
   right: 10px;
   cursor: pointer;
+  color: #333;
 }
 
 /* Блок с градиентной картинкой - ИСПРАВЛЕННЫЙ */
 .hero-banner {
   width: 100%;
   height: 300px;
-  background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #333333 100%); /* Улучшенный градиент */
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #333333 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 60px; /* Отступ для фиксированной шапки */
+  margin-top: 60px;
   overflow: hidden;
   position: relative;
 }
@@ -327,7 +347,7 @@ body {
 .hero-banner img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Возвращаем cover для лучшего заполнения */
+  object-fit: cover;
   opacity: 0.8;
   max-width: 500px;
   position: relative;
@@ -346,18 +366,18 @@ body {
   flex: 1;
 }
 
-/* Карточка товара - 4 в ряд */
+/* Карточка товара - ИСПРАВЛЕННАЯ */
 .product {
   background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
   padding: 15px;
   width: calc(25% - 15px);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: box-shadow 0.3s;
+  transition: all 0.3s ease;
   margin-bottom: 15px;
   position: relative;
   overflow: hidden;
@@ -365,27 +385,26 @@ body {
 }
 
 .product:hover {
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
 }
 
 .product-image {
   width: 100%;
   height: 250px;
-  background-color: #f5f5f5;
   margin-bottom: 15px;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px; /* Добавлен отступ для мобильных */
-  box-sizing: border-box;
+  background: transparent; /* Убираем фон */
 }
 
 .product-image img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain; /* Сохраняем contain для полного отображения */
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Полное отображение без обрезки */
   transition: opacity 0.3s ease;
 }
 
@@ -397,8 +416,6 @@ body {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 10px;
-  box-sizing: border-box;
 }
 
 .product:hover .hover-image {
@@ -407,6 +424,21 @@ body {
 
 .product:hover .main-image {
   opacity: 0;
+}
+
+.product h3 {
+  margin: 10px 0 5px 0;
+  font-size: 16px;
+  text-align: center;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.product p {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #000;
 }
 
 /* Кнопка возвращения вверх */
@@ -498,22 +530,28 @@ body {
   color: white;
 }
 
-/* Официальные иконки платежных систем - ИСПРАВЛЕННЫЕ */
-.payment-icon {
+/* Иконки платежных систем - ПРОСТЫЕ НАДПИСИ */
+.payment-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 40px;
   height: 24px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  display: block; /* Добавлено для корректного отображения */
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #000;
+  font-family: Arial, sans-serif;
 }
 
-.mir-icon {
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 30"><rect width="100" height="30" fill="%231F5BFF"/><text x="50" y="18" text-anchor="middle" fill="white" font-family="Arial" font-size="12">МИР</text></svg>');
+.mir-text {
+  font-size: 9px;
 }
 
-.sbp-icon {
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 30"><rect width="100" height="30" fill="%2328A745"/><text x="50" y="18" text-anchor="middle" fill="white" font-family="Arial" font-size="10">СБП</text></svg>');
+.sbp-text {
+  font-size: 8px;
 }
 
 .copyright {
@@ -574,12 +612,24 @@ body {
   
   .product {
     width: calc(50% - 10px);
-    padding: 10px; /* Уменьшен padding для мобильных */
+    padding: 12px;
   }
   
   .product-image {
-    height: 180px; /* Уменьшена высота для мобильных */
-    padding: 5px; /* Уменьшен отступ */
+    height: 200px;
+  }
+  
+  .product h3 {
+    font-size: 14px;
+  }
+  
+  .product p {
+    font-size: 16px;
+  }
+  
+  .product button {
+    padding: 10px 20px;
+    font-size: 13px;
   }
   
   #cart-container {
@@ -611,28 +661,62 @@ body {
   
   .hero-banner {
     height: 200px;
-    margin-top: 50px; /* Уменьшен отступ для мобильных */
+    margin-top: 50px;
   }
   
   .hero-banner img {
     max-width: 400px;
+  }
+  
+  /* Адаптивность корзины для мобильных */
+  .cart-item {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .cart-item-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .cart-item-info {
+    flex: 1;
+    min-width: 120px;
+  }
+  
+  .cart-item-controls {
+    width: 100%;
+    justify-content: center;
+    margin-top: 8px;
   }
 }
 
 @media (max-width: 480px) {
   .product {
     width: 100%;
-    padding: 8px; /* Еще меньше padding для маленьких экранов */
+    padding: 10px;
+    margin-bottom: 10px;
   }
   
   .product-image {
-    height: 160px; /* Еще меньше высота */
-    padding: 3px; /* Минимальный отступ */
+    height: 180px;
+  }
+  
+  .product h3 {
+    font-size: 14px;
+    margin: 8px 0 4px 0;
+  }
+  
+  .product p {
+    font-size: 16px;
+    margin-bottom: 12px;
   }
   
   .product button {
     padding: 8px 16px;
     font-size: 12px;
+    width: 100%;
+    max-width: 200px;
   }
   
   #cart-container {
@@ -668,16 +752,6 @@ body {
     font-size: 16px;
   }
   
-  .cart-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .cart-item-image {
-    width: 100%;
-    height: 100px;
-  }
-  
   .hero-banner {
     height: 150px;
   }
@@ -690,21 +764,37 @@ body {
     font-size: 18px;
   }
   
-  /* Убираем белую полосу между шапкой и баннером */
-  body {
-    background-color: #000; /* Черный фон для body */
+  /* Адаптивность корзины для маленьких экранов */
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
   }
   
-  .hero-banner {
-    background: #000; /* Убираем градиент на мобильных */
+  .cart-item-image {
+    width: 80px;
+    height: 80px;
+    align-self: center;
   }
   
-  .hero-banner::before {
-    display: none; /* Убираем оверлей на мобильных */
+  .cart-item-info {
+    width: 100%;
+    text-align: center;
   }
   
-  .hero-banner img {
-    opacity: 1; /* Полная непрозрачность на мобильных */
+  .cart-item-controls {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  #cart-content {
+    padding: 15px;
+    margin: 10px;
+  }
+  
+  #cart-form input, #cart-form select {
+    padding: 12px;
+    font-size: 16px; /* Увеличиваем для удобства на мобильных */
   }
 }
 </style>
@@ -824,8 +914,8 @@ body {
       <div class="payment-icons">
         <i class="fab fa-cc-visa"></i>
         <i class="fab fa-cc-mastercard"></i>
-        <span class="payment-icon mir-icon"></span>
-        <span class="payment-icon sbp-icon"></span>
+        <span class="payment-text mir-text">МИР</span>
+        <span class="payment-text sbp-text">СБП</span>
       </div>
     </div>
     
@@ -920,8 +1010,8 @@ function updateCartModal() {
     itemElement.innerHTML = `
       <img src="${item.image}" alt="${item.name}" class="cart-item-image">
       <div class="cart-item-info">
-        <div>${item.name}</div>
-        <div>${item.price} ₽ x ${item.count}</div>
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${item.price} ₽ x ${item.count}</div>
       </div>
       <div class="cart-item-controls">
         <button data-index="${index}" data-action="decrease">-</button>
@@ -1111,7 +1201,7 @@ function sendToTelegram(orderData) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      chat_id: chatId,
+      chat_id: chatId,     
       text: message,
     }),
   })
@@ -1157,3 +1247,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
