@@ -31,3 +31,31 @@ Modern e-commerce website for clothing brand with responsive design and shopping
 - **Deployment:** GitHub Pages
 
 ## 📁 Project Structure | Структура проекта
+Aura-Flow-Collection/
+├── css/
+│ └── style.css # Main styles | Основные стили
+├── js/
+│ └── script.js # Cart logic and UI | Логика корзины и интерфейса
+├── images/ # Product images and backgrounds
+├── index.html # Main page | Главная страница
+├── about.html # About company | О компании
+├── products.html # Products page | Страница товаров
+└── README.md
+
+## 💻 Local Development | Локальная установка
+
+# Clone the repository | Клонируй репозиторий
+git clone https://github.com/Lordi-back/Aura-Flow-Collection.git
+
+# Navigate to project | Перейди в папку проекта
+cd Aura-Flow-Collection
+
+# Open in browser | Открой в браузере
+# Open index.html directly or use Live Server in VS Code
+
+📞 Contact | Контакты
+GitHub: @Lordi-back
+Telegram: @Funny_bastard
+E-mail: 89617151191d@gmail.com
+Project Link: Aura Flow Collection
+
