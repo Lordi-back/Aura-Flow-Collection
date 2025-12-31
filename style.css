@@ -10,7 +10,166 @@
     background-color: rgba(0, 0, 0, 0.7);
     animation: fadeIn 0.3s ease-out;
 }
+/* Стили для страницы корзины (cart.html) */
+.cart-page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
 
+/* Единый стиль для всех картинок товаров */
+.cart-product-image {
+    width: 100%;
+    height: 300px; /* Фиксированная высота */
+    object-fit: cover; /* Картинка заполняет область без искажений */
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #eaeaea;
+    background-color: #f9f9f9; /* Фон на случай прозрачных картинок */
+}
+
+/* Контейнер для карточки товара */
+.cart-product-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid #eee;
+}
+
+/* Секция с цветами - переделываем */
+.color-selection {
+    margin: 15px 0;
+}
+
+.color-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.color-btn {
+    width: 36px; /* Уменьшил размер */
+    height: 36px;
+    border: 2px solid #222; /* Черная рамка */
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: white; /* Белый фон вместо черного */
+    padding: 2px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Внутренний круг с цветом */
+.color-btn-inner {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+/* Цвета товаров */
+.color-black .color-btn-inner { background-color: #000; }
+.color-white .color-btn-inner { background-color: #fff; border: 1px solid #ddd; }
+.color-gray .color-btn-inner { background-color: #808080; }
+.color-blue .color-btn-inner { background-color: #3498db; }
+.color-red .color-btn-inner { background-color: #e74c3c; }
+
+.color-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+
+.color-btn.selected {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+/* Цена и кнопка "Добавить в корзину" - ПЕРЕМЕЩАЕМ ВВЕРХ */
+.product-price-section {
+    margin: 20px 0 15px 0; /* Увеличиваем отступ сверху */
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.product-price {
+    font-size: 28px; /* Увеличиваем размер цены */
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+/* Кнопка "Добавить в корзину" - делаем заметнее */
+.add-to-cart-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    font-size: 18px; /* Увеличиваем текст */
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.add-to-cart-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+    background: linear-gradient(135deg, #2980b9, #3498db);
+}
+
+.add-to-cart-btn:active {
+    transform: translateY(0);
+}
+
+/* Оформление иконки в кнопке */
+.add-to-cart-btn i {
+    font-size: 20px;
+}
+
+/* Секция с описанием (опускаем вниз) */
+.product-description {
+    margin-top: 25px;
+    color: #555;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+/* Медиа-запрос для мобильных */
+@media (max-width: 768px) {
+    .cart-product-image {
+        height: 250px;
+    }
+    
+    .product-price-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .add-to-cart-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .color-btn {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .color-btn-inner {
+        width: 20px;
+        height: 20px;
+    }
+}
 .modal-content {
     position: relative;
     background-color: #fefefe;
@@ -88,3 +247,4 @@
         transform: translateY(0);
     }
 }
+
