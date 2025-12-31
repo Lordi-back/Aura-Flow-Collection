@@ -330,42 +330,116 @@
         }
 
         /* Подвал */
-        .footer {
-            background-color: #000;
-            color: #fff;
-            padding: 30px 20px;
-            text-align: center;
-        }
+   /* Подвал (как на index.html) */
+.footer {
+  background-color: #000;
+  color: #fff;
+  padding: 50px 20px 20px;
+  margin-top: auto;
+}
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 40px;
+}
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 20px;
-        }
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+  margin-bottom: 30px;
+}
 
-        .footer-links a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
+.footer-section h3 {
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
+}
 
-        .footer-links a:hover {
-            text-decoration: underline;
-        }
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-        .copyright {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #333;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  color: #aaa;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+.social-icons, .payment-icons {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.social-icons a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+.social-icons a:hover {
+  transform: translateY(-3px);
+}
+
+.payment-icons i {
+  font-size: 24px;
+  color: white;
+}
+
+/* Иконки платежных систем */
+.payment-icon {
+  width: 40px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 10px;
+  border-radius: 4px;
+}
+
+.mir-icon {
+  background-color: white;
+  border: 1px solid #ddd;
+  color: #000;
+  padding: 2px 5px;
+}
+
+.sbp-icon {
+  background-color: white;
+  border: 1px solid #ddd;
+  color: #000;
+  padding: 2px 5px;
+}
+
+.copyright {
+  text-align: center;
+  width: 100%;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #333;
+  color: #888;
+  font-size: 14px;
+}
 
         /* Адаптивность */
         @media (max-width: 768px) {
@@ -400,10 +474,18 @@
                 left: -80vw;
             }
             
-            .footer-links {
-                flex-direction: column;
-                gap: 15px;
-            }
+              .footer-content {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .footer-section {
+    text-align: center;
+  }
+  
+  .social-icons, .payment-icons {
+    justify-content: center;
+  }
         }
 
         @media (max-width: 480px) {
@@ -535,20 +617,68 @@
     </section>
 
     <!-- Подвал -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="index.html">Главная</a>
-                <a href="catalog.html">Каталог</a>
-                <a href="about.html">О нас</a>
-                <a href="#" class="doc-btn" data-doc="care.txt">Уход</a>
-                <a href="#" class="doc-btn" data-doc="delivery.txt">Доставка</a>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2024 Aura Flow Collection. Все права защищены.</p>
-            </div>
-        </div>
-    </footer>
+   <!-- Подвал (как на index.html) -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>Навигация</h3>
+      <ul class="footer-links">
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="catalog.html">Каталог</a></li>
+        <li><a href="about.html">О нас</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Помощь</h3>
+      <ul class="footer-links">
+        <li><a href="#" class="doc-btn" data-doc="care.txt">Уход</a></li>
+        <li><a href="#" class="doc-btn" data-doc="delivery.txt">Доставка и оплата</a></li>
+        <li><a href="#" class="doc-btn" data-doc="return.txt">Возврат и обмен</a></li>
+        <li><a href="#" class="doc-btn" data-doc="support.txt">Поддержка</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Документация</h3>
+      <ul class="footer-links">
+        <li><a href="#" class="doc-btn" data-doc="privacy.txt">Политика конфиденциальности</a></li>
+        <li><a href="#" class="doc-btn" data-doc="terms.txt">Условия использования</a></li>
+        <li><a href="#" class="doc-btn" data-doc="offer.txt">Публичная оферта</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Мы в соцсетях</h3>
+      <div class="social-icons">
+        <a href="https://instagram.com/ваш_instagram" target="_blank" title="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://vk.com/n1kpav" target="_blank" title="ВКонтакте">
+          <i class="fab fa-vk"></i>
+        </a>
+        <a href="https://t.me/AFCoSup" target="_blank" title="Telegram">
+          <i class="fab fa-telegram"></i>
+        </a>
+        <a href="https://wa.me/79379546766" target="_blank" title="WhatsApp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </div>
+      
+      <h3 style="margin-top: 20px;">Способы оплаты</h3>
+      <div class="payment-icons">
+        <i class="fab fa-cc-visa" title="Visa"></i>
+        <i class="fab fa-cc-mastercard" title="Mastercard"></i>
+        <span class="payment-icon mir-icon" title="Мир">МИР</span>
+        <span class="payment-icon sbp-icon" title="СБП">СБП</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="copyright">
+    <p>&copy; 2024. Aura Flow Collection. Все права защищены</p>
+  </div>
+</footer>
 
     <!-- JavaScript для меню и документов -->
     <script>
@@ -624,4 +754,5 @@
     </script>
 </body>
 </html>
+
 
