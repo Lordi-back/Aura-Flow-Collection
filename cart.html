@@ -206,24 +206,8 @@ h1 {
   <button class="button" id="pay-btn">Оплатить</button>
 </div>
 
-  <!-- Модальное окно для документов -->
-<div id="documentModal" class="modal">
-    <div class="modal-content">
-        <span class="modal-close">&times;</span>
-        <h2 class="modal-title" id="modalDocTitle">Документ</h2>
-        <div class="modal-body">
-            <div class="document-text" id="modalDocText">
-                <p>Загрузка документа...</p>
-            </div>
-            <div class="document-loading" id="modalLoading">
-                <p>Идёт загрузка документа...</p>
-            </div>
-            <div class="document-error" id="modalError" style="display: none;">
-                <p>Не удалось загрузить документ. Пожалуйста, попробуйте позже.</p>
-            </div>
-        </div>
-    </div>
-</div>
+
+
 <script>
   // Обработка открытия/закрытия меню
 const menuBtn = document.getElementById('menu-button');
@@ -341,7 +325,26 @@ updateCartCount();
 <div class="footer">
  <p>&copy; 2024. Aura Flow Collection. Все права защищены</p>
 </div>
+
+  <div id="documentModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2 class="modal-title" id="modalDocTitle">Документ</h2>
+        <div class="modal-body">
+            <div class="document-text" id="modalDocText">
+                <p>Загрузка документа...</p>
+            </div>
+            <div class="document-loading" id="modalLoading">
+                <p>Идёт загрузка документа...</p>
+            </div>
+            <div class="document-error" id="modalError" style="display: none;">
+                <p>Не удалось загрузить документ. Пожалуйста, попробуйте позже.</p>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Закрывающий тег body -->
 </body>
 
 </html>
+
