@@ -96,3 +96,36 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = 'auto'; // Восстанавливаем прокрутку
     }
 });
+
+// Логика выбора цвета на странице cart.html
+function initColorSelection() {
+    const colorButtons = document.querySelectorAll('.color-btn');
+    
+    colorButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Убираем класс selected у всех кнопок в этой группе
+            const parent = this.closest('.color-options');
+            parent.querySelectorAll('.color-btn').forEach(b => {
+                b.classList.remove('selected');
+            });
+            
+            // Добавляем класс selected текущей кнопке
+            this.classList.add('selected');
+            
+            // Можно также обновить данные в корзине
+            const productCard = this.closest('.cart-product-card');
+            const productId = productCard.dataset.productId; // если добавить data-атрибут
+            const selectedColor = this.dataset.color;
+            
+            console.log(`Товар ID: ${productId}, выбран цвет: ${selectedColor}`);
+            // Здесь можно добавить логику обновления корзины
+        });
+    });
+}
+
+// Инициализируем при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.querySelector('.cart-product-card')) {
+        initColorSelection();
+    }
+});
