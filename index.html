@@ -689,6 +689,71 @@ padding-top: 20px;
 border-top: 1px solid #333;
 }
 
+/* Стили для модального окна документов - ДОБАВЛЕНО */
+#docModal {
+display: none;
+position: fixed;
+z-index: 10002;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0,0,0,0.7);
+}
+
+.doc-modal-content {
+background-color: #fefefe;
+margin: 5% auto;
+padding: 30px;
+border-radius: 12px;
+width: 90%;
+max-width: 700px;
+max-height: 80vh;
+overflow-y: auto;
+position: relative;
+box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+}
+
+.doc-modal-close {
+position: absolute;
+top: 15px;
+right: 20px;
+color: #aaa;
+font-size: 28px;
+font-weight: bold;
+cursor: pointer;
+}
+
+.doc-modal-close:hover {
+color: #000;
+}
+
+.doc-modal-title {
+color: #2c3e50;
+margin-bottom: 20px;
+padding-bottom: 10px;
+border-bottom: 2px solid #3498db;
+}
+
+.doc-modal-text {
+font-size: 16px;
+line-height: 1.6;
+color: #333;
+white-space: pre-line;
+}
+
+.doc-modal-loading {
+text-align: center;
+padding: 40px;
+color: #666;
+}
+
+.doc-modal-error {
+text-align: center;
+padding: 40px;
+color: #e74c3c;
+}
+
 /* Медиазапросы для мобильных устройств */
 @media (max-width: 1200px) {
 .products {
@@ -862,7 +927,7 @@ max-width: 300px;
 font-size: 18px;
 }
 
-/* Убираем белую полосу между шапкой и баннером */
+/* Убираем белую полосу между шапки и баннера */
 body {
 background-color: #fff; /* Белый фон для body */
 }
@@ -1035,24 +1100,19 @@ width: 100%;
 <div class="footer-section">
 <h3>Помощь</h3>
 <ul class="footer-links">
-        <li><a href="#">Уход</a></li>
-        <li><a href="#">Доставка и оплата</a></li>
-        <li><a href="#" class="doc-btn" data-doc="care.txt" data-title="Уход за одеждой">Уход</a></li>
-        <li><a href="#" class="doc-btn" data-doc="delivery.txt" data-title="Доставка и оплата">Доставка и оплата</a></li>
-<li><a href="#">Возврат и обмен</a></li>
-<li><a href="#">Поддержка</a></li>
+<li><a href="#" class="doc-btn" data-doc="care.txt">Уход</a></li>
+<li><a href="#" class="doc-btn" data-doc="delivery.txt">Доставка и оплата</a></li>
+<li><a href="#" class="doc-btn" data-doc="return.txt">Возврат и обмен</a></li>
+<li><a href="#" class="doc-btn" data-doc="support.txt">Поддержка</a></li>
 </ul>
 </div>
 
 <div class="footer-section">
 <h3>Документация</h3>
 <ul class="footer-links">
-        <li><a href="#">Политика конфиденциальности</a></li>
-      <li><a href="#" class="doc-btn" data-doc="privacy.txt" data-title="Политика конфиденциальности">Политика конфиденциальности</a></li>
-<li><a href="#">Условия использования</a></li>
-        <li><a href="#">Публичная оферта</a></li>
-           <li><a href="#" class="doc-btn" data-doc="offer.txt" data-title="Публичная оферта">Публичная оферта</a></li>
-
+<li><a href="#" class="doc-btn" data-doc="privacy.txt">Политика конфиденциальности</a></li>
+<li><a href="#" class="doc-btn" data-doc="terms.txt">Условия использования</a></li>
+<li><a href="#" class="doc-btn" data-doc="offer.txt">Публичная оферта</a></li>
 </ul>
 </div>
 
@@ -1077,6 +1137,17 @@ width: 100%;
 <div class="copyright">
 <p>&copy; 2024. Aura Flow Collection. Все права защищены</p>
 </div>
+</div>
+</div>
+
+<!-- Модальное окно для документов - ИСПРАВЛЕНО -->
+<div id="docModal" style="display: none;">
+<div class="doc-modal-content">
+<span class="doc-modal-close">&times;</span>
+<h2 class="doc-modal-title" id="docTitle">Документ</h2>
+<div class="doc-modal-loading" id="docLoading">Загрузка документа...</div>
+<div class="doc-modal-error" id="docError" style="display: none;">Не удалось загрузить документ</div>
+<div class="doc-modal-text" id="docText" style="display: none;"></div>
 </div>
 </div>
 
@@ -1494,6 +1565,79 @@ behavior: 'smooth'
 });
 }
 
+// ЛОГИКА ДЛЯ ДОКУМЕНТОВ - ДОБАВЛЕНО
+function setupDocuments() {
+const docModal = document.getElementById('docModal');
+const docClose = document.querySelector('.doc-modal-close');
+const docTitle = document.getElementById('docTitle');
+const docText = document.getElementById('docText');
+const docLoading = document.getElementById('docLoading');
+const docError = document.getElementById('docError');
+  
+// Заголовки для документов
+const docTitles = {
+'care.txt': 'Уход за одеждой',
+'delivery.txt': 'Доставка и оплата',
+'return.txt': 'Возврат и обмен товара',
+'support.txt': 'Поддержка клиентов',
+'privacy.txt': 'Политика конфиденциальности',
+'terms.txt': 'Условия использования',
+'offer.txt': 'Договор публичной оферты'
+};
+  
+// Обработчики для кнопок документов
+document.querySelectorAll('.doc-btn').forEach(btn => {
+btn.addEventListener('click', async function(e) {
+e.preventDefault();
+      
+const filename = this.getAttribute('data-doc');
+const title = docTitles[filename] || this.textContent;
+      
+// Показываем модальное окно
+docModal.style.display = 'block';
+docTitle.textContent = title;
+      
+// Сбрасываем состояние
+docLoading.style.display = 'block';
+docText.style.display = 'none';
+docError.style.display = 'none';
+      
+try {
+// Загружаем документ
+const response = await fetch(`documents/${filename}`);
+        
+if (!response.ok) {
+throw new Error(`Ошибка загрузки: ${response.status}`);
+}
+        
+const text = await response.text();
+        
+// Вставляем текст
+docText.textContent = text;
+docLoading.style.display = 'none';
+docText.style.display = 'block';
+        
+} catch (error) {
+console.error('Ошибка загрузки документа:', error);
+docLoading.style.display = 'none';
+docError.style.display = 'block';
+}
+});
+});
+  
+// Закрытие модального окна
+docClose.addEventListener('click', function() {
+docModal.style.display = 'none';
+});
+  
+// Закрытие при клике вне окна
+window.addEventListener('click', function(e) {
+if (e.target === docModal) {
+docModal.style.display = 'none';
+}
+});
+}
+
 // Добавляем CSS анимации для уведомлений
 const style = document.createElement('style');
 style.textContent = `
@@ -1516,27 +1660,9 @@ setupCartControls();
 setupMenu();
 setupCartModal();
 setupBackToTop();
+setupDocuments(); // ДОБАВЛЕНО
 updateCartCount();
 });
 </script>
-
-<div id="documentModal" class="modal">
-<div class="modal-content">
-<span class="modal-close">&times;</span>
-<h2 class="modal-title" id="modalDocTitle">Документ</h2>
-<div class="modal-body">
-<div class="document-text" id="modalDocText">
-<p>Загрузка документа...</p>
-</div>
-<div class="document-loading" id="modalLoading">
-<p>Идёт загрузка документа...</p>
-</div>
-<div class="document-error" id="modalError" style="display: none;">
-<p>Не удалось загрузить документ. Пожалуйста, попробуйте позже.</p>
-</div>
-</div>
-</div>
-</div>
 </body>
 </html>
-
