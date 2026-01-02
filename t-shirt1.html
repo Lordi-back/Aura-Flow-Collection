@@ -825,6 +825,74 @@
                 height: 28px;
             }
         }
+
+        /* Стрелочки для пролистывания картинок */
+.image-slider {
+  position: relative;
+  width: 100%;
+}
+
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.slider-arrow:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.prev-arrow {
+  left: 15px;
+}
+
+.next-arrow {
+  right: 15px;
+}
+
+.slider-image {
+  display: none;
+  width: 100%;
+  height: auto;
+}
+
+.slider-image.active {
+  display: block;
+}
+
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ccc;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.dot.active {
+  background: #000;
+}
     </style>
 </head>
 <body>
@@ -876,7 +944,37 @@
                 </button>
             </div>
 
-            <!-- Выбор цвета - ИЗМЕНЕННЫЙ -->
+
+            <div class="color-selection">
+  <p><strong>Цвет:</strong></p>
+  <div class="color-options">
+    <div class="color-btn color-black selected" 
+         data-color="black" 
+         data-main-image="images/product1.jpg"
+         data-hover-image="images/product1-hover.jpg"
+         data-slides='["images/product1.jpg", "images/product1-hover.jpg"]'
+         title="Черно-красный">
+      <div class="color-btn-inner"></div>
+    </div>
+    <div class="color-btn color-white" 
+         data-color="white" 
+         data-main-image="images/product2.jpg"
+         data-hover-image="images/product2-hover.jpg"
+         data-slides='["images/product2.jpg", "images/product2-hover.jpg"]'
+         title="Бело-черный">
+      <div class="color-btn-inner"></div>
+    </div>
+    <div class="color-btn color-gray" 
+         data-color="gray" 
+         data-main-image="images/product3.jpg"
+         data-hover-image="images/product3-hover.jpg"
+         data-slides='["images/product3.jpg", "images/product3-hover.jpg"]'
+         title="Черно-серый">
+      <div class="color-btn-inner"></div>
+    </div>
+  </div>
+</div>
+            <!-- Выбор цвета - ИЗМЕНЕННЫЙ 
             <div class="color-selector">
                 <div class="color-title">Выберите цвет:</div>
                 <div class="color-options">
@@ -890,7 +988,7 @@
                         <div class="color-circle" style="background: linear-gradient(135deg, #808080 50%, #000 50%);"></div>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
             <!-- Выбор размера -->
             <div class="size-selector">
@@ -1438,6 +1536,105 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMenu();
     setupCartModal();
     updateCartCount();
+});
+</script>
+
+    <script>
+// Слайдер картинок и выбор цвета
+document.addEventListener('DOMContentLoaded', function() {
+  const colorButtons = document.querySelectorAll('.color-btn');
+  const sliderContainer = document.getElementById('productImageSlider');
+  const dotsContainer = document.getElementById('sliderDots');
+  const prevArrow = document.querySelector('.prev-arrow');
+  const nextArrow = document.querySelector('.next-arrow');
+  
+  let currentSlide = 0;
+  let currentSlides = [];
+  
+  // Инициализация слайдера для первого цвета
+  initSliderForColor('black');
+  
+  // Обработчики выбора цвета
+  colorButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      // Снимаем выделение со всех кнопок
+      colorButtons.forEach(b => b.classList.remove('selected'));
+      // Выделяем текущую кнопку
+      this.classList.add('selected');
+      
+      const color = this.dataset.color;
+      initSliderForColor(color);
+    });
+  });
+  
+  // Функция инициализации слайдера для выбранного цвета
+  function initSliderForColor(color) {
+    const activeBtn = document.querySelector(`.color-btn[data-color="${color}"]`);
+    currentSlides = JSON.parse(activeBtn.dataset.slides);
+    currentSlide = 0;
+    
+    // Очищаем контейнеры
+    sliderContainer.innerHTML = '';
+    dotsContainer.innerHTML = '';
+    
+    // Создаем слайды
+    currentSlides.forEach((slideSrc, index) => {
+      const slide = document.createElement('div');
+      slide.className = `slider-image ${index === 0 ? 'active' : ''}`;
+      slide.innerHTML = `<img src="${slideSrc}" alt="Футболка ${color}" style="width:100%;height:auto;">`;
+      sliderContainer.appendChild(slide);
+      
+      // Создаем точки
+      const dot = document.createElement('div');
+      dot.className = `dot ${index === 0 ? 'active' : ''}`;
+      dot.dataset.index = index;
+      dot.addEventListener('click', () => goToSlide(index));
+      dotsContainer.appendChild(dot);
+    });
+  }
+  
+  // Функция перехода к слайду
+  function goToSlide(index) {
+    const slides = document.querySelectorAll('.slider-image');
+    const dots = document.querySelectorAll('.dot');
+    
+    // Скрываем все слайды
+    slides.forEach(slide => slide.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+    
+    // Показываем выбранный слайд
+    slides[index].classList.add('active');
+    dots[index].classList.add('active');
+    currentSlide = index;
+  }
+  
+  // Следующий слайд
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % currentSlides.length;
+    goToSlide(currentSlide);
+  }
+  
+  // Предыдущий слайд
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + currentSlides.length) % currentSlides.length;
+    goToSlide(currentSlide);
+  }
+  
+  // Обработчики стрелок
+  prevArrow.addEventListener('click', prevSlide);
+  nextArrow.addEventListener('click', nextSlide);
+  
+  // Автопрокрутка (опционально)
+  let autoSlideInterval = setInterval(nextSlide, 5000);
+  
+  // Останавливаем автопрокрутку при наведении
+  sliderContainer.addEventListener('mouseenter', () => {
+    clearInterval(autoSlideInterval);
+  });
+  
+  sliderContainer.addEventListener('mouseleave', () => {
+    autoSlideInterval = setInterval(nextSlide, 5000);
+  });
 });
 </script>
 </body>
