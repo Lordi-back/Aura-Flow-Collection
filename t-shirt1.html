@@ -418,10 +418,16 @@
             align-items: start;
         }
 
-        /* Галерея изображений */
+        /* Галерея изображений - ОБНОВЛЕННАЯ для слайдера */
         .product-gallery {
             position: sticky;
             top: 100px;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
         }
 
         .main-image-container {
@@ -429,18 +435,72 @@
             height: 500px;
             overflow: hidden;
             border-radius: 15px;
-            margin-bottom: 20px;
             background: #f5f5f5;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
 
-        #main-product-image {
+        /* Стрелочки слайдера */
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .slider-arrow:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .prev-arrow {
+            left: 15px;
+        }
+
+        .next-arrow {
+            right: 15px;
+        }
+
+        .slider-img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            transition: transform 0.3s ease;
+            display: none;
+        }
+
+        .slider-img.active {
+            display: block;
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .dot.active {
+            background: #333;
         }
 
         .thumbnail-container {
@@ -542,12 +602,12 @@
             font-size: 16px;
         }
 
-        /* Выбор цвета - ИЗМЕНЕННЫЙ */
-        .color-selector {
+        /* Выбор цвета - ОБНОВЛЕННЫЙ */
+        .color-selection {
             margin-bottom: 30px;
         }
 
-        .color-title {
+        .color-selection p {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 12px;
@@ -559,37 +619,46 @@
             gap: 12px;
         }
 
-        .color-option {
-            width: 40px; /* Уменьшен размер */
-            height: 40px; /* Уменьшен размер */
+        .color-btn {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             cursor: pointer;
-            border: 2px solid transparent; /* Тонкая черная рамка */
+            border: 2px solid transparent;
             transition: all 0.3s ease;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #fff; /* Белый фон вместо черного */
+            background: #fff;
         }
 
-        .color-option:hover {
+        .color-btn:hover {
             border-color: #999;
         }
 
-        .color-option.selected {
-            border-color: #000; /* Черная рамка для выбранного цвета */
-        }
-
-        .color-circle {
-            width: 32px; /* Уменьшен размер круга */
-            height: 32px; /* Уменьшен размер круга */
-            border-radius: 50%;
-            border: 1px solid #eee; /* Тонкая рамка вокруг самого круга */
-        }
-
-        .color-option.selected .color-circle {
+        .color-btn.selected {
             border-color: #000;
+        }
+
+        .color-btn-inner {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #eee;
+        }
+
+        .color-black .color-btn-inner {
+            background: linear-gradient(135deg, #000 50%, #ff0000 50%);
+        }
+
+        .color-white .color-btn-inner {
+            background: linear-gradient(135deg, #fff 50%, #000 50%);
+            border-color: #ccc;
+        }
+
+        .color-gray .color-btn-inner {
+            background: linear-gradient(135deg, #808080 50%, #000 50%);
         }
 
         /* Выбор размера */
@@ -815,84 +884,16 @@
                 width: 100%;
             }
 
-            .color-option {
+            .color-btn {
                 width: 36px;
                 height: 36px;
             }
 
-            .color-circle {
+            .color-btn-inner {
                 width: 28px;
                 height: 28px;
             }
         }
-
-        /* Стрелочки для пролистывания картинок */
-.image-slider {
-  position: relative;
-  width: 100%;
-}
-
-.slider-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  transition: all 0.3s ease;
-}
-
-.slider-arrow:hover {
-  background: rgba(0, 0, 0, 0.9);
-  transform: translateY(-50%) scale(1.1);
-}
-
-.prev-arrow {
-  left: 15px;
-}
-
-.next-arrow {
-  right: 15px;
-}
-
-.slider-image {
-  display: none;
-  width: 100%;
-  height: auto;
-}
-
-.slider-image.active {
-  display: block;
-}
-
-.slider-dots {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #ccc;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.dot.active {
-  background: #000;
-}
     </style>
 </head>
 <body>
@@ -911,23 +912,30 @@
 <!-- Основной контент -->
 <div class="product-page">
     <div class="product-container">
-        <!-- Галерея изображений -->
+        <!-- Галерея изображений - ОБНОВЛЕННАЯ -->
         <div class="product-gallery">
-            <div class="main-image-container">
-                <img id="main-product-image" src="product1.jpg" alt="Футболка Luxury That Breathes Black">
+            <div class="slider-container">
+                <div class="main-image-container" id="productImageSlider">
+                    <!-- Изображения будут добавляться динамически -->
+                    <img src="product1.jpg" alt="Футболка Luxury That Breathes Black" class="slider-img active">
+                    <img src="product1-hover.jpg" alt="Футболка Luxury That Breathes Black" class="slider-img">
+                </div>
+                <button class="slider-arrow prev-arrow">‹</button>
+                <button class="slider-arrow next-arrow">›</button>
+                
+                <div class="slider-dots" id="sliderDots">
+                    <div class="dot active" data-index="0"></div>
+                    <div class="dot" data-index="1"></div>
+                </div>
             </div>
+            
+            <!-- Миниатюры (оставлены для обратной совместимости) -->
             <div class="thumbnail-container">
                 <div class="thumbnail active" data-image="product1.jpg">
                     <img src="product1.jpg" alt="Вид 1">
                 </div>
                 <div class="thumbnail" data-image="product1-hover.jpg">
                     <img src="product1-hover.jpg" alt="Вид 2">
-                </div>
-                <div class="thumbnail" data-image="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80">
-                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Вид 3">
-                </div>
-                <div class="thumbnail" data-image="https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80">
-                    <img src="https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Вид 4">
                 </div>
             </div>
         </div>
@@ -936,7 +944,7 @@
         <div class="product-info">
             <h1 class="product-title">Футболка "Luxury That Breathes" Black</h1>
             
-            <!-- Цена и кнопка добавления в корзину - ПЕРЕМЕЩЕНЫ ПОД НАЗВАНИЕ -->
+            <!-- Цена и кнопка добавления в корзину -->
             <div class="product-price-section">
                 <div class="product-price">2 990 ₽</div>
                 <button class="add-to-cart-btn" id="add-to-cart">
@@ -944,51 +952,30 @@
                 </button>
             </div>
 
-
+            <!-- Выбор цвета - ОБНОВЛЕННЫЙ -->
             <div class="color-selection">
-  <p><strong>Цвет:</strong></p>
-  <div class="color-options">
-    <div class="color-btn color-black selected" 
-         data-color="black" 
-         data-main-image="images/product1.jpg"
-         data-hover-image="images/product1-hover.jpg"
-         data-slides='["images/product1.jpg", "images/product1-hover.jpg"]'
-         title="Черно-красный">
-      <div class="color-btn-inner"></div>
-    </div>
-    <div class="color-btn color-white" 
-         data-color="white" 
-         data-main-image="images/product2.jpg"
-         data-hover-image="images/product2-hover.jpg"
-         data-slides='["images/product2.jpg", "images/product2-hover.jpg"]'
-         title="Бело-черный">
-      <div class="color-btn-inner"></div>
-    </div>
-    <div class="color-btn color-gray" 
-         data-color="gray" 
-         data-main-image="images/product3.jpg"
-         data-hover-image="images/product3-hover.jpg"
-         data-slides='["images/product3.jpg", "images/product3-hover.jpg"]'
-         title="Черно-серый">
-      <div class="color-btn-inner"></div>
-    </div>
-  </div>
-</div>
-            <!-- Выбор цвета - ИЗМЕНЕННЫЙ 
-            <div class="color-selector">
-                <div class="color-title">Выберите цвет:</div>
+                <p><strong>Цвет:</strong></p>
                 <div class="color-options">
-                    <div class="color-option selected" data-color="black-red" data-color-name="Черно-красный">
-                        <div class="color-circle" style="background: linear-gradient(135deg, #000 50%, #ff0000 50%);"></div>
+                    <div class="color-btn color-black selected" 
+                         data-color="black" 
+                         data-slides='["product1.jpg", "product1-hover.jpg"]'
+                         title="Черно-красный">
+                        <div class="color-btn-inner"></div>
                     </div>
-                    <div class="color-option" data-color="white-black" data-color-name="Бело-черный">
-                        <div class="color-circle" style="background: linear-gradient(135deg, #fff 50%, #000 50%);"></div>
+                    <div class="color-btn color-white" 
+                         data-color="white" 
+                         data-slides='["product2.jpg", "product2-hover.jpg"]'
+                         title="Бело-черный">
+                        <div class="color-btn-inner"></div>
                     </div>
-                    <div class="color-option" data-color="grey-black" data-color-name="Серо-черный">
-                        <div class="color-circle" style="background: linear-gradient(135deg, #808080 50%, #000 50%);"></div>
+                    <div class="color-btn color-gray" 
+                         data-color="gray" 
+                         data-slides='["product3.jpg", "product3-hover.jpg"]'
+                         title="Черно-серый">
+                        <div class="color-btn-inner"></div>
                     </div>
                 </div>
-            </div>-->
+            </div>
 
             <!-- Выбор размера -->
             <div class="size-selector">
@@ -1014,7 +1001,7 @@
                 </div>
             </div>
 
-            <!-- Характеристики -->
+            <!-- Характеристики - ВОТ ЭТОТ БЛОК МОЖЕТЕ ПЕРЕПИСАТЬ -->
             <div class="product-specs">
                 <div class="specs-title">Характеристики</div>
                 <ul class="specs-list">
@@ -1129,16 +1116,177 @@
 <script>
 // Данные товара
 const productData = {
-    name: 'Футболка "Luxury That Breathes" Black',
+    name: 'Футболка "Luxury That Breathes"',
     price: 2990,
-    image: 'product1.jpg',
     sizes: ['S', 'M', 'L', 'XL'],
     colors: [
-        { id: 'black-red', name: 'Черно-красный', image: 'product1.jpg' },
-        { id: 'white-black', name: 'Бело-черный', image: 'product2.jpg' },
-        { id: 'grey-black', name: 'Серо-черный', image: 'product3.jpg' }
+        { 
+            id: 'black', 
+            name: 'Черно-красный', 
+            price: 2990,
+            slides: ['product1.jpg', 'product1-hover.jpg']
+        },
+        { 
+            id: 'white', 
+            name: 'Бело-черный', 
+            price: 2990,
+            slides: ['product2.jpg', 'product2-hover.jpg']
+        },
+        { 
+            id: 'gray', 
+            name: 'Черно-серый', 
+            price: 2990,
+            slides: ['product3.jpg', 'product3-hover.jpg']
+        }
     ]
 };
+
+// Слайдер и выбор цвета
+document.addEventListener('DOMContentLoaded', function() {
+    const colorButtons = document.querySelectorAll('.color-btn');
+    const productImageSlider = document.getElementById('productImageSlider');
+    const sliderDots = document.getElementById('sliderDots');
+    const prevArrow = document.querySelector('.prev-arrow');
+    const nextArrow = document.querySelector('.next-arrow');
+    
+    let currentSlideIndex = 0;
+    let currentColor = 'black';
+    let currentSlides = ['product1.jpg', 'product1-hover.jpg'];
+    
+    // Инициализация слайдера
+    function initSlider() {
+        const slides = currentSlides.map((slide, index) => ({
+            src: slide,
+            active: index === 0
+        }));
+        
+        // Очищаем слайдер
+        productImageSlider.innerHTML = '';
+        sliderDots.innerHTML = '';
+        
+        // Создаем слайды
+        slides.forEach((slide, index) => {
+            const img = document.createElement('img');
+            img.src = slide.src;
+            img.alt = `Футболка ${currentColor}`;
+            img.className = `slider-img ${slide.active ? 'active' : ''}`;
+            productImageSlider.appendChild(img);
+            
+            // Создаем точки
+            const dot = document.createElement('div');
+            dot.className = `dot ${slide.active ? 'active' : ''}`;
+            dot.dataset.index = index;
+            dot.addEventListener('click', () => goToSlide(index));
+            sliderDots.appendChild(dot);
+        });
+        
+        currentSlideIndex = 0;
+    }
+    
+    // Функция перехода к слайду
+    function goToSlide(index) {
+        const slides = productImageSlider.querySelectorAll('.slider-img');
+        const dots = sliderDots.querySelectorAll('.dot');
+        
+        if (slides.length === 0) return;
+        
+        // Скрываем все слайды
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        // Показываем выбранный слайд
+        if (slides[index]) {
+            slides[index].classList.add('active');
+        }
+        if (dots[index]) {
+            dots[index].classList.add('active');
+        }
+        
+        currentSlideIndex = index;
+        
+        // Обновляем миниатюры
+        updateThumbnails();
+    }
+    
+    // Обновление миниатюр
+    function updateThumbnails() {
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const slides = productImageSlider.querySelectorAll('.slider-img');
+        
+        if (thumbnails.length > 0 && slides[currentSlideIndex]) {
+            const currentImage = slides[currentSlideIndex].src.split('/').pop();
+            
+            thumbnails.forEach((thumb, index) => {
+                thumb.classList.remove('active');
+                if (thumb.getAttribute('data-image') === currentImage) {
+                    thumb.classList.add('active');
+                }
+            });
+        }
+    }
+    
+    // Обработчики для кнопок выбора цвета
+    colorButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Убираем выделение со всех кнопок
+            colorButtons.forEach(b => b.classList.remove('selected'));
+            // Выделяем текущую кнопку
+            this.classList.add('selected');
+            
+            currentColor = this.dataset.color;
+            currentSlides = JSON.parse(this.dataset.slides);
+            
+            // Обновляем слайдер
+            initSlider();
+            
+            // Обновляем миниатюры
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach((thumb, index) => {
+                if (index < currentSlides.length) {
+                    thumb.setAttribute('data-image', currentSlides[index]);
+                    thumb.querySelector('img').src = currentSlides[index];
+                }
+            });
+        });
+    });
+    
+    // Обработчики для стрелок
+    prevArrow.addEventListener('click', function() {
+        const slides = productImageSlider.querySelectorAll('.slider-img');
+        if (slides.length === 0) return;
+        
+        const newIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+        goToSlide(newIndex);
+    });
+    
+    nextArrow.addEventListener('click', function() {
+        const slides = productImageSlider.querySelectorAll('.slider-img');
+        if (slides.length === 0) return;
+        
+        const newIndex = (currentSlideIndex + 1) % slides.length;
+        goToSlide(newIndex);
+    });
+    
+    // Обработчики для точек
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('dot')) {
+            const index = parseInt(e.target.getAttribute('data-index'));
+            goToSlide(index);
+        }
+    });
+    
+    // Инициализация слайдера при загрузке
+    initSlider();
+    
+    // Инициализация миниатюр
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    thumbnails.forEach((thumb, index) => {
+        thumb.addEventListener('click', function() {
+            const imageIndex = parseInt(this.getAttribute('data-image') === currentSlides[0] ? 0 : 1);
+            goToSlide(imageIndex);
+        });
+    });
+});
 
 // Обновление счетчика корзины
 function updateCartCount() {
@@ -1260,50 +1408,6 @@ function setupCartControls() {
     });
 }
 
-// Галерея изображений
-function setupGallery() {
-    const mainImage = document.getElementById('main-product-image');
-    const thumbnails = document.querySelectorAll('.thumbnail');
-    
-    thumbnails.forEach(thumb => {
-        thumb.addEventListener('click', function() {
-            const imageUrl = this.getAttribute('data-image');
-            mainImage.src = imageUrl;
-            
-            thumbnails.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
-}
-
-// Выбор цвета
-function setupColorSelector() {
-    const colorOptions = document.querySelectorAll('.color-option');
-    
-    colorOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            const colorName = this.getAttribute('data-color-name');
-            const colorId = this.getAttribute('data-color');
-            
-            colorOptions.forEach(opt => opt.classList.remove('selected'));
-            this.classList.add('selected');
-            
-            // Можно обновить изображение товара в зависимости от цвета
-            const colorData = productData.colors.find(c => c.id === colorId);
-            if (colorData) {
-                const mainImage = document.getElementById('main-product-image');
-                mainImage.src = colorData.image;
-                
-                // Обновить миниатюры
-                const thumbnails = document.querySelectorAll('.thumbnail');
-                if (thumbnails[0]) {
-                    thumbnails[0].querySelector('img').src = colorData.image;
-                }
-            }
-        });
-    });
-}
-
 // Выбор размера
 function setupSizeSelector() {
     const sizeOptions = document.querySelectorAll('.size-option');
@@ -1321,10 +1425,12 @@ function setupAddToCart() {
     const addToCartBtn = document.getElementById('add-to-cart');
     
     addToCartBtn.addEventListener('click', function() {
-        const selectedColor = document.querySelector('.color-option.selected');
+        const selectedColorBtn = document.querySelector('.color-btn.selected');
         const selectedSize = document.querySelector('.size-option.selected');
         
-        const colorName = selectedColor ? selectedColor.getAttribute('data-color-name') : 'Черно-красный';
+        const colorId = selectedColorBtn ? selectedColorBtn.dataset.color : 'black';
+        const colorData = productData.colors.find(c => c.id === colorId);
+        const colorName = colorData ? colorData.name : 'Черно-красный';
         const size = selectedSize ? selectedSize.getAttribute('data-size') : 'S';
         
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -1340,10 +1446,10 @@ function setupAddToCart() {
             cart[existingIndex].count++;
         } else {
             cart.push({ 
-                name: productData.name,
+                name: `${productData.name} ${colorName}`,
                 price: productData.price,
                 count: 1,
-                image: productData.image,
+                image: colorData.slides[0],
                 size: size,
                 color: colorName
             });
@@ -1528,113 +1634,12 @@ document.head.appendChild(style);
 
 // Инициализация страницы
 document.addEventListener('DOMContentLoaded', () => {
-    setupGallery();
-    setupColorSelector();
     setupSizeSelector();
     setupAddToCart();
     setupCartControls();
     setupMenu();
     setupCartModal();
     updateCartCount();
-});
-</script>
-
-    <script>
-// Слайдер картинок и выбор цвета
-document.addEventListener('DOMContentLoaded', function() {
-  const colorButtons = document.querySelectorAll('.color-btn');
-  const sliderContainer = document.getElementById('productImageSlider');
-  const dotsContainer = document.getElementById('sliderDots');
-  const prevArrow = document.querySelector('.prev-arrow');
-  const nextArrow = document.querySelector('.next-arrow');
-  
-  let currentSlide = 0;
-  let currentSlides = [];
-  
-  // Инициализация слайдера для первого цвета
-  initSliderForColor('black');
-  
-  // Обработчики выбора цвета
-  colorButtons.forEach(btn => {
-    btn.addEventListener('click', function() {
-      // Снимаем выделение со всех кнопок
-      colorButtons.forEach(b => b.classList.remove('selected'));
-      // Выделяем текущую кнопку
-      this.classList.add('selected');
-      
-      const color = this.dataset.color;
-      initSliderForColor(color);
-    });
-  });
-  
-  // Функция инициализации слайдера для выбранного цвета
-  function initSliderForColor(color) {
-    const activeBtn = document.querySelector(`.color-btn[data-color="${color}"]`);
-    currentSlides = JSON.parse(activeBtn.dataset.slides);
-    currentSlide = 0;
-    
-    // Очищаем контейнеры
-    sliderContainer.innerHTML = '';
-    dotsContainer.innerHTML = '';
-    
-    // Создаем слайды
-    currentSlides.forEach((slideSrc, index) => {
-      const slide = document.createElement('div');
-      slide.className = `slider-image ${index === 0 ? 'active' : ''}`;
-      slide.innerHTML = `<img src="${slideSrc}" alt="Футболка ${color}" style="width:100%;height:auto;">`;
-      sliderContainer.appendChild(slide);
-      
-      // Создаем точки
-      const dot = document.createElement('div');
-      dot.className = `dot ${index === 0 ? 'active' : ''}`;
-      dot.dataset.index = index;
-      dot.addEventListener('click', () => goToSlide(index));
-      dotsContainer.appendChild(dot);
-    });
-  }
-  
-  // Функция перехода к слайду
-  function goToSlide(index) {
-    const slides = document.querySelectorAll('.slider-image');
-    const dots = document.querySelectorAll('.dot');
-    
-    // Скрываем все слайды
-    slides.forEach(slide => slide.classList.remove('active'));
-    dots.forEach(dot => dot.classList.remove('active'));
-    
-    // Показываем выбранный слайд
-    slides[index].classList.add('active');
-    dots[index].classList.add('active');
-    currentSlide = index;
-  }
-  
-  // Следующий слайд
-  function nextSlide() {
-    currentSlide = (currentSlide + 1) % currentSlides.length;
-    goToSlide(currentSlide);
-  }
-  
-  // Предыдущий слайд
-  function prevSlide() {
-    currentSlide = (currentSlide - 1 + currentSlides.length) % currentSlides.length;
-    goToSlide(currentSlide);
-  }
-  
-  // Обработчики стрелок
-  prevArrow.addEventListener('click', prevSlide);
-  nextArrow.addEventListener('click', nextSlide);
-  
-  // Автопрокрутка (опционально)
-  let autoSlideInterval = setInterval(nextSlide, 5000);
-  
-  // Останавливаем автопрокрутку при наведении
-  sliderContainer.addEventListener('mouseenter', () => {
-    clearInterval(autoSlideInterval);
-  });
-  
-  sliderContainer.addEventListener('mouseleave', () => {
-    autoSlideInterval = setInterval(nextSlide, 5000);
-  });
 });
 </script>
 </body>
