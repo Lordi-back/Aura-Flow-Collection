@@ -3,19 +3,24 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Aura Flow Collection</title>
+
 <!-- Подключение шрифта Pacifico -->
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" />
+
 <!-- Иконки FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+<!-- EmailJS SDK -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script type="text/javascript">
-    // Инициализация EmailJS - ВСТАВЬТЕ ВАШ PUBLIC KEY
+    // Инициализация EmailJS - ВСТАВЬТЕ ВАШ PUBLIC KEY!
     (function() {
-        emailjs.init("service_i9wtu0d");
+        emailjs.init("abqATidxOlLropW-X");
     })();
 </script>
+
 <style>
 body {
 margin: 0;
@@ -478,7 +483,6 @@ justify-content: flex-start;
 flex: 1;
 }
 
-     
 /* Карточка товара - 4 в ряд */
 .product {
 background-color: #fff;
@@ -649,9 +653,6 @@ font-size: 24px;
 color: white;
 }
 
-
-
-     
 /* Официальные иконки платежных систем - ИСПРАВЛЕННЫЕ */
 .payment-icon {
 width: 40px;
@@ -1063,8 +1064,6 @@ height: 140px;
 width: 100%;
 }
 }
-
-   
 </style>
 <link rel="icon" href="ДОРАБОТКА.png" sizes="512x512" type="image/png">
 </head>
@@ -1124,19 +1123,18 @@ width: 100%;
 <!-- Товары в корзине -->
 </div>
 <form id="cart-form">
-    <input type="text" placeholder="ФИО*" required>
-    <input type="tel" placeholder="Телефон*" required pattern="[0-9]{10,15}">
-    <input type="email" placeholder="Email*" required>
-    <input type="text" placeholder="Город" required>
-    <input type="text" placeholder="Адрес" required>
-    <select id="delivery-method" required>
-        <option value="">Выберите способ доставки</option>
-        <option value="sdek">СДЭК - 700 ₽</option>
-        <option value="post">Почта России - 500 ₽</option>
-    </select>
-    <textarea placeholder="Комментарий к заказу (необязательно)" id="order-comment"></textarea>
-    <div id="cart-total">Итого: 0 ₽</div>
-    <button type="button" id="checkout-btn">Отправить заявку</button>
+<input type="text" name="fio" placeholder="ФИО*" required>
+<input type="tel" name="phone" placeholder="Телефон*" required>
+<input type="email" name="email" placeholder="Email*" required>
+<input type="text" name="city" placeholder="Город*" required>
+<input type="text" name="address" placeholder="Адрес*" required>
+<select id="delivery-method" name="delivery" required>
+<option value="">Выберите способ доставки</option>
+<option value="sdek">СДЭК - 700 ₽</option>
+<option value="post">Почта России - 500 ₽</option>
+</select>
+<div id="cart-total">Итого: 0 ₽</div>
+<button type="button" id="checkout-btn">Отправить заявку</button>
 </form>
 </div>
 </div>
@@ -1181,7 +1179,7 @@ width: 100%;
 <a href="https://wa.me/79379546766" target="_blank"><i class="fab fa-whatsapp"></i></a>
 </div>
 
-<h3 style="margin-top: 20px;">Способы оплаты</h3>
+<h3 style="margin-top: 20px;">Способы оплата</h3>
 <div class="payment-icons">
 <i class="fab fa-cc-visa"></i>
 <i class="fab fa-cc-mastercard"></i>
@@ -1297,10 +1295,15 @@ inDev: true
 }
 ];
 
-
 // функция отображения товаров - ОБНОВЛЕННАЯ
 function renderProducts() {
 const container = document.getElementById('products-container');
+if (!container) {
+console.error('Контейнер товаров не найден!');
+return;
+}
+
+console.log('Рендерим', products.length, 'товаров');
 container.innerHTML = '';
 products.forEach((prod, index) => {
 const div = document.createElement('div');
@@ -1537,136 +1540,52 @@ menu.classList.remove('active');
 });
 }
 
-// Обработчики корзины
-function setupCartModal() {
-const cartButton = document.getElementById('cart-button');
-const closeCartButton = document.getElementById('close-cart');
-const cartModal = document.getElementById('cart-modal');
-const deliveryMethod = document.getElementById('delivery-method');
-const checkoutButton = document.getElementById('checkout-btn');
-
-cartButton.addEventListener('click', () => {
-updateCartModal();
-cartModal.style.display = 'flex';
-document.body.style.overflow = 'hidden'; // Блокируем прокрутку страницы
-});
-
-closeCartButton.addEventListener('click', () => {
-cartModal.style.display = 'none';
-document.body.style.overflow = ''; // Восстанавливаем прокрутку
-});
-
-// Закрытие корзины при клике вне окна
-cartModal.addEventListener('click', (e) => {
-if (e.target === cartModal) {
-cartModal.style.display = 'none';
-document.body.style.overflow = ''; // Восстанавливаем прокрутку
-}
-});
-
-deliveryMethod.addEventListener('change', () => {
-updateCartModal();
-});
-
-checkoutButton.addEventListener('click', () => {
-    const form = document.getElementById('cart-form');
-    const formData = new FormData(form);
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-    // Получаем значения полей
-    const fio = form.querySelector('[name="fio"]').value;
-    const phone = form.querySelector('[name="phone"]').value;
-    const email = form.querySelector('[name="email"]').value;
-    const city = form.querySelector('[name="city"]').value;
-    const address = form.querySelector('[name="address"]').value;
-    const delivery = document.getElementById('delivery-method').value;
-    const comment = form.querySelector('[name="comment"]')?.value || '';
-    
-    // Проверка
-    if (!fio || !phone || !email || !city || !address || !delivery) {
-        alert('Пожалуйста, заполните все обязательные поля (отмечены *)');
-        return;
-    }
-    
-    if (cart.length === 0) {
-        alert('Корзина пуста');
-        return;
-    }
-    
-    // Формируем orderData
-    const orderData = {
-        fio: fio,
-        phone: phone,
-        email: email,
-        city: city,
-        address: address,
-        comment: comment,
-        delivery: delivery,
-        deliveryCost: delivery === 'sdek' ? 700 : 500,
-        items: cart,
-        total: document.getElementById('cart-total').textContent,
-        date: new Date().toLocaleString('ru-RU')
-    };
-    
-    // Отправляем на email
-    sendToEmail(orderData);
-    
-    // Очистка
-    localStorage.removeItem('cart');
-    updateCartCount();
-    cartModal.style.display = 'none';
-    document.body.style.overflow = '';
-    alert('Заказ оформлен! Мы свяжемся с вами в ближайшее время.');
-});
-
-
+// Функция отправки заказа на email через EmailJS
 function sendToEmail(orderData) {
-    // Формируем HTML письмо
-    let emailBody = `
-        <h2>Новый заказ с сайта Aura Flow Collection</h2>
-        <p><strong>Дата:</strong> ${orderData.date}</p>
-        <p><strong>ФИО:</strong> ${orderData.fio}</p>
-        <p><strong>Телефон:</strong> ${orderData.phone}</p>
-        <p><strong>Email:</strong> ${orderData.email}</p>
-        <p><strong>Адрес:</strong> ${orderData.city}, ${orderData.address}</p>
-        <p><strong>Доставка:</strong> ${orderData.delivery === 'sdek' ? 'СДЭК' : 'Почта России'} (${orderData.deliveryCost} ₽)</p>
-        ${orderData.comment ? `<p><strong>Комментарий:</strong> ${orderData.comment}</p>` : ''}
-        <h3>Товары:</h3>
-        <ul>
-    `;
+console.log('Отправка email с заказом:', orderData);
     
-    orderData.items.forEach(item => {
-        emailBody += `<li>${item.name} (Размер: ${item.size}, Цвет: ${item.color}): ${item.price} ₽ x ${item.count} = ${item.price * item.count} ₽</li>`;
-    });
-    
-    emailBody += `
-        </ul>
-        <h3>${orderData.total}</h3>
-        <p><em>Свяжитесь с клиентом для подтверждения заказа!</em></p>
-    `;
+// Формируем детали заказа
+let itemsText = '';
+orderData.items.forEach(item => {
+    itemsText += `${item.name} (Размер: ${item.size || 'не указан'}): ${item.count} × ${item.price} ₽ = ${item.price * item.count} ₽\n`;
+});
 
-    // Используем EmailJS API
-    emailjs.send('service_i9wtu0d', 'template_y37j0gf', {
-        to_email: '89617151191d@gmail.com', // Ваша почта
-        subject: `Новый заказ от ${orderData.fio}`,
-        message: emailBody,
-        order_details: JSON.stringify(orderData, null, 2)
-    })
-    .then(() => {
-        alert('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
-    })
-    .catch(error => {
-        console.error('Ошибка отправки:', error);
-        alert('Заявка отправлена, но возникла техническая ошибка. Мы свяжемся с вами.');
-    });
+// Параметры для EmailJS
+const templateParams = {
+    to_email: '89617151191d@gmail.com',
+    from_name: 'Aura Flow Collection',
+    subject: `Новый заказ от ${orderData.fio}`,
+    client_name: orderData.fio,
+    client_phone: orderData.phone,
+    client_email: orderData.email,
+    delivery_address: `${orderData.city}, ${orderData.address}`,
+    delivery_method: orderData.delivery === 'sdek' ? 'СДЭК' : 'Почта России',
+    order_items: itemsText,
+    order_total: orderData.total,
+    order_date: orderData.date,
+    order_comment: orderData.comment || 'Без комментария'
+};
+
+// Отправляем через EmailJS
+// ВАЖНО: замените SERVICE_ID и TEMPLATE_ID на ваши реальные
+emailjs.send('service_i9wtu0d', 'template_y37j0gf', templateParams)
+.then(function(response) {
+    console.log('Email отправлен!', response.status, response.text);
+})
+.catch(function(error) {
+    console.error('Ошибка EmailJS:', error);
+    // Резервно отправляем в Telegram
+    //sendToTelegram(orderData);
+});
 }
 
-     
 /* Функция отправки данных в Telegram
 function sendToTelegram(orderData) {
 // Формируем текст сообщения
 let message = `Новый заказ!\n\n`;
 message += `ФИО: ${orderData.fio}\n`;
+message += `Телефон: ${orderData.phone}\n`;
+message += `Email: ${orderData.email}\n`;
 message += `Город: ${orderData.city}\n`;
 message += `Адрес: ${orderData.address}\n`;
 message += `Способ доставки: ${orderData.delivery === 'sdek' ? 'СДЭК' : 'Почта России'}\n`;
@@ -1706,6 +1625,89 @@ console.error('Ошибка отправки в Telegram:', error);
 });
 }
 */
+// Обработчики корзины
+function setupCartModal() {
+const cartButton = document.getElementById('cart-button');
+const closeCartButton = document.getElementById('close-cart');
+const cartModal = document.getElementById('cart-modal');
+const deliveryMethod = document.getElementById('delivery-method');
+const checkoutButton = document.getElementById('checkout-btn');
+
+cartButton.addEventListener('click', () => {
+updateCartModal();
+cartModal.style.display = 'flex';
+document.body.style.overflow = 'hidden'; // Блокируем прокрутку страницы
+});
+
+closeCartButton.addEventListener('click', () => {
+cartModal.style.display = 'none';
+document.body.style.overflow = ''; // Восстанавливаем прокрутку
+});
+
+// Закрытие корзины при клике вне окна
+cartModal.addEventListener('click', (e) => {
+if (e.target === cartModal) {
+cartModal.style.display = 'none';
+document.body.style.overflow = ''; // Восстанавливаем прокрутку
+}
+});
+
+deliveryMethod.addEventListener('change', () => {
+updateCartModal();
+});
+
+checkoutButton.addEventListener('click', () => {
+const form = document.getElementById('cart-form');
+const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+// Получаем значения полей
+const fio = form.querySelector('[name="fio"]').value;
+const phone = form.querySelector('[name="phone"]').value;
+const email = form.querySelector('[name="email"]').value;
+const city = form.querySelector('[name="city"]').value;
+const address = form.querySelector('[name="address"]').value;
+const delivery = document.getElementById('delivery-method').value;
+    
+// Проверка заполнения
+if (!fio || !phone || !email || !city || !address || !delivery) {
+    alert('Пожалуйста, заполните все обязательные поля (отмечены *)');
+    return;
+}
+    
+if (cart.length === 0) {
+    alert('Корзина пуста');
+    return;
+}
+    
+// Формируем данные заказа
+const orderData = {
+    fio: fio,
+    phone: phone,
+    email: email,
+    city: city,
+    address: address,
+    delivery: delivery,
+    deliveryCost: delivery === 'sdek' ? 700 : 500,
+    items: cart,
+    total: document.getElementById('cart-total').textContent,
+    date: new Date().toLocaleString('ru-RU'),
+    comment: ''
+};
+    
+console.log('Данные заказа:', orderData);
+    
+// Отправляем на email
+sendToEmail(orderData);
+    
+// Очищаем корзину
+localStorage.removeItem('cart');
+updateCartCount();
+cartModal.style.display = 'none';
+document.body.style.overflow = '';
+alert('✅ Заказ оформлен! Мы свяжемся с вами в ближайшее время.');
+});
+}
+
 // Кнопка возвращения вверх
 function setupBackToTop() {
 const backToTopButton = document.getElementById('back-to-top');
@@ -1813,8 +1815,9 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Инициализация страницы
+// Инициализация страницы только после полной загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
+console.log('DOM загружен, рендерим товары...');
 renderProducts();
 setupAddButtons();
 setupCartControls();
@@ -1823,12 +1826,29 @@ setupCartModal();
 setupBackToTop();
 setupDocuments();
 updateCartCount();
+    
+// Дополнительная проверка через секунду
+setTimeout(() => {
+    const container = document.getElementById('products-container');
+    if (!container || container.children.length === 0) {
+        console.error('Товары не отрендерились!');
+        // Экстренное восстановление
+        renderProducts();
+    } else {
+        console.log('Товары успешно отрендерены:', container.children.length, 'шт.');
+    }
+}, 1000);
+});
+
+// Аварийное восстановление если DOMContentLoaded не сработал
+window.addEventListener('load', function() {
+console.log('Страница полностью загружена');
+const container = document.getElementById('products-container');
+if (container && container.children.length === 0) {
+    console.log('Восстанавливаем товары через window.onload...');
+    renderProducts();
+}
 });
 </script>
 </body>
 </html>
-
-
-
-
-
