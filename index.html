@@ -1052,6 +1052,30 @@ height: 140px;
 width: 100%;
 }
 }
+
+     #cart-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-family: inherit;
+    min-height: 80px;
+    resize: vertical;
+}
+
+#cart-form input[type="tel"],
+#cart-form input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
 </style>
 <link rel="icon" href="ДОРАБОТКА.png" sizes="512x512" type="image/png">
 </head>
@@ -1111,16 +1135,19 @@ width: 100%;
 <!-- Товары в корзине -->
 </div>
 <form id="cart-form">
-<input type="text" placeholder="ФИО" required>
-<input type="text" placeholder="Город" required>
-<input type="text" placeholder="Адрес" required>
-<select id="delivery-method" required>
-<option value="">Выберите способ доставки</option>
-<option value="sdek">СДЭК - 700 ₽</option>
-<option value="post">Почта России - 500 ₽</option>
-</select>
-<div id="cart-total">Итого: 0 ₽</div>
-<button type="button" id="checkout-btn">Оформить заказ</button>
+    <input type="text" placeholder="ФИО*" required>
+    <input type="tel" placeholder="Телефон*" required pattern="[0-9]{10,15}">
+    <input type="email" placeholder="Email*" required>
+    <input type="text" placeholder="Город" required>
+    <input type="text" placeholder="Адрес" required>
+    <select id="delivery-method" required>
+        <option value="">Выберите способ доставки</option>
+        <option value="sdek">СДЭК - 700 ₽</option>
+        <option value="post">Почта России - 500 ₽</option>
+    </select>
+    <textarea placeholder="Комментарий к заказу (необязательно)" id="order-comment"></textarea>
+    <div id="cart-total">Итого: 0 ₽</div>
+    <button type="button" id="checkout-btn">Отправить заявку</button>
 </form>
 </div>
 </div>
@@ -1553,46 +1580,100 @@ updateCartModal();
 });
 
 checkoutButton.addEventListener('click', () => {
-const form = document.getElementById('cart-form');
-const formData = new FormData(form);
-const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const form = document.getElementById('cart-form');
+    const formData = new FormData(form);
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const deliveryMethod = document.getElementById('delivery-method');
+    const orderComment = document.getElementById('order-comment');
 
-// Проверка заполнения формы
-if (!formData.get('ФИО') || !formData.get('Город') || !formData.get('Адрес') || !deliveryMethod.value) {
-alert('Пожалуйста, заполните все поля формы');
-return;
-}
+    // Проверка обязательных полей
+    if (!formData.get('ФИО') || !formData.get('Телефон') || !formData.get('Email') || 
+        !formData.get('Город') || !formData.get('Адрес') || !deliveryMethod.value) {
+        alert('Пожалуйста, заполните все обязательные поля (отмечены *)');
+        return;
+    }
 
-// Проверка наличия товаров в корзине
-if (cart.length === 0) {
-alert('Корзина пуста');
-return;
-}
+    if (cart.length === 0) {
+        alert('Корзина пуста');
+        return;
+    }
 
-// Формирование данных для отправки
-const orderData = {
-fio: formData.get('ФИО'),
-city: formData.get('Город'),
-address: formData.get('Адрес'),
-delivery: deliveryMethod.value,
-deliveryCost: deliveryMethod.value === 'sdek' ? 700 : 500,
-items: cart,
-total: document.getElementById('cart-total').textContent
-};
+    // Формирование данных для отправки
+    const orderData = {
+        fio: formData.get('ФИО'),
+        phone: formData.get('Телефон'),
+        email: formData.get('Email'),
+        city: formData.get('Город'),
+        address: formData.get('Адрес'),
+        comment: orderComment ? orderComment.value : '',
+        delivery: deliveryMethod.value,
+        deliveryCost: deliveryMethod.value === 'sdek' ? 700 : 500,
+        items: cart,
+        total: document.getElementById('cart-total').textContent,
+        date: new Date().toLocaleString('ru-RU')
+    };
 
-// Отправка данных (здесь нужно указать ваш Telegram бот токен и chat ID)
-sendToTelegram(orderData);
+    // ВАЖНО: Выберите один из вариантов ниже для отправки
+    // 1. Отправка на почту через EmailJS (самый простой способ)
+    sendToEmail(orderData);
+    
+    // ИЛИ 2. Отправка в Telegram (если нужна только телеграм)
+    // sendToTelegram(orderData);
+    
+    // ИЛИ 3. Отправка на email через PHP
+    // sendToEmailPHP(orderData);
 
-// Очистка корзины после оформления заказа
-localStorage.removeItem('cart');
-updateCartCount();
-cartModal.style.display = 'none';
-document.body.style.overflow = ''; // Восстанавливаем прокрутку
-alert('Заказ оформлен! Мы свяжемся с вами в ближайшее время.');
+    // Очистка корзины после оформления
+    localStorage.removeItem('cart');
+    updateCartCount();
+    cartModal.style.display = 'none';
+    document.body.style.overflow = '';
 });
+
+
+function sendToEmail(orderData) {
+    // Формируем HTML письмо
+    let emailBody = `
+        <h2>Новый заказ с сайта Aura Flow Collection</h2>
+        <p><strong>Дата:</strong> ${orderData.date}</p>
+        <p><strong>ФИО:</strong> ${orderData.fio}</p>
+        <p><strong>Телефон:</strong> ${orderData.phone}</p>
+        <p><strong>Email:</strong> ${orderData.email}</p>
+        <p><strong>Адрес:</strong> ${orderData.city}, ${orderData.address}</p>
+        <p><strong>Доставка:</strong> ${orderData.delivery === 'sdek' ? 'СДЭК' : 'Почта России'} (${orderData.deliveryCost} ₽)</p>
+        ${orderData.comment ? `<p><strong>Комментарий:</strong> ${orderData.comment}</p>` : ''}
+        <h3>Товары:</h3>
+        <ul>
+    `;
+    
+    orderData.items.forEach(item => {
+        emailBody += `<li>${item.name} (Размер: ${item.size}, Цвет: ${item.color}): ${item.price} ₽ x ${item.count} = ${item.price * item.count} ₽</li>`;
+    });
+    
+    emailBody += `
+        </ul>
+        <h3>${orderData.total}</h3>
+        <p><em>Свяжитесь с клиентом для подтверждения заказа!</em></p>
+    `;
+
+    // Используем EmailJS API
+    emailjs.send('service_i9wtu0d', 'template_y37j0gf', {
+        to_email: '89617151191d@gmail.com', // Ваша почта
+        subject: `Новый заказ от ${orderData.fio}`,
+        message: emailBody,
+        order_details: JSON.stringify(orderData, null, 2)
+    })
+    .then(() => {
+        alert('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
+    })
+    .catch(error => {
+        console.error('Ошибка отправки:', error);
+        alert('Заявка отправлена, но возникла техническая ошибка. Мы свяжемся с вами.');
+    });
 }
 
-// Функция отправки данных в Telegram
+     
+/* Функция отправки данных в Telegram
 function sendToTelegram(orderData) {
 // Формируем текст сообщения
 let message = `Новый заказ!\n\n`;
@@ -1635,7 +1716,7 @@ console.log('Сообщение отправлено в Telegram:', data);
 console.error('Ошибка отправки в Telegram:', error);
 });
 }
-
+*/
 // Кнопка возвращения вверх
 function setupBackToTop() {
 const backToTopButton = document.getElementById('back-to-top');
@@ -1757,5 +1838,6 @@ updateCartCount();
 </script>
 </body>
 </html>
+
 
 
