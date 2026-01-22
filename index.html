@@ -1439,6 +1439,26 @@ const product = products[index];
 
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
+const maxSameProduct = 10;
+            const existingIndex = cart.findIndex(item => item.name === product.name);
+            
+            if (existingIndex !== -1) {
+                if (cart[existingIndex].count >= maxSameProduct) {
+                    showNotification(`Максимум ${maxSameProduct} шт. одного товара`);
+                    return;
+                }
+                cart[existingIndex].count++;
+            } else {
+                cart.push({ 
+                    name: product.name, 
+                    price: product.price, 
+                    count: 1,
+                    image: product.image,
+                    size: product.sizes[0],
+                    color: product.color
+                });
+            }
+    
 // Ищем товар с таким же названием (без учета размера при добавлении)
 const existingIndex = cart.findIndex(item => item.name === product.name);
 
@@ -1678,23 +1698,91 @@ if (cart.length === 0) {
     alert('Корзина пуста');
     return;
 }
+ const errors = [];
     
-// Формируем данные заказа
-const orderData = {
-    fio: fio,
-    phone: phone,
-    email: email,
-    city: city,
-    address: address,
-    delivery: delivery,
-    deliveryCost: delivery === 'sdek' ? 700 : 500,
-    items: cart,
-    total: document.getElementById('cart-total').textContent,
-    date: new Date().toLocaleString('ru-RU'),
-    comment: ''
-};
+    if (!validateName(fio)) {
+        errors.push('ФИО должно содержать минимум 2 символа');
+        form.querySelector('[name="fio"]').style.borderColor = 'red';
+    } else {
+        form.querySelector('[name="fio"]').style.borderColor = '#ddd';
+    }
     
-console.log('Данные заказа:', orderData);
+    if (!validatePhone(phone)) {
+        errors.push('Введите корректный российский номер телефона (начинается с 7 или 8, 11 цифр)');
+        form.querySelector('[name="phone"]').style.borderColor = 'red';
+    } else {
+        form.querySelector('[name="phone"]').style.borderColor = '#ddd';
+    }
+    
+    if (!validateEmail(email)) {
+        errors.push('Введите корректный email адрес');
+        form.querySelector('[name="email"]').style.borderColor = 'red';
+    } else {
+        form.querySelector('[name="email"]').style.borderColor = '#ddd';
+    }
+    
+    if (!validateCity(city)) {
+        errors.push('Город должен содержать минимум 2 символа');
+        form.querySelector('[name="city"]').style.borderColor = 'red';
+    } else {
+        form.querySelector('[name="city"]').style.borderColor = '#ddd';
+    }
+    
+    if (!validateAddress(address)) {
+        errors.push('Адрес должен содержать минимум 5 символов');
+        form.querySelector('[name="address"]').style.borderColor = 'red';
+    } else {
+        form.querySelector('[name="address"]').style.borderColor = '#ddd';
+    }
+    
+    if (!delivery) {
+        errors.push('Выберите способ доставки');
+        document.getElementById('delivery-method').style.borderColor = 'red';
+    } else {
+        document.getElementById('delivery-method').style.borderColor = '#ddd';
+    }
+    
+    if (!validateCartNotEmpty(cart)) {
+        errors.push('Добавьте товары в корзину');
+    }
+    
+    // Проверка максимального количества товаров
+    const maxItemsPerOrder = 20;
+    const totalItems = cart.reduce((sum, item) => sum + item.count, 0);
+    if (totalItems > maxItemsPerOrder) {
+        errors.push(`Максимальное количество товаров в одном заказе: ${maxItemsPerOrder}`);
+    }
+    
+    // Если есть ошибки - показываем их
+    if (errors.length > 0) {
+        showValidationErrors(errors);
+        return;
+    }
+    
+    // Форматирование телефона для удобства
+    const formattedPhone = phone.startsWith('8') ? '7' + phone.substring(1) : phone;
+    const cleanPhone = formattedPhone.replace(/\D/g, '');
+    
+    // Формируем данные заказа
+    const orderData = {
+        fio: fio,
+        phone: cleanPhone,
+        email: email,
+        city: city,
+        address: address,
+        delivery: delivery,
+        deliveryCost: delivery === 'sdek' ? 700 : 500,
+        items: cart,
+        total: document.getElementById('cart-total').textContent,
+        date: new Date().toLocaleString('ru-RU'),
+        comment: '',
+        totalItems: totalItems,
+        orderId: 'AFC-' + Date.now()
+    };
+    
+    console.log('Данные заказа:', orderData);
+    
+    
     
 // Отправляем на email
 sendToEmail(orderData);
@@ -1708,6 +1796,51 @@ alert('✅ Заказ оформлен! Мы свяжемся с вами в б�
 });
 }
 
+// Показать ошибки валидации
+function showValidationErrors(errors) {
+    const errorContainer = document.createElement('div');
+    errorContainer.id = 'validation-errors';
+    errorContainer.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: #ff4444;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        z-index: 10001;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        animation: slideIn 0.3s ease;
+        max-width: 300px;
+    `;
+    
+    let errorHtml = '<strong>Исправьте ошибки:</strong><ul style="margin: 10px 0 0 0; padding-left: 20px;">';
+    errors.forEach(error => {
+        errorHtml += `<li style="margin-bottom: 5px; font-size: 14px;">${error}</li>`;
+    });
+    errorHtml += '</ul>';
+    
+    errorContainer.innerHTML = errorHtml;
+    document.body.appendChild(errorContainer);
+    
+    // Удаляем через 5 секунд
+    setTimeout(() => {
+        errorContainer.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            if (errorContainer.parentNode) {
+                document.body.removeChild(errorContainer);
+            }
+        }, 300);
+    }, 5000);
+    
+    // Плавная прокрутка к первой ошибке
+    const firstErrorField = document.querySelector('input:invalid, select:invalid');
+    if (firstErrorField) {
+        firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstErrorField.focus();
+    }
+}
+    
 // Кнопка возвращения вверх
 function setupBackToTop() {
 const backToTopButton = document.getElementById('back-to-top');
@@ -1852,3 +1985,4 @@ if (container && container.children.length === 0) {
 </script>
 </body>
 </html>
+
