@@ -9,6 +9,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" />
 <!-- Иконки FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+    // Инициализация EmailJS - ВСТАВЬТЕ ВАШ PUBLIC KEY
+    (function() {
+        emailjs.init("service_i9wtu0d");
+    })();
+</script>
 <style>
 body {
 margin: 0;
@@ -471,6 +478,30 @@ justify-content: flex-start;
 flex: 1;
 }
 
+  #cart-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-family: inherit;
+    min-height: 80px;
+    resize: vertical;
+}
+
+#cart-form input[type="tel"],
+#cart-form input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+     
 /* Карточка товара - 4 в ряд */
 .product {
 background-color: #fff;
@@ -641,6 +672,9 @@ font-size: 24px;
 color: white;
 }
 
+
+
+     
 /* Официальные иконки платежных систем - ИСПРАВЛЕННЫЕ */
 .payment-icon {
 width: 40px;
@@ -1053,29 +1087,7 @@ width: 100%;
 }
 }
 
-     #cart-form textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-sizing: border-box;
-    font-size: 14px;
-    font-family: inherit;
-    min-height: 80px;
-    resize: vertical;
-}
-
-#cart-form input[type="tel"],
-#cart-form input[type="email"] {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-sizing: border-box;
-    font-size: 14px;
-}
+   
 </style>
 <link rel="icon" href="ДОРАБОТКА.png" sizes="512x512" type="image/png">
 </head>
@@ -1583,51 +1595,51 @@ checkoutButton.addEventListener('click', () => {
     const form = document.getElementById('cart-form');
     const formData = new FormData(form);
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const deliveryMethod = document.getElementById('delivery-method');
-    const orderComment = document.getElementById('order-comment');
-
-    // Проверка обязательных полей
-    if (!formData.get('ФИО') || !formData.get('Телефон') || !formData.get('Email') || 
-        !formData.get('Город') || !formData.get('Адрес') || !deliveryMethod.value) {
+    
+    // Получаем значения полей
+    const fio = form.querySelector('[name="fio"]').value;
+    const phone = form.querySelector('[name="phone"]').value;
+    const email = form.querySelector('[name="email"]').value;
+    const city = form.querySelector('[name="city"]').value;
+    const address = form.querySelector('[name="address"]').value;
+    const delivery = document.getElementById('delivery-method').value;
+    const comment = form.querySelector('[name="comment"]')?.value || '';
+    
+    // Проверка
+    if (!fio || !phone || !email || !city || !address || !delivery) {
         alert('Пожалуйста, заполните все обязательные поля (отмечены *)');
         return;
     }
-
+    
     if (cart.length === 0) {
         alert('Корзина пуста');
         return;
     }
-
-    // Формирование данных для отправки
+    
+    // Формируем orderData
     const orderData = {
-        fio: formData.get('ФИО'),
-        phone: formData.get('Телефон'),
-        email: formData.get('Email'),
-        city: formData.get('Город'),
-        address: formData.get('Адрес'),
-        comment: orderComment ? orderComment.value : '',
-        delivery: deliveryMethod.value,
-        deliveryCost: deliveryMethod.value === 'sdek' ? 700 : 500,
+        fio: fio,
+        phone: phone,
+        email: email,
+        city: city,
+        address: address,
+        comment: comment,
+        delivery: delivery,
+        deliveryCost: delivery === 'sdek' ? 700 : 500,
         items: cart,
         total: document.getElementById('cart-total').textContent,
         date: new Date().toLocaleString('ru-RU')
     };
-
-    // ВАЖНО: Выберите один из вариантов ниже для отправки
-    // 1. Отправка на почту через EmailJS (самый простой способ)
+    
+    // Отправляем на email
     sendToEmail(orderData);
     
-    // ИЛИ 2. Отправка в Telegram (если нужна только телеграм)
-    // sendToTelegram(orderData);
-    
-    // ИЛИ 3. Отправка на email через PHP
-    // sendToEmailPHP(orderData);
-
-    // Очистка корзины после оформления
+    // Очистка
     localStorage.removeItem('cart');
     updateCartCount();
     cartModal.style.display = 'none';
     document.body.style.overflow = '';
+    alert('Заказ оформлен! Мы свяжемся с вами в ближайшее время.');
 });
 
 
@@ -1838,6 +1850,7 @@ updateCartCount();
 </script>
 </body>
 </html>
+
 
 
 
