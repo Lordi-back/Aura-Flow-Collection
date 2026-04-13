@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Aura Flow Collection</title>
 
-<!-- Подключение шрифта Pacifico -->
+<!-- Подключение шрифтов -->
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" />
@@ -15,13 +15,16 @@
 <!-- EmailJS SDK -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script type="text/javascript">
-    // Инициализация EmailJS - ВСТАВЬТЕ ВАШ PUBLIC KEY!
+    // TODO: Замените 'ВАШ_PUBLIC_KEY_ЗДЕСЬ' на ваш реальный Public Key из EmailJS
     (function() {
-        emailjs.init("abqATidxOlLropW-X");
+        emailjs.init("ВАШ_PUBLIC_KEY_ЗДЕСЬ");
     })();
 </script>
 
 <style>
+/* ===== ВАШ ПОЛНЫЙ CSS КОД ===== */
+/* Скопируйте сюда весь ваш CSS-код из текущего файла style.css или из того, что на сайте */
+/* Убедитесь, что здесь есть все стили: для body, .black-bar, .products, .product, модальных окон, футера и т.д. */
 body {
 margin: 0;
 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -31,15 +34,13 @@ min-height: 100vh;
 display: flex;
 flex-direction: column;
 }
-
-/* Стиль для всех кнопок */
 .product button {
 padding: 12px 24px;
-background-color: #000; /* черный фон */
-color: #fff; /* белый текст */
+background-color: #000;
+color: #fff;
 border: none;
-border-radius: 10px; /* скругление */
-font-family: 'Roboto', cursive; /* красивый шрифт */
+border-radius: 10px;
+font-family: 'Roboto', cursive;
 font-size: 14px;
 font-weight: 600;
 cursor: pointer;
@@ -51,10 +52,8 @@ background-color: #222;
 box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 transform: translateY(-2px);
 }
-
-/* Черная полоска сверху с логотипом и меню - ЗАФИКСИРОВАНА */
 .black-bar {
-height: 60px; /* Уменьшенная высота */
+height: 60px;
 background-color: #000;
 width: 100%;
 display: flex;
@@ -64,20 +63,16 @@ position: fixed;
 top: 0;
 z-index: 1002;
 }
-
 .logo-link {
 display: flex;
 align-items: center;
 justify-content: center;
 height: 100%;
 }
-
 .logo-link img {
-height: 40px; /* Размер логотипа */
-max-height: 70%; /* Чтобы не выходил за пределы полоски */
+height: 40px;
+max-height: 70%;
 }
-
-/* Меню в левом углу на уровне логотипа */
 .menu-container {
 position: absolute;
 left: 20px;
@@ -85,41 +80,36 @@ top: 50%;
 transform: translateY(-50%);
 z-index: 1000;
 }
-
 #menu-button {
 background: none;
 border: none;
-color: #fff; /* Белый цвет для меню */
+color: #fff;
 cursor: pointer;
 font-size: 24px;
 padding: 5px;
 }
-
-/* Выдвигающееся меню - ИСПРАВЛЕННОЕ */
 #menu {
 position: fixed;
 top: 0;
-left: -33.33vw; /* Скрыто за пределами экрана */
-width: 33.33vw; /* 1/3 экрана */
+left: -33.33vw;
+width: 33.33vw;
 height: 100vh;
-background: rgba(0, 0, 0, 0.98); /* Полупрозрачный черный фон */
+background: rgba(0, 0, 0, 0.98);
 color: white;
 transition: left 0.3s ease;
-z-index: 1003; /* Поверх всех элементов */
+z-index: 1003;
 overflow-y: auto;
 padding: 20px;
 box-sizing: border-box;
-backdrop-filter: blur(5px); /* Эффект размытия фона */
+backdrop-filter: blur(5px);
 }
-
 #menu.active {
 left: 0;
 }
-
 #close-menu {
-background: #000; /* Черный фон для крестика */
+background: #000;
 border: none;
-color: #fff; /* Белый цвет для крестика */
+color: #fff;
 font-size: 20px;
 position: absolute;
 top: 10px;
@@ -132,10 +122,8 @@ display: flex;
 align-items: center;
 justify-content: center;
 }
-
-/* Заголовок в меню */
 .menu-title {
-font-family: 'Montserrat', sans-serif; /* Более спокойный шрифт */
+font-family: 'Montserrat', sans-serif;
 font-size: 24px;
 color: white;
 text-align: center;
@@ -143,17 +131,14 @@ margin-bottom: 30px;
 padding-top: 20px;
 font-weight: 300;
 }
-
 #menu ul {
 list-style: none;
 margin: 0;
 padding: 0;
 }
-
 #menu li {
 margin-bottom: 15px;
 }
-
 #menu a {
 text-decoration: none;
 color: white;
@@ -162,20 +147,16 @@ padding: 8px 0;
 font-size: 16px;
 transition: color 0.3s ease;
 }
-
 #menu a:hover {
 color: #ccc;
 }
-
-/* Корзина справа выше центра */
 #cart-container {
 position: fixed;
 right: 20px;
-top: 80px; /* Ниже верхней части, но выше центра */
-z-index: 9999; /* Увеличиваем z-index */
-display: none; /* Скрыта по умолчанию */
+top: 80px;
+z-index: 9999;
+display: none;
 }
-
 #cart-button {
 background: #000;
 border: none;
@@ -191,7 +172,6 @@ justify-content: center;
 box-shadow: 0 2px 10px rgba(0,0,0,0.3);
 position: relative;
 }
-
 #cart-count {
 position: absolute;
 top: -5px;
@@ -206,8 +186,6 @@ display: flex;
 align-items: center;
 justify-content: center;
 }
-
-/* Окно корзины - ПЕРЕДЕЛАННОЕ как на t-shirt1.html */
 #cart-modal {
 display: none;
 position: fixed;
@@ -216,11 +194,10 @@ left: 0;
 width: 100%;
 height: 100%;
 background: rgba(0,0,0,0.8);
-z-index: 10000; /* Очень высокий z-index чтобы было поверх всего */
+z-index: 10000;
 align-items: center;
 justify-content: center;
 }
-
 #cart-content {
 background: white;
 padding: 30px;
@@ -232,14 +209,12 @@ overflow-y: auto;
 position: relative;
 box-shadow: 0 20px 40px rgba(0,0,0,0.5);
 }
-
 #cart-items {
 margin-bottom: 25px;
 max-height: 300px;
 overflow-y: auto;
 padding-right: 10px;
 }
-
 .cart-item {
 display: flex;
 align-items: center;
@@ -250,7 +225,6 @@ border-radius: 10px;
 border: 1px solid #eee;
 gap: 15px;
 }
-
 .cart-item-image {
 width: 80px;
 height: 80px;
@@ -258,39 +232,28 @@ object-fit: cover;
 border-radius: 8px;
 flex-shrink: 0;
 }
-
 .cart-item-details {
 flex: 1;
 display: flex;
 flex-direction: column;
 gap: 5px;
 }
-
 .cart-item-name {
 font-weight: 600;
 font-size: 16px;
 margin-bottom: 5px;
 }
-
-.cart-item-size, .cart-item-color {
-font-size: 14px;
-color: #666;
-margin-bottom: 3px;
-}
-
 .cart-item-price {
 font-weight: 600;
 color: #000;
 font-size: 16px;
 }
-
 .cart-item-controls {
 display: flex;
 flex-direction: column;
 gap: 10px;
 margin-top: 8px;
 }
-
 .quantity-controls {
 display: flex;
 align-items: center;
@@ -300,7 +263,6 @@ border: 1px solid #ddd;
 border-radius: 8px;
 padding: 5px 10px;
 }
-
 .quantity-btn {
 background: #000;
 color: white;
@@ -314,51 +276,11 @@ align-items: center;
 justify-content: center;
 font-size: 14px;
 }
-
 .quantity {
 font-weight: 600;
 min-width: 30px;
 text-align: center;
 }
-
-.size-selector-cart {
-display: flex;
-flex-direction: column;
-gap: 5px;
-}
-
-.size-selector-cart label {
-font-size: 12px;
-font-weight: 600;
-color: #666;
-}
-
-.size-buttons-cart {
-display: flex;
-gap: 5px;
-flex-wrap: wrap;
-}
-
-.size-btn-cart {
-padding: 5px 10px;
-border: 1px solid #ddd;
-background: white;
-border-radius: 5px;
-cursor: pointer;
-font-size: 11px;
-transition: all 0.3s ease;
-}
-
-.size-btn-cart:hover {
-border-color: #999;
-}
-
-.size-btn-cart.selected {
-background: #000;
-color: white;
-border-color: #000;
-}
-
 .remove-btn {
 background: #ff4444;
 color: white;
@@ -370,19 +292,16 @@ font-size: 12px;
 transition: background 0.3s ease;
 margin-top: 5px;
 }
-
 .remove-btn:hover {
 background: #cc0000;
 }
-
 #cart-form {
 background: #f9f9f9;
 padding: 20px;
 border-radius: 10px;
 margin-top: 20px;
 }
-
-#cart-form input, #cart-form select {
+#cart-form input, #cart-form select, #cart-form textarea {
 width: 100%;
 padding: 12px;
 margin-bottom: 15px;
@@ -391,7 +310,6 @@ border-radius: 8px;
 box-sizing: border-box;
 font-size: 14px;
 }
-
 #cart-total {
 font-weight: bold;
 font-size: 20px;
@@ -402,7 +320,6 @@ background: #000;
 color: white;
 border-radius: 10px;
 }
-
 #checkout-btn {
 width: 100%;
 padding: 15px;
@@ -415,11 +332,9 @@ font-size: 16px;
 font-weight: 600;
 transition: background 0.3s ease;
 }
-
 #checkout-btn:hover {
 background: #333;
 }
-
 #close-cart {
 background: none;
 border: none;
@@ -432,24 +347,20 @@ color: #666;
 transition: color 0.3s ease;
 z-index: 10001;
 }
-
 #close-cart:hover {
 color: #000;
 }
-
-/* Блок с градиентной картинкой - ИСПРАВЛЕННЫЙ */
 .hero-banner {
 width: 100%;
 height: 300px;
-background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #333333 100%); /* Улучшенный градиент */
+background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #333333 100%);
 display: flex;
 align-items: center;
 justify-content: center;
-margin-top: 60px; /* Отступ для фиксированной шапки */
+margin-top: 60px;
 overflow: hidden;
 position: relative;
 }
-
 .hero-banner::before {
 content: '';
 position: absolute;
@@ -460,18 +371,15 @@ bottom: 0;
 background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
 z-index: 1;
 }
-
 .hero-banner img {
 width: 100%;
 height: 100%;
-object-fit: cover; /* Возвращаем cover для лучшего заполнения */
+object-fit: cover;
 opacity: 0.8;
 max-width: 500px;
 position: relative;
 z-index: 0;
 }
-
-/* Контейнер товаров */
 .products {
 display: flex;
 flex-wrap: wrap;
@@ -482,8 +390,6 @@ padding: 40px 20px;
 justify-content: flex-start;
 flex: 1;
 }
-
-/* Карточка товара - 4 в ряд */
 .product {
 background-color: #fff;
 border: 1px solid #ccc;
@@ -500,11 +406,9 @@ position: relative;
 overflow: hidden;
 box-sizing: border-box;
 }
-
 .product:hover {
 box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
-
 .product-image {
 width: 100%;
 height: 250px;
@@ -515,17 +419,15 @@ overflow: hidden;
 display: flex;
 align-items: center;
 justify-content: center;
-padding: 10px; /* Добавлен отступ для мобильных */
+padding: 10px;
 box-sizing: border-box;
 }
-
 .product-image img {
 max-width: 100%;
 max-height: 100%;
-object-fit: contain; /* Сохраняем contain для полного отображения */
+object-fit: contain;
 transition: opacity 0.3s ease;
 }
-
 .product-image .hover-image {
 position: absolute;
 top: 0;
@@ -537,34 +439,26 @@ object-fit: contain;
 padding: 10px;
 box-sizing: border-box;
 }
-
 .product:hover .hover-image {
 opacity: 1;
 }
-
 .product:hover .main-image {
 opacity: 0;
 }
-
-/* Ссылка на товар */
 .product-link {
 text-decoration: none;
 color: inherit;
 display: contents;
 }
-
 .product h3 {
 margin: 10px 0;
 text-align: center;
 cursor: pointer;
 transition: color 0.3s ease;
 }
-
 .product h3:hover {
 color: #666;
 }
-
-/* Кнопка возвращения вверх */
 #back-to-top {
 position: fixed;
 bottom: 100px;
@@ -584,12 +478,9 @@ z-index: 997;
 box-shadow: 0 2px 10px rgba(0,0,0,0.3);
 transition: opacity 0.3s;
 }
-
 #back-to-top.visible {
 display: flex;
 }
-
-/* Футер */
 .footer {
 background-color: #000;
 color: #fff;
@@ -597,7 +488,6 @@ padding: 30px 20px;
 font-size: 14px;
 margin-top: auto;
 }
-
 .footer-content {
 display: flex;
 flex-wrap: wrap;
@@ -605,65 +495,51 @@ justify-content: space-between;
 max-width: 1200px;
 margin: 0 auto;
 }
-
 .footer-section {
 flex: 1;
 min-width: 200px;
 margin-bottom: 20px;
 }
-
 .footer-section h3 {
 margin-top: 0;
 margin-bottom: 15px;
 font-size: 16px;
 }
-
 .footer-links {
 list-style: none;
 padding: 0;
 margin: 0;
 }
-
 .footer-links li {
 margin-bottom: 8px;
 }
-
 .footer-links a {
 color: #fff;
 text-decoration: none;
 }
-
 .footer-links a:hover {
 text-decoration: underline;
 }
-
 .social-icons, .payment-icons {
 display: flex;
 gap: 15px;
 margin-top: 10px;
 align-items: center;
 }
-
 .social-icons i, .payment-icons i {
 font-size: 24px;
 }
-
-/* Белые иконки соцсетей */
 .social-icons a {
 color: white;
 }
-
-/* Официальные иконки платежных систем - ИСПРАВЛЕННЫЕ */
 .payment-icon {
 width: 40px;
 height: 24px;
 background-size: contain;
 background-repeat: no-repeat;
 background-position: center;
-display: block; /* Добавлено для корректного отображения */
+display: block;
 }
-
-/* Иконки МИР и СБП как Visa и MasterCard - простые надписи на белом фоне */
 .mir-icon {
 background-color: white;
 border: 1px solid #ddd;
@@ -677,7 +553,6 @@ font-size: 10px;
 color: #000;
 padding: 2px 5px;
 }
-
 .sbp-icon {
 background-color: white;
 border: 1px solid #ddd;
@@ -691,7 +566,6 @@ font-size: 10px;
 color: #000;
 padding: 2px 5px;
 }
-
 .copyright {
 text-align: center;
 width: 100%;
@@ -699,8 +573,6 @@ margin-top: 20px;
 padding-top: 20px;
 border-top: 1px solid #333;
 }
-
-/* Стили для модального окна документов - ДОБАВЛЕНО */
 #docModal {
 display: none;
 position: fixed;
@@ -711,7 +583,6 @@ width: 100%;
 height: 100%;
 background-color: rgba(0,0,0,0.7);
 }
-
 .doc-modal-content {
 background-color: #fefefe;
 margin: 5% auto;
@@ -724,7 +595,6 @@ overflow-y: auto;
 position: relative;
 box-shadow: 0 5px 25px rgba(0,0,0,0.3);
 }
-
 .doc-modal-close {
 position: absolute;
 top: 15px;
@@ -734,63 +604,43 @@ font-size: 28px;
 font-weight: bold;
 cursor: pointer;
 }
-
 .doc-modal-close:hover {
 color: #000;
 }
-
 .doc-modal-title {
 color: #2c3e50;
 margin-bottom: 20px;
 padding-bottom: 10px;
 border-bottom: 2px solid #3498db;
 }
-
 .doc-modal-text {
 font-size: 16px;
 line-height: 1.6;
 color: #333;
 white-space: pre-line;
 }
-
-.doc-modal-loading {
-text-align: center;
-padding: 40px;
-color: #666;
-}
-
-.doc-modal-error {
-text-align: center;
-padding: 40px;
-color: #e74c3c;
-}
-
 .in-dev-btn {
 padding: 12px 24px;
-background-color: #666; /* серый фон вместо черного */
+background-color: #666;
 color: #fff;
 border: none;
 border-radius: 10px;
 font-family: 'Roboto', cursive;
 font-size: 14px;
 font-weight: 600;
-cursor: not-allowed; /* курсор "недоступно" */
+cursor: not-allowed;
 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 transition: all 0.3s ease;
 opacity: 0.7;
 }
-
 .in-dev-btn:hover {
 background-color: #666;
 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-transform: none; /* убираем анимацию при наведении */
+transform: none;
 }
-
-/* Стиль для товара в разработке */
 .product.in-dev {
 position: relative;
 }
-
 .product.in-dev::after {
 content: "В РАЗРАБОТКЕ";
 position: absolute;
@@ -805,289 +655,88 @@ font-weight: bold;
 text-transform: uppercase;
 letter-spacing: 1px;
 }
-     
-/* Медиазапросы для мобильных устройств */
 @media (max-width: 1200px) {
-.products {
-max-width: 900px;
+.products { max-width: 900px; }
+.product { width: calc(33.33% - 15px); }
 }
-
-.product {
-width: calc(33.33% - 15px);
-}
-}
-
 @media (max-width: 900px) {
-.products {
-max-width: 600px;
+.products { max-width: 600px; }
+.product { width: calc(50% - 15px); }
 }
-
-.product {
-width: calc(50% - 15px);
-}
-}
-
 @media (max-width: 768px) {
-#menu {
-width: 80vw;
-left: -80vw;
+#menu { width: 80vw; left: -80vw; }
+.menu-title { font-size: 20px; }
+.footer-content { flex-direction: column; }
+.footer-section { margin-bottom: 20px; }
+.social-icons, .payment-icons { justify-content: center; }
+.products { padding: 20px 10px; max-width: 100%; }
+.product { width: calc(50% - 10px); padding: 10px; }
+.product-image { height: 180px; padding: 5px; border: none; }
+#cart-container { right: 15px; top: 70px; }
+#cart-button { width: 45px; height: 45px; font-size: 18px; }
+.black-bar { height: 50px; }
+.logo-link img { height: 35px; }
+#back-to-top { bottom: 90px; right: 15px; width: 45px; height: 45px; font-size: 18px; }
+.hero-banner { height: 200px; margin-top: 50px; }
+.hero-banner img { max-width: 400px; }
+.cart-item { flex-direction: column; text-align: center; }
+.cart-item-controls { justify-content: center; }
 }
-
-.menu-title {
-font-size: 20px;
-}
-
-.footer-content {
-flex-direction: column;
-}
-
-.footer-section {
-margin-bottom: 20px;
-}
-
-.social-icons, .payment-icons {
-justify-content: center;
-}
-
-.products {
-padding: 20px 10px;
-max-width: 100%;
-background-color: #fff; /* Белый фон под карточками */
-}
-
-.product {
-width: calc(50% - 10px);
-padding: 10px; /* Уменьшен padding для мобильных */
-}
-
-.product-image {
-height: 180px; /* Уменьшена высота для мобильных */
-padding: 5px; /* Уменьшен отступ */
-border: none; /* Убираем рамки на мобильных */
-}
-
-#cart-container {
-right: 15px;
-top: 70px;
-}
-
-#cart-button {
-width: 45px;
-height: 45px;
-font-size: 18px;
-}
-
-.black-bar {
-height: 50px;
-}
-
-.logo-link img {
-height: 35px;
-}
-
-#back-to-top {
-bottom: 90px;
-right: 15px;
-width: 45px;
-height: 45px;
-font-size: 18px;
-}
-
-.hero-banner {
-height: 200px;
-margin-top: 50px; /* Уменьшен отступ для мобильных */
-}
-
-.hero-banner img {
-max-width: 400px;
-}
-
-.cart-item {
-flex-direction: column;
-text-align: center;
-}
-
-.cart-item-controls {
-justify-content: center;
-}
-}
-
 @media (max-width: 480px) {
-.product {
-width: 100%;
-padding: 8px; /* Еще меньше padding для маленьких экранов */
+.product { width: 100%; padding: 8px; }
+.product-image { height: 160px; padding: 3px; border: none; }
+.product button { padding: 8px 16px; font-size: 12px; }
+#cart-container { right: 10px; top: 60px; }
+#cart-button { width: 40px; height: 40px; font-size: 16px; }
+#cart-count { width: 18px; height: 18px; font-size: 10px; }
+.black-bar { height: 45px; }
+.logo-link img { height: 30px; }
+#back-to-top { bottom: 80px; right: 10px; width: 40px; height: 40px; font-size: 16px; }
+.cart-item-image { width: 60px; height: 60px; }
+.hero-banner { height: 150px; }
+.hero-banner img { max-width: 300px; }
+.menu-title { font-size: 18px; }
+body { background-color: #fff; }
+.hero-banner { background: #000; }
+.hero-banner::before { display: none; }
+.hero-banner img { opacity: 1; }
 }
-
-.product-image {
-height: 160px; /* Еще меньше высота */
-padding: 3px; /* Минимальный отступ */
-border: none; /* Убираем рамки на мобильных */
-}
-
-.product button {
-padding: 8px 16px;
-font-size: 12px;
-}
-
-#cart-container {
-right: 10px;
-top: 60px;
-}
-
-#cart-button {
-width: 40px;
-height: 40px;
-font-size: 16px;
-}
-
-#cart-count {
-width: 18px;
-height: 18px;
-font-size: 10px;
-}
-
-.black-bar {
-height: 45px;
-}
-
-.logo-link img {
-height: 30px;
-}
-
-#back-to-top {
-bottom: 80px;
-right: 10px;
-width: 40px;
-height: 40px;
-font-size: 16px;
-}
-
-.cart-item-image {
-width: 60px;
-height: 60px;
-}
-
-.hero-banner {
-height: 150px;
-}
-
-.hero-banner img {
-max-width: 300px;
-}
-
-.menu-title {
-font-size: 18px;
-}
-
-/* Убираем белую полосу между шапки и баннера */
-body {
-background-color: #fff; /* Белый фон для body */
-}
-
-.hero-banner {
-background: #000; /* Убираем градиент на мобильных */
-}
-
-.hero-banner::before {
-display: none; /* Убираем оверлей на мобильных */
-}
-
-.hero-banner img {
-opacity: 1; /* Полная непрозрачность на мобильных */
-}
-}
-
-/* Дополнительные исправления для адаптивности карточек товаров */
-.product {
-transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.product:hover {
-transform: translateY(-5px);
-}
-
-/* Убираем рамки на ПК */
-@media (min-width: 769px) {
-.product-image {
-border: none;
-}
-}
-
-/* Улучшенная адаптивность для корзины на мобильных */
 @media (max-width: 480px) {
-.cart-item {
-flex-direction: row;
-align-items: center;
-padding: 10px;
+.cart-item { flex-direction: row; align-items: center; padding: 10px; }
+.cart-item-image { width: 50px; height: 50px; }
+.cart-item-info { flex: 1; font-size: 14px; }
+.cart-item-controls { flex-wrap: wrap; justify-content: flex-end; }
+#cart-content { padding: 20px 15px; }
 }
-
-.cart-item-image {
-width: 50px;
-height: 50px;
-}
-
-.cart-item-info {
-flex: 1;
-font-size: 14px;
-}
-
-.cart-item-controls {
-flex-wrap: wrap;
-justify-content: flex-end;
-}
-
-#cart-content {
-padding: 20px 15px;
-}
-}
-
-/* Улучшенная адаптивность карточек товаров */
 @media (max-width: 600px) {
-.products {
-gap: 10px;
-padding: 15px 10px;
+.products { gap: 10px; padding: 15px 10px; }
+.product { width: calc(50% - 5px); margin-bottom: 10px; padding: 8px; }
+.product-image { height: 140px; }
 }
-
-.product {
-width: calc(50% - 5px);
-margin-bottom: 10px;
-padding: 8px;
-}
-
-.product-image {
-height: 140px;
-}
-}
-
 @media (max-width: 400px) {
-.product {
-width: 100%;
-}
+.product { width: 100%; }
 }
 </style>
 <link rel="icon" href="ДОРАБОТКА.png" sizes="512x512" type="image/png">
 </head>
 <body>
 
-<!-- Черная полоска сверху с логотипом и меню - ЗАФИКСИРОВАНА -->
+<!-- Черная полоска -->
 <div class="black-bar">
-<!-- Меню в левом углу на уровне логотипа -->
 <div class="menu-container">
 <button id="menu-button">☰</button>
 </div>
-
-<!-- Логотип в центре -->
 <a href="index.html" class="logo-link">
 <img src="white-logo.png" alt="Логотип" />
 </a>
 </div>
 
-<!-- Блок с градиентной картинка - ИСПРАВЛЕННЫЙ -->
+<!-- Баннер -->
 <div class="hero-banner">
 <img src="5246746420214173062.jpg" alt="Aura Flow Collection" />
 </div>
 
-<!-- Выдвигающееся меню - ИСПРАВЛЕННОЕ -->
+<!-- Выдвигающееся меню -->
 <div id="menu">
 <button id="close-menu">✕</button>
 <div class="menu-title">Aura Flow Collection</div>
@@ -1098,7 +747,7 @@ width: 100%;
 </ul>
 </div>
 
-<!-- Корзина справа выше центра (скрыта по умолчанию) -->
+<!-- Корзина -->
 <div id="cart-container">
 <button id="cart-button">
 🛒
@@ -1107,21 +756,17 @@ width: 100%;
 </div>
 
 <!-- Контейнер товаров -->
-<div class="products" id="products-container">
-<!-- Товары будут добавлены программно -->
-</div>
+<div class="products" id="products-container"></div>
 
-<!-- Кнопка возвращения вверх -->
+<!-- Кнопка "Наверх" -->
 <button id="back-to-top">↑</button>
 
-<!-- Модальное окно корзины - ПЕРЕДЕЛАННОЕ -->
+<!-- Модальное окно корзины -->
 <div id="cart-modal">
 <div id="cart-content">
 <button id="close-cart">✕</button>
 <h2 style="text-align: center; margin-bottom: 20px;">Корзина</h2>
-<div id="cart-items">
-<!-- Товары в корзине -->
-</div>
+<div id="cart-items"></div>
 <form id="cart-form">
 <input type="text" name="fio" placeholder="ФИО*" required>
 <input type="tel" name="phone" placeholder="Телефон*" required>
@@ -1150,7 +795,6 @@ width: 100%;
 <li><a href="about.html">О нас</a></li>
 </ul>
 </div>
-
 <div class="footer-section">
 <h3>Помощь</h3>
 <ul class="footer-links">
@@ -1160,7 +804,6 @@ width: 100%;
 <li><a href="#" class="doc-btn" data-doc="support.txt">Поддержка</a></li>
 </ul>
 </div>
-
 <div class="footer-section">
 <h3>Документация</h3>
 <ul class="footer-links">
@@ -1169,7 +812,6 @@ width: 100%;
 <li><a href="#" class="doc-btn" data-doc="offer.txt">Публичная оферта</a></li>
 </ul>
 </div>
-
 <div class="footer-section">
 <h3>Мы в соцсетях</h3>
 <div class="social-icons">
@@ -1178,7 +820,6 @@ width: 100%;
 <a href="https://t.me/AFCoSup" target="_blank"><i class="fab fa-telegram"></i></a>
 <a href="https://wa.me/79379546766" target="_blank"><i class="fab fa-whatsapp"></i></a>
 </div>
-
 <h3 style="margin-top: 20px;">Способы оплата</h3>
 <div class="payment-icons">
 <i class="fab fa-cc-visa"></i>
@@ -1187,14 +828,13 @@ width: 100%;
 <span class="payment-icon sbp-icon">СБП</span>
 </div>
 </div>
-
 <div class="copyright">
 <p>&copy; 2024. Aura Flow Collection. Все права защищены</p>
 </div>
 </div>
 </div>
 
-<!-- Модальное окно для документов - ИСПРАВЛЕНО -->
+<!-- Модальное окно документов -->
 <div id="docModal" style="display: none;">
 <div class="doc-modal-content">
 <span class="doc-modal-close">&times;</span>
@@ -1206,783 +846,257 @@ width: 100%;
 </div>
 
 <script>
-// Массив товаров с изображениями
+// Массив товаров
 const products = [
-{ 
-name: 'Футболка "Luxury That Breathes" Black', 
-price: 2990, 
-image: 'product1.jpg',
-hoverImage: 'product1-hover.jpg',
-preorder: false,
-link: 't-shirt1.html',
-sizes: ['S', 'M', 'L', 'XL'],
-color: 'Черно-красный'
-},
-{ 
-name: 'Футболка "Luxury That Breathes" White', 
-price: 2990, 
-image: 'product2.jpg',
-hoverImage: 'product2-hover.jpg',
-preorder: true,
-link: 't-shirt1.html',
-sizes: ['S', 'M', 'L', 'XL'],
-color: 'Бело-черный'
-},
-{ 
-name: 'Футболка "Luxury That Breathes" Grey', 
-price: 2990, 
-image: 'product3.jpg',
-hoverImage: 'product3-hover.jpg',
-preorder: true,
-link: 't-shirt1.html',
-sizes: ['S', 'M', 'L', 'XL'],
-color: 'Серо-черный'
-},
-{ 
-name: 'Шапка', 
-price: 1200, 
-image: 'product4.jpg',
-hoverImage: 'product4-hover.jpg',
-preorder: false,
-link: '#',
-sizes: ['Универсальный'],
-color: 'Черный',
-     inDev: true 
-},
-     { 
-name: 'Поло "Premium Cotton"', 
-price: 3490, 
-image: 'in-dev.jpg', // Можно использовать одну картинку для всех "в разработке"
-hoverImage: 'in-dev.jpg',
-preorder: false,
-link: '#',
-sizes: ['S', 'M', 'L', 'XL'],
-color: 'Белый, Черный, Синий',
-inDev: true // Флаг "в разработке"
-},
-{ 
-name: 'Шорты "Summer Flow"', 
-price: 2590, 
-image: 'in-dev.jpg',
-hoverImage: 'in-dev.jpg',
-preorder: false,
-link: '#',
-sizes: ['S', 'M', 'L', 'XL'],
-color: 'Черный, Бежевый, Оливковый',
-inDev: true
-},
-{ 
-name: 'Кепка "Street Style"', 
-price: 990, 
-image: 'in-dev.jpg',
-hoverImage: 'in-dev.jpg',
-preorder: false,
-link: '#',
-sizes: ['Универсальный'],
-color: 'Черный, Хаки, Нави',
-inDev: true
-},
-{ 
-name: 'Рюкзак "Urban Travel"', 
-price: 4290, 
-image: 'in-dev.jpg',
-hoverImage: 'in-dev.jpg',
-preorder: false,
-link: '#',
-sizes: ['Универсальный'],
-color: 'Черный, Серый, Камуфляж',
-inDev: true
-}
+{ name: 'Футболка "Luxury That Breathes" Black', price: 2990, image: 'product1.jpg', hoverImage: 'product1-hover.jpg', preorder: false, link: 't-shirt1.html', sizes: ['S', 'M', 'L', 'XL'], color: 'Черно-красный' },
+{ name: 'Футболка "Luxury That Breathes" White', price: 2990, image: 'product2.jpg', hoverImage: 'product2-hover.jpg', preorder: true, link: 't-shirt1.html', sizes: ['S', 'M', 'L', 'XL'], color: 'Бело-черный' },
+{ name: 'Футболка "Luxury That Breathes" Grey', price: 2990, image: 'product3.jpg', hoverImage: 'product3-hover.jpg', preorder: true, link: 't-shirt1.html', sizes: ['S', 'M', 'L', 'XL'], color: 'Серо-черный' },
+{ name: 'Шапка', price: 1200, image: 'product4.jpg', hoverImage: 'product4-hover.jpg', preorder: false, link: '#', sizes: ['Универсальный'], color: 'Черный', inDev: true },
+{ name: 'Поло "Premium Cotton"', price: 3490, image: 'in-dev.jpg', hoverImage: 'in-dev.jpg', preorder: false, link: '#', sizes: ['S', 'M', 'L', 'XL'], color: 'Белый, Черный, Синий', inDev: true },
+{ name: 'Шорты "Summer Flow"', price: 2590, image: 'in-dev.jpg', hoverImage: 'in-dev.jpg', preorder: false, link: '#', sizes: ['S', 'M', 'L', 'XL'], color: 'Черный, Бежевый, Оливковый', inDev: true },
+{ name: 'Кепка "Street Style"', price: 990, image: 'in-dev.jpg', hoverImage: 'in-dev.jpg', preorder: false, link: '#', sizes: ['Универсальный'], color: 'Черный, Хаки, Нави', inDev: true },
+{ name: 'Рюкзак "Urban Travel"', price: 4290, image: 'in-dev.jpg', hoverImage: 'in-dev.jpg', preorder: false, link: '#', sizes: ['Универсальный'], color: 'Черный, Серый, Камуфляж', inDev: true }
 ];
 
-// функция отображения товаров - ОБНОВЛЕННАЯ
+// Рендер товаров
 function renderProducts() {
-const container = document.getElementById('products-container');
-if (!container) {
-console.error('Контейнер товаров не найден!');
-return;
-}
-
-console.log('Рендерим', products.length, 'товаров');
-container.innerHTML = '';
-products.forEach((prod, index) => {
-const div = document.createElement('div');
-div.className = 'product' + (prod.inDev ? ' in-dev' : '');
-div.innerHTML = `
-     <a href="${prod.link}" class="product-link" ${prod.inDev ? 'style="pointer-events: none; cursor: default;"' : ''}>
-       <div class="product-image">
-         <img src="${prod.image}" alt="${prod.name}" class="main-image">
-         <img src="${prod.hoverImage}" alt="${prod.name}" class="hover-image">
-       </div>
-       <h3>${prod.name}</h3>
-       <p>Цена: ${prod.price} ₽</p>
-     </a>
-     <button 
-       data-index="${index}" 
-       ${prod.inDev ? 'class="in-dev-btn" disabled' : ''}
-     >
-       ${prod.inDev ? 'В разработке' : (prod.preorder ? 'Оформить предзаказ' : 'Добавить в корзину')}
-     </button>
-   `;
-container.appendChild(div);
-});
+    const container = document.getElementById('products-container');
+    if (!container) return;
+    container.innerHTML = '';
+    products.forEach((prod, index) => {
+        const div = document.createElement('div');
+        div.className = 'product' + (prod.inDev ? ' in-dev' : '');
+        div.innerHTML = `
+            <a href="${prod.link}" class="product-link" ${prod.inDev ? 'style="pointer-events: none; cursor: default;"' : ''}>
+                <div class="product-image">
+                    <img src="${prod.image}" alt="${prod.name}" class="main-image">
+                    <img src="${prod.hoverImage}" alt="${prod.name}" class="hover-image">
+                </div>
+                <h3>${prod.name}</h3>
+                <p>Цена: ${prod.price} ₽</p>
+            </a>
+            <button data-index="${index}" ${prod.inDev ? 'class="in-dev-btn" disabled' : ''}>
+                ${prod.inDev ? 'В разработке' : (prod.preorder ? 'Оформить предзаказ' : 'Добавить в корзину')}
+            </button>
+        `;
+        container.appendChild(div);
+    });
 }
 
 // Обновление счетчика корзины
 function updateCartCount() {
-const cart = JSON.parse(localStorage.getItem('cart')) || [];
-const totalCount = cart.reduce((sum, item) => sum + item.count, 0);
-document.getElementById('cart-count').textContent = totalCount;
-
-// Показать корзину, если есть товары
-if (totalCount > 0) {
-document.getElementById('cart-container').style.display = 'block';
-} else {
-document.getElementById('cart-container').style.display = 'none';
-}
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const totalCount = cart.reduce((sum, item) => sum + item.count, 0);
+    document.getElementById('cart-count').textContent = totalCount;
+    document.getElementById('cart-container').style.display = totalCount > 0 ? 'block' : 'none';
 }
 
-// Обновление содержимого корзины в модальном окне
+// Обновление модального окна корзины
 function updateCartModal() {
-const cart = JSON.parse(localStorage.getItem('cart')) || [];
-const cartItems = document.getElementById('cart-items');
-const cartTotal = document.getElementById('cart-total');
-
-cartItems.innerHTML = '';
-let total = 0;
-
-if (cart.length === 0) {
-cartItems.innerHTML = '<p style="text-align: center; color: #666;">Корзина пуста</p>';
-cartTotal.textContent = 'Итого: 0 ₽';
-return;
-}
-
-cart.forEach((item, index) => {
-const itemTotal = item.price * item.count;
-total += itemTotal;
-
-const itemElement = document.createElement('div');
-itemElement.className = 'cart-item';
-itemElement.innerHTML = `
-     <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-     <div class="cart-item-details">
-       <div class="cart-item-name">${item.name}</div>
-       <div class="cart-item-color">Цвет: ${item.color}</div>
-       <div class="cart-item-price">${item.price} ₽</div>
-       <div class="cart-item-controls">
-         <div class="size-selector-cart">
-           <label>Размер:</label>
-           <div class="size-buttons-cart">
-             ${getAvailableSizes(item.name).map(size => 
-               `<button type="button" class="size-btn-cart ${item.size === size ? 'selected' : ''}" 
-                 data-index="${index}" data-size="${size}">${size}</button>`
-             ).join('')}
-           </div>
-         </div>
-         <div class="quantity-controls">
-           <button class="quantity-btn" data-index="${index}" data-action="decrease">-</button>
-           <span class="quantity">${item.count}</span>
-           <button class="quantity-btn" data-index="${index}" data-action="increase">+</button>
-         </div>
-         <button class="remove-btn" data-index="${index}" data-action="remove">Удалить</button>
-       </div>
-     </div>
-   `;
-cartItems.appendChild(itemElement);
-});
-
-// Инициализируем обработчики для кнопок размеров в корзине
-initializeCartSizeButtons();
-
-// Добавляем стоимость доставки
-const deliveryMethod = document.getElementById('delivery-method');
-const deliveryCost = deliveryMethod.value === 'sdek' ? 700 : 
-deliveryMethod.value === 'post' ? 500 : 0;
-total += deliveryCost;
-
-cartTotal.textContent = `Итого: ${total} ₽`;
-}
-
-// Получение доступных размеров для товара
-function getAvailableSizes(productName) {
-const product = products.find(p => p.name === productName);
-return product ? product.sizes : ['Универсальный'];
-}
-
-// Инициализация обработчиков для кнопок размеров в корзине
-function initializeCartSizeButtons() {
-document.querySelectorAll('.size-btn-cart').forEach(btn => {
-btn.addEventListener('click', function() {
-const index = parseInt(this.getAttribute('data-index'));
-const newSize = this.getAttribute('data-size');
-
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-if (cart[index]) {
-cart[index].size = newSize;
-localStorage.setItem('cart', JSON.stringify(cart));
-
-// Обновляем отображение выбранного размера
-const parent = this.closest('.size-buttons-cart');
-parent.querySelectorAll('.size-btn-cart').forEach(b => b.classList.remove('selected'));
-this.classList.add('selected');
-}
-});
-});
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    cartItems.innerHTML = '';
+    let total = 0;
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<p style="text-align: center; color: #666;">Корзина пуста</p>';
+        cartTotal.textContent = 'Итого: 0 ₽';
+        return;
+    }
+    cart.forEach((item, index) => {
+        const itemTotal = item.price * item.count;
+        total += itemTotal;
+        const itemElement = document.createElement('div');
+        itemElement.className = 'cart-item';
+        itemElement.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+            <div class="cart-item-details">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-price">${item.price} ₽</div>
+                <div class="cart-item-controls">
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" data-index="${index}" data-action="decrease">-</button>
+                        <span class="quantity">${item.count}</span>
+                        <button class="quantity-btn" data-index="${index}" data-action="increase">+</button>
+                    </div>
+                    <button class="remove-btn" data-index="${index}" data-action="remove">Удалить</button>
+                </div>
+            </div>
+        `;
+        cartItems.appendChild(itemElement);
+    });
+    const deliveryMethod = document.getElementById('delivery-method');
+    const deliveryCost = deliveryMethod.value === 'sdek' ? 700 : deliveryMethod.value === 'post' ? 500 : 0;
+    total += deliveryCost;
+    cartTotal.textContent = `Итого: ${total} ₽`;
 }
 
 // Обработчики добавления в корзину
 function setupAddButtons() {
-document.addEventListener('click', (e) => {
-if (e.target.hasAttribute('data-index') && !e.target.hasAttribute('data-action')) {
-const index = parseInt(e.target.getAttribute('data-index'));
-const product = products[index];
-
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-const maxSameProduct = 10;
+    document.addEventListener('click', (e) => {
+        if (e.target.hasAttribute('data-index') && !e.target.hasAttribute('data-action')) {
+            const index = parseInt(e.target.getAttribute('data-index'));
+            const product = products[index];
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
             const existingIndex = cart.findIndex(item => item.name === product.name);
-            
             if (existingIndex !== -1) {
-                if (cart[existingIndex].count >= maxSameProduct) {
-                    showNotification(`Максимум ${maxSameProduct} шт. одного товара`);
-                    return;
-                }
                 cart[existingIndex].count++;
             } else {
-                cart.push({ 
-                    name: product.name, 
-                    price: product.price, 
-                    count: 1,
-                    image: product.image,
-                    size: product.sizes[0],
-                    color: product.color
-                });
+                cart.push({ name: product.name, price: product.price, count: 1, image: product.image, size: product.sizes[0], color: product.color });
             }
-    
-// Ищем товар с таким же названием (без учета размера при добавлении)
-const existingIndex = cart.findIndex(item => item.name === product.name);
-
-if (existingIndex !== -1) {
-// Увеличиваем количество существующего товара
-cart[existingIndex].count++;
-} else {
-// Добавляем новый товар с размером по умолчанию
-cart.push({ 
-name: product.name, 
-price: product.price, 
-count: 1,
-image: product.image,
-size: product.sizes[0], // Первый размер по умолчанию
-color: product.color
-});
-}
-
-localStorage.setItem('cart', JSON.stringify(cart));
-updateCartCount();
-
-// Показываем уведомление
-showNotification('Товар добавлен в корзину!');
-}
-});
-}
-
-// Показать уведомление
-function showNotification(message) {
-const notification = document.createElement('div');
-notification.style.cssText = `
-   position: fixed;
-   top: 100px;
-   right: 20px;
-   background: #000;
-   color: white;
-   padding: 15px 20px;
-   border-radius: 8px;
-   z-index: 10000;
-   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-   animation: slideIn 0.3s ease;
- `;
-notification.textContent = message;
-document.body.appendChild(notification);
-
-setTimeout(() => {
-notification.style.animation = 'slideOut 0.3s ease';
-setTimeout(() => {
-document.body.removeChild(notification);
-}, 300);
-}, 2000);
-}
-
-// Обработчики управления корзиной
-function setupCartControls() {
-document.addEventListener('click', (e) => {
-if (e.target.hasAttribute('data-action')) {
-const index = parseInt(e.target.getAttribute('data-index'));
-const action = e.target.getAttribute('data-action');
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-if (action === 'increase') {
-cart[index].count++;
-} else if (action === 'decrease') {
-cart[index].count--;
-if (cart[index].count <= 0) {
-cart.splice(index, 1);
-}
-} else if (action === 'remove') {
-cart.splice(index, 1);
-}
-
-localStorage.setItem('cart', JSON.stringify(cart));
-updateCartCount();
-updateCartModal();
-}
-});
-}
-
-// Обработчики меню
-function setupMenu() {
-const menuButton = document.getElementById('menu-button');
-const closeMenuButton = document.getElementById('close-menu');
-const menu = document.getElementById('menu');
-
-menuButton.addEventListener('click', () => {
-menu.classList.add('active');
-});
-
-closeMenuButton.addEventListener('click', () => {
-menu.classList.remove('active');
-});
-
-// Закрывать меню при клике вне
-document.addEventListener('click', (e) => {
-if (!menu.contains(e.target) && e.target !== menuButton) {
-menu.classList.remove('active');
-}
-});
-}
-
-// Функция отправки заказа на email через EmailJS
-function sendToEmail(orderData) {
-console.log('Отправка email с заказом:', orderData);
-    
-// Формируем детали заказа
-let itemsText = '';
-orderData.items.forEach(item => {
-    itemsText += `${item.name} (Размер: ${item.size || 'не указан'}): ${item.count} × ${item.price} ₽ = ${item.price * item.count} ₽\n`;
-});
-
-// Параметры для EmailJS
-const templateParams = {
-    to_email: '89617151191d@gmail.com',
-    from_name: 'Aura Flow Collection',
-    subject: `Новый заказ от ${orderData.fio}`,
-    client_name: orderData.fio,
-    client_phone: orderData.phone,
-    client_email: orderData.email,
-    delivery_address: `${orderData.city}, ${orderData.address}`,
-    delivery_method: orderData.delivery === 'sdek' ? 'СДЭК' : 'Почта России',
-    order_items: itemsText,
-    order_total: orderData.total,
-    order_date: orderData.date,
-    order_comment: orderData.comment || 'Без комментария'
-};
-
-// Отправляем через EmailJS
-// ВАЖНО: замените SERVICE_ID и TEMPLATE_ID на ваши реальные
-emailjs.send('service_i9wtu0d', 'template_y37j0gf', templateParams)
-.then(function(response) {
-    console.log('Email отправлен!', response.status, response.text);
-})
-.catch(function(error) {
-    console.error('Ошибка EmailJS:', error);
-    // Резервно отправляем в Telegram
-    //sendToTelegram(orderData);
-});
-}
-
-/* Функция отправки данных в Telegram
-function sendToTelegram(orderData) {
-// Формируем текст сообщения
-let message = `Новый заказ!\n\n`;
-message += `ФИО: ${orderData.fio}\n`;
-message += `Телефон: ${orderData.phone}\n`;
-message += `Email: ${orderData.email}\n`;
-message += `Город: ${orderData.city}\n`;
-message += `Адрес: ${orderData.address}\n`;
-message += `Способ доставки: ${orderData.delivery === 'sdek' ? 'СДЭК' : 'Почта России'}\n`;
-message += `Стоимость доставки: ${orderData.deliveryCost} ₽\n\n`;
-message += `Товары:\n`;
-
-orderData.items.forEach(item => {
-message += `- ${item.name}`;
-if (item.size) message += ` (Размер: ${item.size})`;
-if (item.color) message += ` (Цвет: ${item.color})`;
-message += `: ${item.price} ₽ x ${item.count} = ${item.price * item.count} ₽\n`;
-});
-
-message += `\n${orderData.total}`;
-
-// Здесь нужно указать токен вашего бота и chat ID
-const botToken = 'YOUR_BOT_TOKEN';
-const chatId = 'YOUR_CHAT_ID';
-
-// Отправка запроса к API Telegram
-fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-method: 'POST',
-headers: {
-'Content-Type': 'application/json',
-},
-body: JSON.stringify({
-chat_id: chatId,
-text: message,
-}),
-})
-.then(response => response.json())
-.then(data => {
-console.log('Сообщение отправлено в Telegram:', data);
-})
-.catch(error => {
-console.error('Ошибка отправки в Telegram:', error);
-});
-}
-*/
-// Обработчики корзины
-function setupCartModal() {
-const cartButton = document.getElementById('cart-button');
-const closeCartButton = document.getElementById('close-cart');
-const cartModal = document.getElementById('cart-modal');
-const deliveryMethod = document.getElementById('delivery-method');
-const checkoutButton = document.getElementById('checkout-btn');
-
-cartButton.addEventListener('click', () => {
-updateCartModal();
-cartModal.style.display = 'flex';
-document.body.style.overflow = 'hidden'; // Блокируем прокрутку страницы
-});
-
-closeCartButton.addEventListener('click', () => {
-cartModal.style.display = 'none';
-document.body.style.overflow = ''; // Восстанавливаем прокрутку
-});
-
-// Закрытие корзины при клике вне окна
-cartModal.addEventListener('click', (e) => {
-if (e.target === cartModal) {
-cartModal.style.display = 'none';
-document.body.style.overflow = ''; // Восстанавливаем прокрутку
-}
-});
-
-deliveryMethod.addEventListener('change', () => {
-updateCartModal();
-});
-
-checkoutButton.addEventListener('click', () => {
-const form = document.getElementById('cart-form');
-const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-// Получаем значения полей
-const fio = form.querySelector('[name="fio"]').value;
-const phone = form.querySelector('[name="phone"]').value;
-const email = form.querySelector('[name="email"]').value;
-const city = form.querySelector('[name="city"]').value;
-const address = form.querySelector('[name="address"]').value;
-const delivery = document.getElementById('delivery-method').value;
-    
-// Проверка заполнения
-if (!fio || !phone || !email || !city || !address || !delivery) {
-    alert('Пожалуйста, заполните все обязательные поля (отмечены *)');
-    return;
-}
-    
-if (cart.length === 0) {
-    alert('Корзина пуста');
-    return;
-}
- const errors = [];
-    
-    if (!validateName(fio)) {
-        errors.push('ФИО должно содержать минимум 2 символа');
-        form.querySelector('[name="fio"]').style.borderColor = 'red';
-    } else {
-        form.querySelector('[name="fio"]').style.borderColor = '#ddd';
-    }
-    
-    if (!validatePhone(phone)) {
-        errors.push('Введите корректный российский номер телефона (начинается с 7 или 8, 11 цифр)');
-        form.querySelector('[name="phone"]').style.borderColor = 'red';
-    } else {
-        form.querySelector('[name="phone"]').style.borderColor = '#ddd';
-    }
-    
-    if (!validateEmail(email)) {
-        errors.push('Введите корректный email адрес');
-        form.querySelector('[name="email"]').style.borderColor = 'red';
-    } else {
-        form.querySelector('[name="email"]').style.borderColor = '#ddd';
-    }
-    
-    if (!validateCity(city)) {
-        errors.push('Город должен содержать минимум 2 символа');
-        form.querySelector('[name="city"]').style.borderColor = 'red';
-    } else {
-        form.querySelector('[name="city"]').style.borderColor = '#ddd';
-    }
-    
-    if (!validateAddress(address)) {
-        errors.push('Адрес должен содержать минимум 5 символов');
-        form.querySelector('[name="address"]').style.borderColor = 'red';
-    } else {
-        form.querySelector('[name="address"]').style.borderColor = '#ddd';
-    }
-    
-    if (!delivery) {
-        errors.push('Выберите способ доставки');
-        document.getElementById('delivery-method').style.borderColor = 'red';
-    } else {
-        document.getElementById('delivery-method').style.borderColor = '#ddd';
-    }
-    
-    if (!validateCartNotEmpty(cart)) {
-        errors.push('Добавьте товары в корзину');
-    }
-    
-    // Проверка максимального количества товаров
-    const maxItemsPerOrder = 20;
-    const totalItems = cart.reduce((sum, item) => sum + item.count, 0);
-    if (totalItems > maxItemsPerOrder) {
-        errors.push(`Максимальное количество товаров в одном заказе: ${maxItemsPerOrder}`);
-    }
-    
-    // Если есть ошибки - показываем их
-    if (errors.length > 0) {
-        showValidationErrors(errors);
-        return;
-    }
-    
-    // Форматирование телефона для удобства
-    const formattedPhone = phone.startsWith('8') ? '7' + phone.substring(1) : phone;
-    const cleanPhone = formattedPhone.replace(/\D/g, '');
-    
-    // Формируем данные заказа
-    const orderData = {
-        fio: fio,
-        phone: cleanPhone,
-        email: email,
-        city: city,
-        address: address,
-        delivery: delivery,
-        deliveryCost: delivery === 'sdek' ? 700 : 500,
-        items: cart,
-        total: document.getElementById('cart-total').textContent,
-        date: new Date().toLocaleString('ru-RU'),
-        comment: '',
-        totalItems: totalItems,
-        orderId: 'AFC-' + Date.now()
-    };
-    
-    console.log('Данные заказа:', orderData);
-    
-    
-    
-// Отправляем на email
-sendToEmail(orderData);
-    
-// Очищаем корзину
-localStorage.removeItem('cart');
-updateCartCount();
-cartModal.style.display = 'none';
-document.body.style.overflow = '';
-alert('✅ Заказ оформлен! Мы свяжемся с вами в ближайшее время.');
-});
-}
-
-// Показать ошибки валидации
-function showValidationErrors(errors) {
-    const errorContainer = document.createElement('div');
-    errorContainer.id = 'validation-errors';
-    errorContainer.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        background: #ff4444;
-        color: white;
-        padding: 15px 20px;
-        border-radius: 8px;
-        z-index: 10001;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        animation: slideIn 0.3s ease;
-        max-width: 300px;
-    `;
-    
-    let errorHtml = '<strong>Исправьте ошибки:</strong><ul style="margin: 10px 0 0 0; padding-left: 20px;">';
-    errors.forEach(error => {
-        errorHtml += `<li style="margin-bottom: 5px; font-size: 14px;">${error}</li>`;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            showNotification('Товар добавлен в корзину!');
+        }
     });
-    errorHtml += '</ul>';
-    
-    errorContainer.innerHTML = errorHtml;
-    document.body.appendChild(errorContainer);
-    
-    // Удаляем через 5 секунд
+}
+
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `position: fixed; top: 100px; right: 20px; background: #000; color: white; padding: 15px 20px; border-radius: 8px; z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.3); animation: slideIn 0.3s ease;`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
     setTimeout(() => {
-        errorContainer.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => {
-            if (errorContainer.parentNode) {
-                document.body.removeChild(errorContainer);
-            }
-        }, 300);
-    }, 5000);
-    
-    // Плавная прокрутка к первой ошибке
-    const firstErrorField = document.querySelector('input:invalid, select:invalid');
-    if (firstErrorField) {
-        firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        firstErrorField.focus();
-    }
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => document.body.removeChild(notification), 300);
+    }, 2000);
 }
-    
-// Кнопка возвращения вверх
+
+function setupCartControls() {
+    document.addEventListener('click', (e) => {
+        if (e.target.hasAttribute('data-action')) {
+            const index = parseInt(e.target.getAttribute('data-index'));
+            const action = e.target.getAttribute('data-action');
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (action === 'increase') cart[index].count++;
+            else if (action === 'decrease') { cart[index].count--; if (cart[index].count <= 0) cart.splice(index, 1); }
+            else if (action === 'remove') cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            updateCartModal();
+        }
+    });
+}
+
+function setupMenu() {
+    const menuButton = document.getElementById('menu-button');
+    const closeMenuButton = document.getElementById('close-menu');
+    const menu = document.getElementById('menu');
+    menuButton.addEventListener('click', () => menu.classList.add('active'));
+    closeMenuButton.addEventListener('click', () => menu.classList.remove('active'));
+    document.addEventListener('click', (e) => { if (!menu.contains(e.target) && e.target !== menuButton) menu.classList.remove('active'); });
+}
+
+function sendToEmail(orderData) {
+    const templateParams = {
+        to_email: '89617151191d@gmail.com',
+        client_name: orderData.fio,
+        client_phone: orderData.phone,
+        client_email: orderData.email,
+        delivery_address: `${orderData.city}, ${orderData.address}`,
+        delivery_method: orderData.delivery === 'sdek' ? 'СДЭК' : 'Почта России',
+        order_items: orderData.items.map(item => `${item.name}: ${item.count} × ${item.price} ₽ = ${item.price * item.count} ₽`).join('\n'),
+        order_total: orderData.total,
+        order_date: orderData.date
+    };
+    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+        .then(() => console.log('Email отправлен!'))
+        .catch(error => { console.error('Ошибка EmailJS:', error); sendToTelegram(orderData); });
+}
+
+function sendToTelegram(orderData) {
+    let message = `Новый заказ!\nФИО: ${orderData.fio}\nТелефон: ${orderData.phone}\nEmail: ${orderData.email}\nАдрес: ${orderData.city}, ${orderData.address}\nДоставка: ${orderData.delivery === 'sdek' ? 'СДЭК' : 'Почта России'}\nТовары:\n${orderData.items.map(item => `- ${item.name}: ${item.count} × ${item.price} ₽`).join('\n')}\n${orderData.total}`;
+    const botToken = 'YOUR_BOT_TOKEN';
+    const chatId = 'YOUR_CHAT_ID';
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: chatId, text: message }) }).catch(error => console.error('Ошибка Telegram:', error));
+}
+
+function setupCartModal() {
+    const cartButton = document.getElementById('cart-button');
+    const closeCartButton = document.getElementById('close-cart');
+    const cartModal = document.getElementById('cart-modal');
+    const deliveryMethod = document.getElementById('delivery-method');
+    const checkoutButton = document.getElementById('checkout-btn');
+    cartButton.addEventListener('click', () => { updateCartModal(); cartModal.style.display = 'flex'; document.body.style.overflow = 'hidden'; });
+    closeCartButton.addEventListener('click', () => { cartModal.style.display = 'none'; document.body.style.overflow = ''; });
+    cartModal.addEventListener('click', (e) => { if (e.target === cartModal) { cartModal.style.display = 'none'; document.body.style.overflow = ''; } });
+    deliveryMethod.addEventListener('change', () => updateCartModal());
+    checkoutButton.addEventListener('click', () => {
+        const form = document.getElementById('cart-form');
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const fio = form.querySelector('[name="fio"]').value.trim();
+        const phone = form.querySelector('[name="phone"]').value.trim();
+        const email = form.querySelector('[name="email"]').value.trim();
+        const city = form.querySelector('[name="city"]').value.trim();
+        const address = form.querySelector('[name="address"]').value.trim();
+        const delivery = document.getElementById('delivery-method').value;
+        if (!fio || !phone || !email || !city || !address || !delivery) { alert('Заполните все поля!'); return; }
+        if (cart.length === 0) { alert('Корзина пуста'); return; }
+        const orderData = { fio, phone, email, city, address, delivery, deliveryCost: delivery === 'sdek' ? 700 : 500, items: cart, total: document.getElementById('cart-total').textContent, date: new Date().toLocaleString('ru-RU') };
+        sendToEmail(orderData);
+        localStorage.removeItem('cart');
+        updateCartCount();
+        cartModal.style.display = 'none';
+        document.body.style.overflow = '';
+        alert('✅ Заказ оформлен! Мы свяжемся с вами.');
+    });
+}
+
 function setupBackToTop() {
-const backToTopButton = document.getElementById('back-to-top');
-
-window.addEventListener('scroll', () => {
-if (window.pageYOffset > 300) {
-backToTopButton.classList.add('visible');
-} else {
-backToTopButton.classList.remove('visible');
-}
-});
-
-backToTopButton.addEventListener('click', () => {
-window.scrollTo({
-top: 0,
-behavior: 'smooth'
-});
-});
+    const backToTopButton = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => backToTopButton.classList.toggle('visible', window.pageYOffset > 300));
+    backToTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
-// ЛОГИКА ДЛЯ ДОКУМЕНТОВ - ДОБАВЛЕНО
 function setupDocuments() {
-const docModal = document.getElementById('docModal');
-const docClose = document.querySelector('.doc-modal-close');
-const docTitle = document.getElementById('docTitle');
-const docText = document.getElementById('docText');
-const docLoading = document.getElementById('docLoading');
-const docError = document.getElementById('docError');
-  
-// Заголовки для документов
-const docTitles = {
-'care.txt': 'Уход за одеждой',
-'delivery.txt': 'Доставка и оплата',
-'return.txt': 'Возврат и обмен товара',
-'support.txt': 'Поддержка клиентов',
-'privacy.txt': 'Политика конфиденциальности',
-'terms.txt': 'Условия использования',
-'offer.txt': 'Договор публичной оферты'
-};
-  
-// Обработчики для кнопок документов
-document.querySelectorAll('.doc-btn').forEach(btn => {
-btn.addEventListener('click', async function(e) {
-e.preventDefault();
-      
-const filename = this.getAttribute('data-doc');
-const title = docTitles[filename] || this.textContent;
-      
-// Показываем модальное окно
-docModal.style.display = 'block';
-docTitle.textContent = title;
-      
-// Сбрасываем состояние
-docLoading.style.display = 'block';
-docText.style.display = 'none';
-docError.style.display = 'none';
-      
-try {
-// Загружаем документ
-const response = await fetch(`documents/${filename}`);
-        
-if (!response.ok) {
-throw new Error(`Ошибка загрузки: ${response.status}`);
-}
-        
-const text = await response.text();
-        
-// Вставляем текст
-docText.textContent = text;
-docLoading.style.display = 'none';
-docText.style.display = 'block';
-        
-} catch (error) {
-console.error('Ошибка загрузки документа:', error);
-docLoading.style.display = 'none';
-docError.style.display = 'block';
-}
-});
-});
-  
-// Закрытие модального окна
-docClose.addEventListener('click', function() {
-docModal.style.display = 'none';
-});
-  
-// Закрытие при клике вне окна
-window.addEventListener('click', function(e) {
-if (e.target === docModal) {
-docModal.style.display = 'none';
-}
-});
+    const docModal = document.getElementById('docModal');
+    const docClose = document.querySelector('.doc-modal-close');
+    const docTitle = document.getElementById('docTitle');
+    const docText = document.getElementById('docText');
+    const docLoading = document.getElementById('docLoading');
+    const docError = document.getElementById('docError');
+    const docTitles = { 'care.txt': 'Уход за одеждой', 'delivery.txt': 'Доставка и оплата', 'return.txt': 'Возврат и обмен товара', 'support.txt': 'Поддержка клиентов', 'privacy.txt': 'Политика конфиденциальности', 'terms.txt': 'Условия использования', 'offer.txt': 'Договор публичной оферты' };
+    document.querySelectorAll('.doc-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const filename = btn.getAttribute('data-doc');
+            docTitle.textContent = docTitles[filename] || btn.textContent;
+            docModal.style.display = 'block';
+            docLoading.style.display = 'block';
+            docText.style.display = 'none';
+            docError.style.display = 'none';
+            try {
+                const response = await fetch(`documents/${filename}`);
+                if (!response.ok) throw new Error(`Ошибка: ${response.status}`);
+                docText.textContent = await response.text();
+                docLoading.style.display = 'none';
+                docText.style.display = 'block';
+            } catch (error) {
+                docLoading.style.display = 'none';
+                docError.style.display = 'block';
+            }
+        });
+    });
+    docClose.addEventListener('click', () => docModal.style.display = 'none');
+    window.addEventListener('click', (e) => { if (e.target === docModal) docModal.style.display = 'none'; });
 }
 
-// Добавляем CSS анимации для уведомлений
-const style = document.createElement('style');
-style.textContent = `
- @keyframes slideIn {
-   from { transform: translateX(100%); opacity: 0; }
-   to { transform: translateX(0); opacity: 1; }
- }
- @keyframes slideOut {
-   from { transform: translateX(0); opacity: 1; }
-   to { transform: translateX(100%); opacity: 0; }
- }
-`;
-document.head.appendChild(style);
+// Добавляем CSS анимации
+const styleSheet = document.createElement('style');
+styleSheet.textContent = `@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } } @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }`;
+document.head.appendChild(styleSheet);
 
-// Инициализация страницы только после полной загрузки DOM
+// Инициализация
 document.addEventListener('DOMContentLoaded', () => {
-console.log('DOM загружен, рендерим товары...');
-renderProducts();
-setupAddButtons();
-setupCartControls();
-setupMenu();
-setupCartModal();
-setupBackToTop();
-setupDocuments();
-updateCartCount();
-    
-// Дополнительная проверка через секунду
-setTimeout(() => {
-    const container = document.getElementById('products-container');
-    if (!container || container.children.length === 0) {
-        console.error('Товары не отрендерились!');
-        // Экстренное восстановление
-        renderProducts();
-    } else {
-        console.log('Товары успешно отрендерены:', container.children.length, 'шт.');
-    }
-}, 1000);
-});
-
-// Аварийное восстановление если DOMContentLoaded не сработал
-window.addEventListener('load', function() {
-console.log('Страница полностью загружена');
-const container = document.getElementById('products-container');
-if (container && container.children.length === 0) {
-    console.log('Восстанавливаем товары через window.onload...');
     renderProducts();
-}
+    setupAddButtons();
+    setupCartControls();
+    setupMenu();
+    setupCartModal();
+    setupBackToTop();
+    setupDocuments();
+    updateCartCount();
 });
 </script>
 </body>
 </html>
-
